@@ -14,7 +14,7 @@ RUN yarn install
 COPY . .
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 5000
 
 # Define the command to run the application
 CMD ["npm", "start"]
