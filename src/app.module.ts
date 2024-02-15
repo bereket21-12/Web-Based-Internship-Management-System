@@ -6,9 +6,12 @@ import { UsersModule } from './users/users.module';
 import { UsersController } from './users/users.controller';
 // import { PrismaModule } from './prisma/prisma.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { InternshipModule } from './internship/internship.module';
+import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
-  imports: [UsersModule, PrismaModule],
+  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule],
   controllers: [UsersController],
   providers: [AppService],
 })
