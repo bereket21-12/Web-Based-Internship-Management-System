@@ -10,8 +10,271 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Role {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  users       User[]
+  permissions String[]
+}
+
 model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String
-  name  String
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  email           String         @unique
+  password        String
+  firstName       String
+  middleName      String
+  role            Role           @relation(fields: [roleId], references: [id])
+  roleId          String         @db.ObjectId
+  profilePic      String
+  phoneNum        String
+  verified        Boolean
+  notifications   Notification[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+  Student         Student?
+  Company         Company[]
+  University      University[]
+  College         College[]
+  Department      Department[]
+  Advisor         Advisor[]
+  Mentor          Mentor[]
+  Message         Message[]
+}
+
+model Student {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String     @unique @db.ObjectId
+  user           User       @relation(fields: [userId], references: [id])
+  universityId   String     @db.ObjectId
+  University     University @relation(fields: [universityId], references: [id])
+  departmentId   String     @db.ObjectId
+  department     Department @relation(fields: [departmentId], references: [id])
+  year           Int
+  gpa            Float
+  skills         String[]
+  resumeUrl      String?
+  isOnInternship Boolean
+  advisorId      String?    @db.ObjectId
+  advisor        Advisor?   @relation(fields: [advisorId], references: [id])
+  mentorId       String?    @db.ObjectId
+  mentor         Mentor?    @relation(fields: [mentorId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  Report         Report[]
+  Feedback       Feedback[]
+}
+
+model Internship {
+  id                      String                @id @default(auto()) @map("_id") @db.ObjectId
+  title                   String
+  companyId               String                @db.ObjectId
+  company                 Company               @relation(fields: [companyId], references: [id])
+  duration                String
+  startDate               DateTime
+  endDate                 DateTime
+  schedule                Schedule
+  compensations           Compensations
+  descriptionId           String                @unique
+  description             InternshipDescription @relation(fields: [internshipDescriptionId], references: [id])
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  internshipDescriptionId String                @unique @db.ObjectId
+  Report                  Report[]
+}
+
+model InternshipDescription {
+  id                      String      @id @default(auto()) @map("_id") @db.ObjectId
+  responsibilities        String[]
+  qualifications          String[]
+  applicationInstructions String
+  deadline                DateTime
+  createdAt               DateTime    @default(now())
+  updatedAt               DateTime    @updatedAt
+  Internship              Internship?
+}
+
+model Company {
+  id                 String       @id @default(auto()) @map("_id") @db.ObjectId
+  name               String       @unique
+  industry           String
+  companyHRId        String       @db.ObjectId
+  companyHR          User         @relation(fields: [companyHRId], references: [id])
+  logoUrl            String
+  website            String?
+  email              String
+  phoneNum           String
+  addressId          String       @db.ObjectId
+  address            Address      @relation(fields: [addressId], references: [id])
+  internshiprOferred Internship[]
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  Mentor             Mentor[]
+  Feedback           Feedback[]
+}
+
+model Conversation {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  participantIds String[] @db.ObjectId
+  participants   User[]   @relation(fields: [participantIds], references: [id])
+
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  senderId       String       @db.ObjectId
+  sender         User         @relation(fields: [senderId], references: [id])
+  content        String
+  read           Boolean
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  read      Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model University {
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
+  name              String       @unique
+  websiteUrl        String?
+  college           College[]
+  departments       Department[]
+  universityAdminId String       @db.ObjectId
+  universityAdmin   User         @relation(fields: [universityAdminId], references: [id])
+  email             String
+  phoneNum          String
+  addressId         String       @db.ObjectId
+  address           Address      @relation(fields: [addressId], references: [id])
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  Student Student[]
+}
+
+model Address {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  city       String
+  region     String
+  subcity    String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Company    Company[]
+  University University[]
+}
+
+model College {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String       @unique
+  websiteUrl    String?
+  departments   Department[]
+  collegeDeanId String       @db.ObjectId
+  collegeDean   User         @relation(fields: [collegeDeanId], references: [id])
+  universityId  String       @db.ObjectId
+  university    University   @relation(fields: [universityId], references: [id])
+  email         String
+  phoneNum      String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Department {
+  id               String      @id @default(auto()) @map("_id") @db.ObjectId
+  name             String      @unique
+  departmentHeadId String      @db.ObjectId
+  departmentHead   User        @relation(fields: [departmentHeadId], references: [id])
+  collegeId        String      @db.ObjectId
+  college          College     @relation(fields: [collegeId], references: [id])
+  email            String
+  phoneNum         String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  Student          Student[]
+  University       University? @relation(fields: [universityId], references: [id])
+  universityId     String?     @db.ObjectId
+  Advisor          Advisor[]
+}
+
+model Advisor {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String     @db.ObjectId
+  user         User       @relation(fields: [userId], references: [id])
+  departmentId String     @db.ObjectId
+  department   Department @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  Student      Student[]
+  Report       Report[]
+  Feedback     Feedback[]
+}
+
+model Mentor {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String     @db.ObjectId
+  user      User       @relation(fields: [userId], references: [id])
+  companyId String     @db.ObjectId
+  company   Company    @relation(fields: [companyId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Student   Student[]
+  Report    Report[]
+  Feedback  Feedback[]
+}
+
+model Feedback {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  internId  String?   @db.ObjectId
+  intern    Student?  @relation(fields: [internId], references: [id])
+  companyId String?   @db.ObjectId
+  company   Company?  @relation(fields: [companyId], references: [id])
+  advisorId String?   @db.ObjectId
+  advisor   Advisor?  @relation(fields: [advisorId], references: [id])
+  mentorId  String?   @db.ObjectId
+  mentor    Mentor?   @relation(fields: [mentorId], references: [id])
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Report    Report[]
+}
+
+model Report {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  studentId     String     @db.ObjectId
+  student       Student    @relation(fields: [studentId], references: [id])
+  advisorId     String?     @db.ObjectId
+  advisor       Advisor?    @relation(fields: [advisorId], references: [id])
+  mentorId      String?     @db.ObjectId
+  mentor        Mentor?     @relation(fields: [mentorId], references: [id])
+  internshipId  String     @db.ObjectId
+  internship    Internship @relation(fields: [internshipId], references: [id])
+  title         String
+  attachmentUrl String?
+  feedbackId    String?     @db.ObjectId
+  feedback      Feedback?   @relation(fields: [feedbackId], references: [id])
+  content       String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+enum Schedule {
+  FULL_TIME
+  PART_TIME
+  REMOTE
+}
+
+enum Compensations {
+  PAID
+  UNPAID
 }
