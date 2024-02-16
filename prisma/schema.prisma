@@ -23,6 +23,7 @@ model User {
   password        String
   firstName       String
   middleName      String
+  userName        String         @unique
   role            Role           @relation(fields: [roleId], references: [id])
   roleId          String         @db.ObjectId
   profilePic      String
@@ -150,9 +151,11 @@ model University {
   id                String       @id @default(auto()) @map("_id") @db.ObjectId
   name              String       @unique
   websiteUrl        String?
+  logoUrl           String
   college           College[]
   departments       Department[]
   universityAdminId String       @db.ObjectId
+  verified          Boolean     @default(false)
   universityAdmin   User         @relation(fields: [universityAdminId], references: [id])
   email             String
   phoneNum          String
