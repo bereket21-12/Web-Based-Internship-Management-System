@@ -155,7 +155,7 @@ model University {
   college           College[]
   departments       Department[]
   universityAdminId String       @db.ObjectId
-  verified          Boolean     @default(false)
+  verified          Boolean      @default(false)
   universityAdmin   User         @relation(fields: [universityAdminId], references: [id])
   email             String
   phoneNum          String
@@ -163,7 +163,7 @@ model University {
   address           Address      @relation(fields: [addressId], references: [id])
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
-  Student Student[]
+  Student           Student[]
 }
 
 model Address {
@@ -180,7 +180,6 @@ model Address {
 model College {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String       @unique
-  websiteUrl    String?
   departments   Department[]
   collegeDeanId String       @db.ObjectId
   collegeDean   User         @relation(fields: [collegeDeanId], references: [id])
@@ -190,6 +189,7 @@ model College {
   phoneNum      String
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  Form          Form[]
 }
 
 model Department {
@@ -237,15 +237,15 @@ model Mentor {
 
 model Feedback {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  internId  String?   @db.ObjectId
-  intern    Student?  @relation(fields: [internId], references: [id])
-  companyId String?   @db.ObjectId
-  company   Company?  @relation(fields: [companyId], references: [id])
-  advisorId String?   @db.ObjectId
-  advisor   Advisor?  @relation(fields: [advisorId], references: [id])
-  mentorId  String?   @db.ObjectId
-  mentor    Mentor?   @relation(fields: [mentorId], references: [id])
-  rating    Int
+  internId  String?  @db.ObjectId
+  intern    Student? @relation(fields: [internId], references: [id])
+  companyId String?  @db.ObjectId
+  company   Company? @relation(fields: [companyId], references: [id])
+  advisorId String?  @db.ObjectId
+  advisor   Advisor? @relation(fields: [advisorId], references: [id])
+  mentorId  String?  @db.ObjectId
+  mentor    Mentor?  @relation(fields: [mentorId], references: [id])
+  rating    Int?
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -253,22 +253,48 @@ model Feedback {
 }
 
 model Report {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
-  studentId     String     @db.ObjectId
-  student       Student    @relation(fields: [studentId], references: [id])
-  advisorId     String?     @db.ObjectId
-  advisor       Advisor?    @relation(fields: [advisorId], references: [id])
-  mentorId      String?     @db.ObjectId
-  mentor        Mentor?     @relation(fields: [mentorId], references: [id])
-  internshipId  String     @db.ObjectId
-  internship    Internship @relation(fields: [internshipId], references: [id])
-  title         String
-  attachmentUrl String?
-  feedbackId    String?     @db.ObjectId
-  feedback      Feedback?   @relation(fields: [feedbackId], references: [id])
-  content       String
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  studentId         String     @db.ObjectId
+  student           Student    @relation(fields: [studentId], references: [id])
+  advisorId         String?    @db.ObjectId
+  advisor           Advisor?   @relation(fields: [advisorId], references: [id])
+  mentorId          String?    @db.ObjectId
+  mentor            Mentor?    @relation(fields: [mentorId], references: [id])
+  internshipId      String     @db.ObjectId
+  internship        Internship @relation(fields: [internshipId], references: [id])
+  title             String
+  attachmentUrl     String?
+  feedbackId        String?    @db.ObjectId
+  feedback          Feedback?  @relation(fields: [feedbackId], references: [id])
+  description       String
+  challengesFaced   String[]
+  lessonsLearned    String[]
+  tasksAccomplished String[]
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+}
+
+model Form {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  collegeId   String    @db.ObjectId
+  college     College   @relation(fields: [collegeId], references: [id])
+  questionId  String[]  @db.ObjectId
+  question    Question? @relation(fields: [questionId], references: [id])
+  totalWeight Int
+  type        FormType
+}
+
+model Question {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+  weight  Int
+  formId  String?  @db.ObjectId
+  Form    Form[]
+}
+
+enum FormType {
+  ADVISOR
+  MENTOR
 }
 
 enum Schedule {
