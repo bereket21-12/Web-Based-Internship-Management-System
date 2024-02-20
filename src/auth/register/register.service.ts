@@ -10,7 +10,7 @@ export class RegisterService {
     constructor(
         private prismaService: PrismaService,
         private generateJwtService: GenerateJwtService
-    ) { }
+    ) {}
 
     async registerUniversity(dto: UniversityRegisterDto): Promise<Tokens> {
         const hashedPassword = await argon.hash(dto.adminPassword)
@@ -39,6 +39,7 @@ export class RegisterService {
         })
 
         const tokens = await this.generateJwtService.getToken(newUniversity.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
+        await this.updateRtHash(newUniversity.universityAdminId, tokens.refresh_token);
         return tokens;
     }
 
