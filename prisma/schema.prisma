@@ -24,11 +24,12 @@ model User {
   firstName       String
   middleName      String
   userName        String         @unique
-  role            Role           @relation(fields: [roleId], references: [id])
-  roleId          String         @db.ObjectId
+  role            Role           @relation(fields: [roleName], references: [name])
+  roleName        String
   profilePic      String
   phoneNum        String
-  verified        Boolean
+  hashedRt        String?
+  verified        Boolean?
   notifications   Notification[]
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -106,8 +107,7 @@ model Company {
   website            String?
   email              String
   phoneNum           String
-  addressId          String       @db.ObjectId
-  address            Address      @relation(fields: [addressId], references: [id])
+  address            Address?
   internshiprOferred Internship[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -150,31 +150,25 @@ model Notification {
 model University {
   id                String       @id @default(auto()) @map("_id") @db.ObjectId
   name              String       @unique
-  websiteUrl        String?
   logoUrl           String
+  websiteUrl        String?
   college           College[]
   departments       Department[]
   universityAdminId String       @db.ObjectId
   verified          Boolean      @default(false)
   universityAdmin   User         @relation(fields: [universityAdminId], references: [id])
-  email             String
+  email             String       @unique
   phoneNum          String
-  addressId         String       @db.ObjectId
-  address           Address      @relation(fields: [addressId], references: [id])
+  address           Address?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   Student           Student[]
 }
 
-model Address {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  city       String
-  region     String
-  subcity    String?
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Company    Company[]
-  University University[]
+type Address {
+  city    String
+  region  String
+  subcity String?
 }
 
 model College {
@@ -285,10 +279,10 @@ model Form {
 }
 
 model Question {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
   content String
   weight  Int
-  formId  String?  @db.ObjectId
+  formId  String? @db.ObjectId
   Form    Form[]
 }
 

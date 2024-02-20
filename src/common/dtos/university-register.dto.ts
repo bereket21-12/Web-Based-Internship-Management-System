@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString, IsUrl, Length } from "class-validator";
+import { AddressDto } from "./address.dto";
 
-export class CreateUniversityAdminDto {
+export class UniversityRegisterDto {
     @IsString()
     @IsNotEmpty()
     adminUserName: string;
@@ -34,6 +35,9 @@ export class CreateUniversityAdminDto {
     @IsNotEmpty()
     universityName: string;
 
+    @IsString()
+    websiteUrl?: string;
+
     @IsNotEmpty()
     @IsEmail()
     universityEmail: string;
@@ -43,17 +47,10 @@ export class CreateUniversityAdminDto {
     @Length(10, 15)
     universityPhoneNumber: string;
 
-    @IsString()
     @IsNotEmpty()
-    universityCityAddress: string;
-
-    @IsString()
-    @IsNotEmpty()
-    universityRegionAddress: string;
-
-    @IsString()
-    universitySubCityAddress?: string;
+    address: AddressDto;
 
     @IsUrl()
     universityLogoUrl?: string;
 }
+
