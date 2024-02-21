@@ -1,10 +1,16 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { LogoutService } from './logout.service';
+import { AtGuard } from 'src/common/guards';
+import { GetCurrentUser } from 'src/common/decorators';
 
 @Controller('logout')
 export class LogoutController {
+    constructor(private logoutService: LogoutService) {}
 
+    @UseGuards(AtGuard)
     @Post()
-    logout() {
-        return 'This action logs a user out';
+    @HttpCode(HttpStatus.OK)
+    logout(@GetCurrentUser('sub') userId: string){
+        return this.logoutService.logout(userId);
     }
 }
