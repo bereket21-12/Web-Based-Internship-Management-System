@@ -3,7 +3,7 @@ import { LogoutService } from './logout.service';
 import { AtGuard } from 'src/common/guards';
 import { GetCurrentUser } from 'src/common/decorators';
 
-@Controller('logout')
+@Controller('auth/logout')
 export class LogoutController {
     constructor(private logoutService: LogoutService) {}
 

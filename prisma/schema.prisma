@@ -24,8 +24,8 @@ model User {
   firstName       String
   middleName      String
   userName        String         @unique
-  role            Role           @relation(fields: [roleName], references: [name])
-  roleName        String
+  role            Role?          @relation(fields: [roleName], references: [name])
+  roleName        String?
   profilePic      String
   phoneNum        String
   hashedRt        String?
@@ -35,7 +35,7 @@ model User {
   updatedAt       DateTime       @updatedAt
   conversationIds String[]       @db.ObjectId
   conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
-  Student         Student?
+  Student         Student[]
   Company         Company[]
   University      University[]
   College         College[]
@@ -49,15 +49,15 @@ model Student {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   userId         String     @unique @db.ObjectId
   user           User       @relation(fields: [userId], references: [id])
-  universityId   String     @db.ObjectId
-  University     University @relation(fields: [universityId], references: [id])
-  departmentId   String     @db.ObjectId
-  department     Department @relation(fields: [departmentId], references: [id])
+  universityName String
+  University     University @relation(fields: [universityName], references: [name])
+  departmentName String
+  department     Department @relation(fields: [departmentName], references: [name])
   year           Int
   gpa            Float
   skills         String[]
   resumeUrl      String?
-  isOnInternship Boolean
+  isOnInternship Boolean?
   advisorId      String?    @db.ObjectId
   advisor        Advisor?   @relation(fields: [advisorId], references: [id])
   mentorId       String?    @db.ObjectId
@@ -116,13 +116,12 @@ model Company {
 }
 
 model Conversation {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  participantIds String[] @db.ObjectId
-  participants   User[]   @relation(fields: [participantIds], references: [id])
-
-  messages  Message[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  participantIds String[]  @db.ObjectId
+  participants   User[]    @relation(fields: [participantIds], references: [id])
+  messages       Message[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model Message {
@@ -163,12 +162,6 @@ model University {
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   Student           Student[]
-}
-
-type Address {
-  city    String
-  region  String
-  subcity String?
 }
 
 model College {
@@ -300,4 +293,10 @@ enum Schedule {
 enum Compensations {
   PAID
   UNPAID
+}
+
+type Address {
+  city    String
+  region  String
+  subcity String?
 }
