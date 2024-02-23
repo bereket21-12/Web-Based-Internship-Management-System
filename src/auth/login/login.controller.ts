@@ -3,7 +3,7 @@ import { LoginService } from './login.service';
 import { LoginDto } from 'src/common/dtos';
 import { Tokens } from 'src/common/types';
 
-@Controller('login')
+@Controller('auth/login')
 export class LoginController {
     constructor(private loginService: LoginService) {}
 
