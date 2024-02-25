@@ -7,9 +7,13 @@ export class MessageGateway implements OnGatewayInit, OnGatewayConnection, OnGat
   messageService: any;
 
   @SubscribeMessage('events')
-  handleEvent(@MessageBody() data: string): string {
+  handleEvent(@MessageBody() data: string): any {
 
-     return data;
+     this.server.emit('onMessage' ,{
+      msg : "message",
+      body : data
+     })
+    
   }
 
   private connections: Set<WebSocket> = new Set();
@@ -39,30 +43,30 @@ export class MessageGateway implements OnGatewayInit, OnGatewayConnection, OnGat
   }
 
 
-  async getUserById(id: string): Promise<User | undefined> {
-    try {
-      return await this.userService.findOneById(id);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      return undefined;
-    }
-  }
-  async handlePrivateMessage(@MessageBody() message: { senderId: string, receiverId: string, content: string }) {
-    const sender = this.getUserById(message.senderId);
-    const receiver = this.getUserById(message.receiverId);
+  // async getUserById(id: string): Promise<User | undefined> {
+  //   try {
+  //     return await this.userService.findOneById(id);
+  //   } catch (error) {
+  //     console.error('Error fetching user:', error);
+  //     return undefined;
+  //   }
+  // }
+  // async handlePrivateMessage(@MessageBody() message: { senderId: string, receiverId: string, content: string }) {
+  //   const sender = this.getUserById(message.senderId);
+  //   const receiver = this.getUserById(message.receiverId);
   
-    if (sender && receiver) {
-      const receiverClient = this.connections.get(receiver.socketId);
-      if (receiverClient) {
-        receiverClient.emit('private_message', message); // Deliver immediately if online
-      } else {
-        // Store message for offline recipient
-        await this.messageService.storeMessage(message);
-      }
-    } else {
-      console.log(`Invalid sender or recipient.`);
-    }
-  }
+  //   if (sender && receiver) {
+  //     const receiverClient = this.connections.get(receiver.socketId);
+  //     if (receiverClient) {
+  //       receiverClient.emit('private_message', message); // Deliver immediately if online
+  //     } else {
+  //       // Store message for offline recipient
+  //       await this.messageService.storeMessage(message);
+  //     }
+  //   } else {
+  //     console.log(`Invalid sender or recipient.`);
+  //   }
+  // }
 
   
 }
