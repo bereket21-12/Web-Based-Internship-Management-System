@@ -1,2 +1,6 @@
 export * from './login.dto'
 export * from './set.permission.dto'
+export * from './create-mentor.dto'
+export * from './create-advisor.dto'
+export * from './create-department-head.dto'
+export * from './create-college.dto'

@@ -1,4 +1,9 @@
 import { Module } from '@nestjs/common';
+import { GetController } from './get.controller';
+import { GetService } from './get.service';
 
-@Module({})
+@Module({
+  controllers: [GetController],
+  providers: [GetService]
+})
 export class GetModule {}
