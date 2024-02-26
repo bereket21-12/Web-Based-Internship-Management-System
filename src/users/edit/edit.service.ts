@@ -55,7 +55,7 @@ export class EditService {
                         userName: dto.advisorUserName,
                         profilePic: dto.advisorProfilePicUrl,
                         phoneNum: dto.advisorPhoneNum,
-                        hashedRt: dto.advisorHashedRt,
+                        // hashedRt: dto.advisorHashedRt,
                         verified: dto.advisorVerified,
                         email: dto.advisorEmail,
                         password: dto.advisorPassword,

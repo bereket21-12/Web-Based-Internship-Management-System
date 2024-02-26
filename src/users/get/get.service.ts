@@ -8,11 +8,13 @@ export class GetService {
     ) {}
 
     async getAllUsers(): Promise<any> {
+
         const users = await this.prismaService.user.findMany()
         return users;
     }
 
     async getUserById(_id: string): Promise<any> {
+
         const user = await this.prismaService.user.findUnique({
             where: {
                 id: _id
@@ -22,6 +24,7 @@ export class GetService {
     }
 
     async getUsersByRole(role: string): Promise<any> {
+        
         const users = await this.prismaService.user.findMany({
             where: {
                 roleName: role
