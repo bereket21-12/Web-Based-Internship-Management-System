@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CreateAdvisorDto, CreateCollegeDto, CreateDepartmentHeadDto, CreateMentorDto } from 'src/common/dtos';
 import { CreateService } from './create.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -14,7 +14,8 @@ export class CreateController {
     @UseInterceptors(FileInterceptor('image'))
     async createMentor(@Body() dto: CreateMentorDto, @UploadedFile() file: Express.Multer.File) {
         try {
-            const result = await this.cloudinaryService.uploadImage(file.path);
+            const result = await this.uploadImageToCloudinary(file)
+            console.log(result.secure_url)
             dto.mentorProfilePicUrl = result.secure_url;
             return this.createService.createMentor(dto);
         } catch(err) {
@@ -35,5 +36,12 @@ export class CreateController {
     @Post('college')
     createCollege(@Body() dto: CreateCollegeDto) {
         return this.createService.createCollege(dto);
+    }
+
+    @Post('upload')
+    async uploadImageToCloudinary(file: Express.Multer.File) {
+        return await this.cloudinaryService.uploadImage(file).catch(err => {
+            throw new BadRequestException(err);
+        })
     }
 }
