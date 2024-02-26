@@ -1,15 +1,25 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CreateAdvisorDto, CreateCollegeDto, CreateDepartmentHeadDto, CreateMentorDto } from 'src/common/dtos';
 import { CreateService } from './create.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('create')
 export class CreateController {
     constructor(
         private createService: CreateService,
+        private cloudinaryService: CloudinaryService
     ) {}
     @Post('mentor')
-    createMentor(@Body() dto: CreateMentorDto) {
-        return this.createService.createMentor(dto);
+    @UseInterceptors(FileInterceptor('image'))
+    async createMentor(@Body() dto: CreateMentorDto, @UploadedFile() file: Express.Multer.File) {
+        try {
+            const result = await this.cloudinaryService.uploadImage(file.path);
+            dto.mentorProfilePicUrl = result.secure_url;
+            return this.createService.createMentor(dto);
+        } catch(err) {
+            throw new Error(err);
+        }
     }
 
     @Post('advisor')
