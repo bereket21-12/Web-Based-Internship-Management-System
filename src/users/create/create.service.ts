@@ -208,6 +208,4 @@ export class CreateService {
             resume: uploads[1] ? uploads[1].url : undefined // Conditionally return the resume URL if present, adjust based on how you handle default/missing resumes
         };
     }
-
-
 }

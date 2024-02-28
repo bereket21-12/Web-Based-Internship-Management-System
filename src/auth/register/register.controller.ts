@@ -26,32 +26,30 @@ export class RegisterController {
     async registerUniversity(
         @Body() dto: UniversityRegisterDto,
         @UploadedFiles() files: { image?: Express.Multer.File[], logo?: Express.Multer.File[] }
-    ): Promise<Tokens> {
-        let logoUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709102607/d2lzd65x1idyztuz2afq.jpg'
-        let logoId = 'd2lzd65x1idyztuz2afq';
+    ): Promise<any> {
+        let logoUrl = ' '
+        let logoId = ' ';
 
-        let adminProfilePicUrl = RegisterController.defaultImageUrl;
-        let imagePublicId = RegisterController.defaultImagePublicId;
+        let adminProfilePicUrl = '';
+        let imagePublicId = '';
 
-        if (files[0]) {
-            const imageUploadResult = await this.cloudinaryService.uploadImage(files[0]);
+        if (files.image && files.image[0]) {
+            const imageUploadResult = await this.cloudinaryService.uploadImage(files.image[0]);
             adminProfilePicUrl = imageUploadResult.url;
             imagePublicId = imageUploadResult.public_id;
         }
         dto.adminProfilePicture = adminProfilePicUrl;
         dto.adminImagePublicId = imagePublicId;
 
-        if (files[1]) {
-            console.log(files[1], 'logo');
-            
-            const logoUploadResult = await this.cloudinaryService.uploadImage(files[1]);
+        if (files.logo && files.logo[0]) {
+            const logoUploadResult = await this.cloudinaryService.uploadImage(files.logo[0]);
             logoUrl = logoUploadResult.url;
             logoId = logoUploadResult.public_id;
         }
+
         dto.universityLogoUrl = logoUrl
         dto.logoPublicId = logoId
-
-        console.log(dto.adminProfilePicture, dto.adminImagePublicId, 'admin');        
+        console.log(dto.adminProfilePicture, dto.adminImagePublicId, 'admin');
         console.log(dto.universityLogoUrl, dto.logoPublicId, 'logo');
         return this.registerService.registerUniversity(dto);
     }
@@ -65,27 +63,28 @@ export class RegisterController {
     async registerCompany(
         @Body() dto: CompanyRegistrationDto,
         @UploadedFiles() files: { image?: Express.Multer.File[], logo?: Express.Multer.File[] }
-    ): Promise<Tokens> {
+    ): Promise<any> {
 
-        let logoUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709102607/d2lzd65x1idyztuz2afq.jpg'
-        let logoId = 'd2lzd65x1idyztuz2afq';
+        let logoUrl = ' '
+        let logoId = ' ';
 
-        let hrProfilePicUrl = RegisterController.defaultImageUrl;
-        let imagePublicId = RegisterController.defaultImagePublicId;
+        let hrProfilePicUrl = ' ';
+        let imagePublicId = ' ';
 
-        if (files[0]) {
-            const imageUploadResult = await this.cloudinaryService.uploadImage(files[0]);
+        if (files.image && files.image[0]) {
+            const imageUploadResult = await this.cloudinaryService.uploadImage(files.image[0]);
             hrProfilePicUrl = imageUploadResult.url;
             imagePublicId = imageUploadResult.public_id;
         }
         dto.HRProfilePicture = hrProfilePicUrl;
         dto.HRImagePublicId = imagePublicId;
 
-        if (files[1]) {
-            const logoUploadResult = await this.cloudinaryService.uploadImage(files[1]);
+        if (files.logo && files.logo[0]) {
+            const logoUploadResult = await this.cloudinaryService.uploadImage(files.logo[0]);
             logoUrl = logoUploadResult.url;
             logoId = logoUploadResult.public_id;
         }
+
         dto.logoUrl = logoUrl
         dto.logoPublicId = logoId
         return this.registerService.registerCompany(dto);
@@ -101,23 +100,32 @@ export class RegisterController {
         @Body() dto: StudentRegistrationDto,
         @UploadedFiles() files: { image?: Express.Multer.File[], resume?: Express.Multer.File[] }
     ): Promise<Tokens> {
-        let studentProfilePicUrl = RegisterController.defaultImageUrl;
-        let imagePublicId = RegisterController.defaultImagePublicId;
+        let studentProfilePicUrl = " ";
+        let imagePublicId = " ";
 
-        if (files[0]) {
-            const imageUploadResult = await this.cloudinaryService.uploadImage(files[0]);
+        if (files.image && files.image[0]) {
+            const imageUploadResult = await this.cloudinaryService.uploadImage(files.image[0]);
             studentProfilePicUrl = imageUploadResult.url;
             imagePublicId = imageUploadResult.public_id;
         }
         dto.profilePic = studentProfilePicUrl;
         dto.imagePublicId = imagePublicId;
 
-        if (files[1]) {
-            const resumeUploadPromise = await this.cloudinaryService.uploadPDF(files[1]);
+        if (files.resume && files.resume[0]) {
+            const resumeUploadPromise = await this.cloudinaryService.uploadPDF(files.resume[0]);
             dto.resumeUrl = resumeUploadPromise.url;
             dto.resumePublicId = resumeUploadPromise.public_id;
+            // console.log(resumeUploadPromise.url, resumeUploadPromise.public_id, 'resume')
         }
-
         return this.registerService.registerStudent(dto);
     }
+
+    // @Post('upload')
+    // @UseInterceptors(FileInterceptor('image'))
+    // async uploadImage(@UploadedFile() file: Express.Multer.File) {
+    //     const imageUploadResult = await this.cloudinaryService.uploadImage(file);
+    //     const result = this.cloudinaryService.deleteFile('fxj3vmsktztjnzr9prdf')
+
+    //     return result;
+    // }
 }
