@@ -1,51 +1,58 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsBoolean, IsString } from "class-validator";
+import { IsBoolean, IsOptional, IsString } from "class-validator";
 
 export class CreateCollegeDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    // @IsString()
-    collegeDeanId: string;
+  // @IsString()
+  collegeDeanId: string;
 
-    @IsString()
-    universityId: string;
+  @IsString()
+  universityId: string;
 
-    @IsString()
-    email: string;
+  @IsString()
+  email: string;
 
-    @IsString()
-    phoneNum: string;
+  @IsString()
+  phoneNum: string;
 
-    @IsString()
-    deanFirstName: string;
+  @IsString()
+  deanFirstName: string;
 
-    @IsString()
-    deanMiddleName: string;
+  @IsString()
+  deanMiddleName: string;
 
-    @IsString()
-    deanUserName: string;
+  @IsString()
+  deanUserName: string;
 
-    @IsString()
-    deanProfilePic: string;
+  @IsString()
+  @IsOptional()
+  deanProfilePic: string;
 
-    @IsString()
-    deanPhoneNum: string;
+  @IsString()
+  @IsOptional()
+  deanImagePublicId: string;
 
-    @IsString()
-    deanEmail: string;
+  @IsString()
+  deanPhoneNum: string;
 
-    @IsString()
-    deanPassword: string;
+  @IsString()
+  deanEmail: string;
 
-    @IsBoolean()
-    deanVerified: boolean = true;
+  @IsString()
+  deanPassword: string;
 
-    @IsString()
-    roleName: string;
+  @IsBoolean()
+  @IsOptional()
+  deanVerified: boolean = true;
+
+  @IsString()
+  @IsOptional()
+  roleName: string;
 }
 
-export class UpdateCollegeDto extends PartialType(CreateCollegeDto) {}
+export class UpdateCollegeDto extends PartialType(CreateCollegeDto) { }
 
 /*
 model College {

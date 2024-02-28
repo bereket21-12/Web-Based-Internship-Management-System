@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsUrl, Length } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, Length } from "class-validator";
 import { AddressDto } from "./address.dto";
 
 export class UniversityRegisterDto {
@@ -16,7 +16,7 @@ export class UniversityRegisterDto {
     adminPassword: string;
 
     @IsString()
-    @IsNotEmpty()  
+    @IsNotEmpty()
     adminFirstName: string;
 
     @IsString()
@@ -24,7 +24,16 @@ export class UniversityRegisterDto {
     adminMiddleName: string;
 
     @IsUrl()
+    @IsOptional()
     adminProfilePicture?: string;
+
+    @IsString()
+    @IsOptional()
+    adminImagePublicId: string;
+
+    @IsString()
+    @IsOptional()
+    logoPublicId: string;
 
     @IsString()
     @IsNotEmpty()

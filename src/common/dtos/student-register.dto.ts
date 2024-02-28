@@ -27,6 +27,10 @@ export class StudentRegistrationDto {
     profilePic?: string;
 
     @IsString()
+    @IsOptional()
+    imagePublicId?: string;
+
+    @IsString()
     @IsNotEmpty()
     phoneNum: string;
 
@@ -60,4 +64,8 @@ export class StudentRegistrationDto {
     @IsUrl()
     @IsOptional()
     resumeUrl?: string;
+
+    @IsString()
+    @IsOptional()
+    resumePublicId?: string;
 }

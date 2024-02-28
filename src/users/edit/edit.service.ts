@@ -21,7 +21,7 @@ export class EditService {
                         userName: dto.mentorUserName,
                         profilePic: dto.mentorProfilePicUrl,
                         phoneNum: dto.mentorPhoneNum,
-                        verified: dto.mentorVerified,
+                        // verified: dto.mentorVerified,
                         email: dto.mentorEmail,
                         password: dto.mentorPassword,
                         role: {

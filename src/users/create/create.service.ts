@@ -1,10 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { CreateAdvisorDto, CreateCollegeDto, CreateDepartmentHeadDto, CreateMentorDto } from 'src/common/dtos';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
 export class CreateService {
-    constructor(private prismaService: PrismaService) { }
+    constructor(
+        private prismaService: PrismaService,
+        private cloudinary: CloudinaryService
+    ) { }
 
     async createMentor(dto: CreateMentorDto) {
         const newMentorUser = await this.prismaService.user.create({
@@ -13,13 +17,14 @@ export class CreateService {
                 middleName: dto.mentorMiddleName,
                 userName: dto.mentorUserName,
                 profilePic: dto.mentorProfilePicUrl,
+                imagePublicId: dto.mentorImagePublicId,
                 phoneNum: dto.mentorPhoneNum,
-                verified: dto.mentorVerified,
+                verified: true,
                 email: dto.mentorEmail,
                 password: dto.mentorPassword,
                 role: {
                     connect: {
-                        name: dto.role
+                        name: "MENTOR"
                     }
                 }
             }
@@ -48,13 +53,14 @@ export class CreateService {
                 middleName: dto.advisorMiddleName,
                 userName: dto.advisorUserName,
                 profilePic: dto.advisorProfilePicUrl,
+                imagePublicId: dto.advisorImagePublicId,
                 phoneNum: dto.advisorPhoneNum,
-                verified: dto.advisorVerified,
+                verified: true,
                 email: dto.advisorEmail,
                 password: dto.advisorPassword,
                 role: {
                     connect: {
-                        name: dto.role
+                        name: "ADVISOR"
                     }
                 }
             }
@@ -83,13 +89,14 @@ export class CreateService {
                 middleName: dto.departmentHeadMiddleName,
                 userName: dto.departmentHeadUserName,
                 profilePic: dto.departmentHeadProfilePicUrl,
+                imagePublicId: dto.departmentHeadImagePublicId,
                 phoneNum: dto.departmentHeadPhoneNum,
-                verified: dto.departmentHeadVerified,
+                verified: true,
                 email: dto.departmentHeadEmail,
                 password: dto.departmentHeadPassword,
                 role: {
                     connect: {
-                        name: dto.role
+                        name: "DEPARTMENT_HEAD"
                     }
                 }
             }
@@ -127,13 +134,14 @@ export class CreateService {
                 middleName: dto.deanMiddleName,
                 userName: dto.deanUserName,
                 profilePic: dto.deanProfilePic,
+                imagePublicId: dto.deanImagePublicId,
                 phoneNum: dto.deanPhoneNum,
-                verified: dto.deanVerified,
+                verified: true,
                 email: dto.deanEmail,
                 password: dto.deanPassword,
                 role: {
                     connect: {
-                        name: dto.roleName
+                        name: "COLLEGE_DEAN"
                     }
                 }
             }
@@ -157,4 +165,49 @@ export class CreateService {
         })
         return newCollege;
     }
+
+    async uploadProfilePic(imageFile: Express.Multer.File) {
+        const imageUploadPromise = this.cloudinary.uploadImage(imageFile).catch(err => {
+            throw new BadRequestException(`Image upload failed: ${err.message}`);
+        })
+        const uploads = await Promise.all([
+            imageUploadPromise
+        ]);
+        return uploads[0].url;
+    }
+
+    async uploadProfilePicAndResume(imageFile?: Express.Multer.File, resumeFile?: Express.Multer.File) {
+        // Define a default image URL
+        const defaultImageUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709011728/yn7txagp9asfmu5uie7f.jpg';
+
+        // Optionally, define a default or placeholder URL for the resume, if needed
+        // For example, if you want to track that no resume was uploaded without causing an error
+        const defaultResumeUrl = 'Optional: Define a default resume URL or leave as undefined';
+
+        // Use a ternary operator to decide whether to upload the image or use the default
+        const imageUploadPromise = imageFile
+            ? this.cloudinary.uploadImage(imageFile).catch(err => {
+                throw new BadRequestException(`Image upload failed: ${err.message}`);
+            })
+            : Promise.resolve({ url: defaultImageUrl }); // If no imageFile, resolve with default image URL
+
+        // Similar handling for the resume file, with an additional check to only upload if provided
+        const resumeUploadPromise = resumeFile
+            ? this.cloudinary.uploadImage(resumeFile).catch(err => {
+                throw new BadRequestException(`Resume upload failed: ${err.message}`);
+            })
+            : Promise.resolve({ url: defaultResumeUrl }); // Use a default or placeholder URL for resumes, or handle differently as needed
+
+        const uploads = await Promise.all([
+            imageUploadPromise,
+            resumeUploadPromise
+        ]);
+
+        return {
+            image: uploads[0].url, // This will be the uploaded image URL or the default image URL
+            resume: uploads[1] ? uploads[1].url : undefined // Conditionally return the resume URL if present, adjust based on how you handle default/missing resumes
+        };
+    }
+
+
 }

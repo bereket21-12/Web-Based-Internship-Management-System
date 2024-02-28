@@ -1,40 +1,47 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsBoolean, IsEmail, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 
 export class CreateMentorDto {
-    @IsString()
-    mentorFirstName: string;
+  @IsString()
+  mentorFirstName: string;
 
-    @IsString()
-    mentorMiddleName: string;
+  @IsString()
+  mentorMiddleName: string;
 
-    @IsString()
-    mentorUserName: string;
+  @IsString()
+  mentorUserName: string;
 
-    @IsString()
-    mentorProfilePicUrl?: string;
+  @IsString()
+  @IsOptional()
+  mentorProfilePicUrl?: string;
 
-    @IsString()
-    mentorPhoneNum: string;
+  @IsString()
+  @IsOptional()
+  mentorImagePublicId: string;
 
-    @IsBoolean()
-    mentorVerified: boolean;
+  @IsString()
+  mentorPhoneNum: string;
 
-    @IsString()
-    @IsEmail()
-    mentorEmail: string;
+  @IsBoolean()
+  @IsOptional()
+  mentorVerified?: boolean = true;
 
-    @IsString()
-    mentorPassword: string;
+  @IsString()
+  @IsEmail()
+  mentorEmail: string;
 
-    @IsString()
-    role: string;
+  @IsString()
+  mentorPassword: string;
 
-    @IsString()
-    companyId: string;
+  @IsString()
+  @IsOptional()
+  role: string;
+
+  @IsString()
+  companyId: string;
 }
 
-export class UpdateMentorDto extends PartialType(CreateMentorDto) {}
+export class UpdateMentorDto extends PartialType(CreateMentorDto) { }
 
 // firstName       String
 //   middleName      String
