@@ -1,39 +1,46 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsBoolean, IsEmail, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 
 export class CreateAdvisorDto {
-    @IsString()
-    advisorFirstName: string;
+  @IsString()
+  advisorFirstName: string;
 
-    @IsString()
-    advisorMiddleName: string;
+  @IsString()
+  advisorMiddleName: string;
 
-    @IsString()
-    advisorUserName: string;
+  @IsString()
+  advisorUserName: string;
 
-    @IsString()
-    advisorProfilePicUrl: string;
+  @IsString()
+  @IsOptional()
+  advisorProfilePicUrl: string;
 
-    @IsString()
-    advisorPhoneNum: string;
+  @IsString()
+  @IsOptional()
+  advisorImagePublicId: string;
 
-    @IsBoolean()
-    advisorVerified: boolean;
+  @IsString()
+  advisorPhoneNum: string;
 
-    @IsEmail()
-    advisorEmail: string;
+  @IsBoolean()
+  @IsOptional()
+  advisorVerified: boolean;
 
-    @IsString()
-    advisorPassword: string;
+  @IsEmail()
+  advisorEmail: string;
 
-    @IsString()
-    role: string;
+  @IsString()
+  advisorPassword: string;
 
-    @IsString()
-    departmentId: string;
+  @IsString()
+  @IsOptional()
+  role: string;
+
+  @IsString()
+  departmentId: string;
 }
 
-export class UpdateAdvisorDto extends PartialType(CreateAdvisorDto) {}
+export class UpdateAdvisorDto extends PartialType(CreateAdvisorDto) { }
 
 /*
 model User {

@@ -39,6 +39,10 @@ export class CompanyRegistrationDto {
     @IsNotEmpty()
     logoUrl: string;
 
+    @IsString()
+    @IsOptional()
+    logoPublicId: string;
+
     @IsUrl()
     @IsOptional()
     website?: string;

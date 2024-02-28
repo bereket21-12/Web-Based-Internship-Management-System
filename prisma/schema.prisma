@@ -27,6 +27,7 @@ model User {
   role            Role?          @relation(fields: [roleName], references: [name])
   roleName        String?
   profilePic      String
+  imagePublicId   String
   phoneNum        String
   hashedRt        String?
   verified        Boolean?
@@ -57,6 +58,7 @@ model Student {
   gpa            Float
   skills         String[]
   resumeUrl      String?
+  resumePublicId String?
   isOnInternship Boolean?
   advisorId      String?    @db.ObjectId
   advisor        Advisor?   @relation(fields: [advisorId], references: [id])
@@ -104,6 +106,7 @@ model Company {
   companyHRId        String       @db.ObjectId
   companyHR          User         @relation(fields: [companyHRId], references: [id])
   logoUrl            String
+  logoPublicId       String
   website            String?
   email              String
   phoneNum           String
@@ -150,6 +153,7 @@ model University {
   id                String       @id @default(auto()) @map("_id") @db.ObjectId
   name              String       @unique
   logoUrl           String
+  logoPublicId      String
   websiteUrl        String?
   college           College[]
   departments       Department[]

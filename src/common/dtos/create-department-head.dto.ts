@@ -1,58 +1,62 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsString, IsBoolean, IsEmail } from "class-validator";
+import { IsString, IsBoolean, IsEmail, IsOptional } from "class-validator";
 
 export class CreateDepartmentHeadDto {
-    @IsString()
-    departmentHeadFirstName: string;
+  @IsString()
+  departmentHeadFirstName: string;
 
-    @IsString()
-    departmentHeadMiddleName: string;
+  @IsString()
+  departmentHeadMiddleName: string;
 
-    @IsString()
-    departmentHeadUserName: string;
+  @IsString()
+  departmentHeadUserName: string;
 
-    @IsString()
-    departmentHeadProfilePicUrl: string;
+  @IsString()
+  @IsOptional()
+  departmentHeadProfilePicUrl: string;
 
-    @IsString()
-    departmentHeadPhoneNum: string;
+  @IsString()
+  @IsOptional()
+  departmentHeadImagePublicId: string;
 
-    @IsString()
-    departmentHeadHashedRt: string;
+  @IsString()
+  departmentHeadPhoneNum: string;
 
-    @IsBoolean()
-    departmentHeadVerified: boolean;
+  @IsString()
+  departmentHeadHashedRt: string;
 
-    @IsEmail()
-    departmentHeadEmail: string;
+  @IsBoolean()
+  @IsOptional()
+  departmentHeadVerified: boolean;
 
-    @IsString()
-    departmentHeadPassword: string;
+  @IsEmail()
+  departmentHeadEmail: string;
 
-    @IsString()
-    role: string;
+  @IsString()
+  departmentHeadPassword: string;
 
-    @IsString()
-    departmentEmail: string;
+  @IsString()
+  @IsOptional()
+  role: string;
 
-    @IsString()
-    departmentPhoneNum: string;
+  @IsString()
+  departmentEmail: string;
 
-    @IsString()
-    collegeId: string;
+  @IsString()
+  departmentPhoneNum: string;
 
-    @IsString()
-    universityId: string;
+  @IsString()
+  collegeId: string;
 
-    @IsString()
-    departmentName: string;
+  @IsString()
+  universityId: string;
 
-    // @IsString()
-    // departmentHeadId: string;
+  @IsString()
+  departmentName: string;
 
 }
 
-export class UpdateDepartmentHeadDto extends PartialType(CreateDepartmentHeadDto) {}
+export class UpdateDepartmentHeadDto extends PartialType(CreateDepartmentHeadDto) { }
 
 /*
 model User {
