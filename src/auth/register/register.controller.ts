@@ -42,6 +42,8 @@ export class RegisterController {
         dto.adminImagePublicId = imagePublicId;
 
         if (files[1]) {
+            console.log(files[1], 'logo');
+            
             const logoUploadResult = await this.cloudinaryService.uploadImage(files[1]);
             logoUrl = logoUploadResult.url;
             logoId = logoUploadResult.public_id;
@@ -49,6 +51,8 @@ export class RegisterController {
         dto.universityLogoUrl = logoUrl
         dto.logoPublicId = logoId
 
+        console.log(dto.adminProfilePicture, dto.adminImagePublicId, 'admin');        
+        console.log(dto.universityLogoUrl, dto.logoPublicId, 'logo');
         return this.registerService.registerUniversity(dto);
     }
 
@@ -75,7 +79,7 @@ export class RegisterController {
             imagePublicId = imageUploadResult.public_id;
         }
         dto.HRProfilePicture = hrProfilePicUrl;
-        dto.logoPublicId = imagePublicId;
+        dto.HRImagePublicId = imagePublicId;
 
         if (files[1]) {
             const logoUploadResult = await this.cloudinaryService.uploadImage(files[1]);

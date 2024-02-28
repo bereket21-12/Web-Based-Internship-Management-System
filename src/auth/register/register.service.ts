@@ -24,6 +24,7 @@ export class RegisterService {
                 phoneNum: dto.universityPhoneNumber,
                 websiteUrl: dto.websiteUrl,
                 logoUrl: dto.universityLogoUrl,
+                logoPublicId: dto.logoPublicId,
                 address: dto.address,
                 universityAdmin: {
                     create: {
@@ -33,6 +34,7 @@ export class RegisterService {
                         firstName: dto.adminFirstName,
                         middleName: dto.adminMiddleName,
                         profilePic: dto.adminProfilePicture,
+                        imagePublicId: dto.adminImagePublicId,
                         phoneNum: dto.adminPhoneNumber,
                         roleName: 'UNIVERSITY_ADMIN',
                     },
@@ -55,6 +57,7 @@ export class RegisterService {
                 phoneNum: dto.companyPhoneNum,
                 website: dto.website,
                 logoUrl: dto.logoUrl,
+                logoPublicId: dto.logoPublicId,
                 industry: dto.industryType,
                 address: dto.address,
                 companyHR: {
@@ -65,6 +68,7 @@ export class RegisterService {
                         firstName: dto.HRFirstName,
                         middleName: dto.HRMiddleName,
                         profilePic: dto.HRProfilePicture,
+                        imagePublicId: dto.HRImagePublicId,
                         phoneNum: dto.HRPhoneNumber,
                         roleName: 'COMPANY_HR',
                     },
@@ -88,6 +92,7 @@ export class RegisterService {
                 middleName: dto.middleName,
                 userName: dto.userName,
                 profilePic: dto.profilePic,
+                imagePublicId: dto.imagePublicId,
                 phoneNum: dto.phoneNum,
                 roleName: 'STUDENT',
                 verified: dto.verified ?? false,

@@ -27,6 +27,10 @@ export class CompanyRegistrationDto {
     HRProfilePicture?: string;
 
     @IsString()
+    @IsOptional()
+    HRImagePublicId: string;
+
+    @IsString()
     @IsNotEmpty()
     @Length(10, 15)
     HRPhoneNumber: string;

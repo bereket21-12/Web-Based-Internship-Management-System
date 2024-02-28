@@ -60,6 +60,8 @@ export class UniversityRegisterDto {
     address: AddressDto;
 
     @IsUrl()
+    @IsOptional()
+    @IsString()
     universityLogoUrl?: string;
 }
 
