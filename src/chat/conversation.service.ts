@@ -8,17 +8,7 @@ export class ConversationService {
 
   async createConversation(participantIds: string[]): Promise<Conversation | null> {
     try {
-      const existingConversation = await this.prisma.conversation.findFirst({
-        where: {
-          participantIds: {
-            hasSome: participantIds,
-          },
-        },
-      });
 
-      if (existingConversation) {
-        return existingConversation;
-      }
 
       const newConversation = await this.prisma.conversation.create({
         data: {

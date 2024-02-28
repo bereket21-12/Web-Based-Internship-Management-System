@@ -13,7 +13,12 @@ export class CreateMessageDto {
 
     @IsBoolean()
     read: boolean;
-    participantIds: any;
+
+    @IsString()
+    senderId: string;
+    
+    @IsString()
+    receiverId:string
 }
 
 /*
