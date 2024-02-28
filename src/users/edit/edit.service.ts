@@ -6,7 +6,7 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 export class EditService {
     constructor(
         private prismaService: PrismaService,
-    ) {}
+    ) { }
 
     async updateMentor(dto: UpdateMentorDto, _id: string): Promise<any> {
         const updatedMentor = await this.prismaService.mentor.update({
@@ -21,7 +21,6 @@ export class EditService {
                         userName: dto.mentorUserName,
                         profilePic: dto.mentorProfilePicUrl,
                         phoneNum: dto.mentorPhoneNum,
-                        hashedRt: dto.mentorHashedRt,
                         verified: dto.mentorVerified,
                         email: dto.mentorEmail,
                         password: dto.mentorPassword,

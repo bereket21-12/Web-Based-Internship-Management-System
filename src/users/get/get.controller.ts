@@ -1,34 +1,34 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { GetService } from './get.service';
 
-@Controller('get')
+@Controller('users')
 export class GetController {
     constructor(
         private getService: GetService
-    ) {}
+    ) { }
 
-    @Get('all')
+    @Get()
     async getAllUsers(): Promise<any> {
         return this.getService.getAllUsers();
     }
 
-    @Get('user/:id')
-    async getUserById(_id: string): Promise<any> {
+    @Get(':id')
+    async getUserById(@Param('id') _id: string): Promise<any> {
         return this.getService.getUserById(_id);
     }
 
     @Get('role/:role')
-    async getUsersByRole(role: string): Promise<any> {
+    async getUsersByRole(@Param('role') role: string): Promise<any> {
         return this.getService.getUsersByRole(role);
     }
 
     @Get('mentor/:id')
-    async getMentorsById(_id: string): Promise<any> {
+    async getMentorsById(@Param('id') _id: string): Promise<any> {
         return this.getService.getMentorsById(_id);
     }
 
     @Get('advisor/:id')
-    async getAdvisorById(_id: string): Promise<any> {
+    async getAdvisorById(@Param('id') _id: string): Promise<any> {
         return this.getService.getAdvisorById(_id);
     }
 }

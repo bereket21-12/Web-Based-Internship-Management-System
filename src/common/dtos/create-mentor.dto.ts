@@ -1,5 +1,5 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsEmail, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsString } from "class-validator";
 
 export class CreateMentorDto {
     @IsString()
@@ -12,14 +12,12 @@ export class CreateMentorDto {
     mentorUserName: string;
 
     @IsString()
-    mentorProfilePicUrl: string;
+    mentorProfilePicUrl?: string;
 
     @IsString()
     mentorPhoneNum: string;
 
-    @IsString()
-    mentorHashedRt: string;
-
+    @IsBoolean()
     mentorVerified: boolean;
 
     @IsString()
@@ -31,6 +29,8 @@ export class CreateMentorDto {
 
     @IsString()
     role: string;
+
+    @IsString()
     companyId: string;
 }
 
