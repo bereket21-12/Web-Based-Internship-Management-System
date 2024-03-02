@@ -24,6 +24,7 @@ export class CompanyRegistrationDto {
     HRMiddleName: string;
 
     @IsUrl()
+    @IsOptional()
     HRProfilePicture?: string;
 
     @IsString()
@@ -40,7 +41,7 @@ export class CompanyRegistrationDto {
     companyName: string;
 
     @IsUrl()
-    @IsNotEmpty()
+    @IsOptional()
     logoUrl: string;
 
     @IsString()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UniversityRegisterDto } from 'src/common/dtos/university-register.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import * as argon from 'argon2';
@@ -6,12 +6,14 @@ import { Tokens } from 'src/common/types';
 import { GenerateJwtService } from '../jwt/generate.jwt.service';
 import { StudentRegistrationDto } from 'src/common/dtos/student-register.dto';
 import { CompanyRegistrationDto } from 'src/common/dtos/company-register.dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class RegisterService {
     constructor(
         private prismaService: PrismaService,
-        private generateJwtService: GenerateJwtService
+        private generateJwtService: GenerateJwtService,
+        private cloudinary: CloudinaryService,
     ) { }
 
     async registerUniversity(dto: UniversityRegisterDto): Promise<Tokens> {
@@ -126,4 +128,33 @@ export class RegisterService {
             }
         })
     }
+
+    // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
+    //     // Define a default image URL
+    //     const defaultImageUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709011728/yn7txagp9asfmu5uie7f.jpg';
+    //     const defaultImageId = 'yn7txagp9asfmu5uie7f';
+    //     const logoUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709102607/d2lzd65x1idyztuz2afq.jpg'
+    //     const logoId = 'd2lzd65x1idyztuz2afq';
+
+    //     // Use a ternary operator to decide whether to upload the image or use the default
+    //     const imageUploadPromise = imageFile
+    //         ? this.cloudinary.uploadImage(imageFile).catch(err => {
+    //             throw new BadRequestException(`Image upload failed: ${err.message}`);
+    //         })
+    //         : Promise.resolve({ url: defaultImageUrl, publicId: defaultImageId }); // If no imageFile, resolve with default image URL
+
+    //     // Similar handling for the resume file, with an additional check to only upload if provided
+    //     const logoUploadPromise = logoFile
+    //         ? this.cloudinary.uploadImage(logoFile).catch(err => {
+    //             throw new BadRequestException(`Resume upload failed: ${err.message}`);
+    //         })
+    //         : Promise.resolve({ url: logoUrl, publicId: logoId }); // Use a default or placeholder URL for resumes, or handle differently as needed
+
+    //     const uploads = await Promise.all([
+    //         imageUploadPromise,
+    //         logoUploadPromise
+    //     ]);
+
+    //     return uploads;
+    // }
 }
