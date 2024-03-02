@@ -34,10 +34,6 @@ export class CreateMentorDto {
   mentorPassword: string;
 
   @IsString()
-  @IsOptional()
-  role: string;
-
-  @IsString()
   companyId: string;
 }
 

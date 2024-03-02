@@ -22,11 +22,7 @@ export class CreateService {
                 verified: true,
                 email: dto.mentorEmail,
                 password: dto.mentorPassword,
-                role: {
-                    connect: {
-                        name: "MENTOR"
-                    }
-                }
+                roleName: "MENTOR"
             }
         })
         const newMentor = await this.prismaService.mentor.create({
@@ -58,11 +54,7 @@ export class CreateService {
                 verified: true,
                 email: dto.advisorEmail,
                 password: dto.advisorPassword,
-                role: {
-                    connect: {
-                        name: "ADVISOR"
-                    }
-                }
+                roleName: "ADVISOR"
             }
         })
         const newAdvisor = await this.prismaService.advisor.create({
