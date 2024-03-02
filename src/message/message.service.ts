@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Message } from '@prisma/client';
 import { CreateMessageDto } from 'src/common/dtos/create-message.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
-import { ConversationService } from '../conversation.service';
+import { ConversationService } from '../chat/chat.service';
 
 @Injectable()
 export class MessageService {
@@ -12,22 +12,25 @@ export class MessageService {
 
   async createMessage(dto: CreateMessageDto): Promise<Message | null> {
     
-   const conversationId =  this.getConversationId(dto.receiverId ,dto.senderId)
+   let conversationId: string = await this.getConversationId(dto.receiverId ,dto.senderId)
+
     try {
 
       if (!conversationId) {
-        this.conversationservice.createConversation([dto.receiverId,dto.senderId])
-        throw new Error('Conversation not found'); // Handle non-existent conversation
+
+        conversationId = await this.conversationservice.createConversation([dto.receiverId,dto.senderId])
+      
+        console.log('Conversation not found'); // Handle non-existent conversation
       }
 
       // Create the new message if the conversation exists
       const newMessage = await this.prismaService.message.create({
         data: {
           content: dto.content,
-          sender: { connect: { id: dto.userId } },
-          conversation: { connect: { id: dto.conversationId } },
+          sender: { connect: { id: dto.senderId } },
+          conversation: { connect: { id :conversationId } },
           read: dto.read,
-          receiver : { connect: { id: dto.userId } }
+          receiver : { connect: { id: dto.receiverId } }
 
         },
       });
@@ -39,7 +42,7 @@ export class MessageService {
     }
   }
 
-    async getConversationId(userId1: string, userId2: string): Promise<string | null> {
+    async getConversationId(userId1: string, userId2: string){
     const conversation = await this.prismaService.conversation.findFirst({
       where: {
         participantIds: {

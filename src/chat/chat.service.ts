@@ -6,7 +6,7 @@ import { Conversation } from '@prisma/client';
 export class ConversationService {
   constructor(private prisma: PrismaService) {}
 
-  async createConversation(participantIds: string[]): Promise<Conversation | null> {
+  async createConversation(participantIds: string[]) {
     try {
 
 
@@ -16,7 +16,10 @@ export class ConversationService {
         },
       });
 
-      return newConversation;
+     const  conversationId = newConversation.id
+
+
+      return conversationId;
     } catch (error) {
       console.error(error);
       throw new Error(`Failed to create conversation: ${error.message}`);
