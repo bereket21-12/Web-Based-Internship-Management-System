@@ -81,7 +81,7 @@ model Internship {
   endDate                 DateTime
   schedule                Schedule
   compensations           Compensations
-  descriptionId           String                @unique
+  descriptionId           String?                @unique
   description             InternshipDescription @relation(fields: [internshipDescriptionId], references: [id])
   createdAt               DateTime              @default(now())
   updatedAt               DateTime              @updatedAt
@@ -145,7 +145,6 @@ model Message {
   updatedAt      DateTime     @updatedAt
   
 }
- 
 
 model Notification {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
