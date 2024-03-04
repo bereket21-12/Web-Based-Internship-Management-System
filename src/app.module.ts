@@ -7,10 +7,13 @@ import { CommonModule } from './common/common.module';
 import { ChatModule } from './chat/chat.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MessageModule } from './message/message.module';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { MessageService } from './message/message.service';
+import { Mygateway } from './gateway/gateway';
 
 @Module({
-  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule],
+  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,Mygateway],
   controllers: [],
-  providers: [],
+  providers: [MessageService],
 })
 export class AppModule { }
