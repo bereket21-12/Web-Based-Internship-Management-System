@@ -288,15 +288,17 @@ model Report {
 }
 
 model Form {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  collegeId   String       @db.ObjectId
-  college     College      @relation(fields: [collegeId], references: [id])
-  totalWeight Int
-  type        FormType
-  Evaluation  Evaluation[]
-  Question    Question[]
+  id                   String       @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  description          String
+  attachedUrl          String?
+  attachedFilePublicId String?
+  collegeId            String       @db.ObjectId
+  college              College      @relation(fields: [collegeId], references: [id])
+  totalWeight          Int
+  type                 FormType
+  Evaluation           Evaluation[]
+  Question             Question[]
 }
 
 model Question {
@@ -304,7 +306,7 @@ model Question {
   content String
   weight  Int
   formId  String? @db.ObjectId
-  form    Form?    @relation(fields: [formId], references: [id])
+  form    Form?   @relation(fields: [formId], references: [id])
 }
 
 model Evaluation {

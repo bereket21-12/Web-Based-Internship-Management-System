@@ -1,6 +1,6 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { Type } from "class-transformer";
-import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
 export class CreateQuestionsDto {
     @IsNotEmpty()
@@ -27,6 +27,12 @@ export class CreateFormDto {
 
     @IsNotEmpty()
     formType: FormType;
+
+    @IsOptional()
+    attachedFileUrl: string;
+
+    @IsOptional()
+    attachedFilePublicId: string;
 
     @IsNotEmpty()
     @IsArray()
