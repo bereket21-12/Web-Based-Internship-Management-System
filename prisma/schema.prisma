@@ -48,28 +48,29 @@ model User {
 }
 
 model Student {
-  id             String       @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String       @unique @db.ObjectId
-  user           User         @relation(fields: [userId], references: [id])
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String        @unique @db.ObjectId
+  user           User          @relation(fields: [userId], references: [id])
   universityName String
-  University     University   @relation(fields: [universityName], references: [name])
+  University     University    @relation(fields: [universityName], references: [name])
   departmentName String
-  department     Department   @relation(fields: [departmentName], references: [name])
+  department     Department    @relation(fields: [departmentName], references: [name])
   year           Int
   gpa            Float
   skills         String[]
   resumeUrl      String?
   resumePublicId String?
   isOnInternship Boolean?
-  advisorId      String?      @db.ObjectId
-  advisor        Advisor?     @relation(fields: [advisorId], references: [id])
-  mentorId       String?      @db.ObjectId
-  mentor         Mentor?      @relation(fields: [mentorId], references: [id])
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  advisorId      String?       @db.ObjectId
+  advisor        Advisor?      @relation(fields: [advisorId], references: [id])
+  mentorId       String?       @db.ObjectId
+  mentor         Mentor?       @relation(fields: [mentorId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
   Report         Report[]
   Feedback       Feedback[]
   Evaluation     Evaluation[]
+  Application    Application[]
 }
 
 model Internship {
@@ -88,6 +89,7 @@ model Internship {
   updatedAt               DateTime              @updatedAt
   internshipDescriptionId String                @unique @db.ObjectId
   Report                  Report[]
+  Application             Application[]
 }
 
 model InternshipDescription {
@@ -102,11 +104,11 @@ model InternshipDescription {
 }
 
 model Company {
-  id                 String       @id @default(auto()) @map("_id") @db.ObjectId
-  name               String       @unique
+  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+  name               String        @unique
   industry           String
-  companyHRId        String       @db.ObjectId
-  companyHR          User         @relation(fields: [companyHRId], references: [id])
+  companyHRId        String        @db.ObjectId
+  companyHR          User          @relation(fields: [companyHRId], references: [id])
   logoUrl            String
   logoPublicId       String
   website            String?
@@ -114,10 +116,24 @@ model Company {
   phoneNum           String
   address            Address?
   internshiprOferred Internship[]
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
   Mentor             Mentor[]
   Feedback           Feedback[]
+  Application        Application[]
+}
+
+model Application {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  studentId    String            @db.ObjectId
+  student      Student           @relation(fields: [studentId], references: [id])
+  internshipId String            @db.ObjectId
+  internship   Internship        @relation(fields: [internshipId], references: [id])
+  companyId    String            @db.ObjectId
+  company      Company           @relation(fields: [companyId], references: [id])
+  status       ApplicationStatus
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 }
 
 model Conversation {
@@ -320,6 +336,13 @@ enum Schedule {
 enum Compensations {
   PAID
   UNPAID
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
 }
 
 type Address {
