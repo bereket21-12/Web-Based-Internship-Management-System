@@ -1,29 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { IsArray, IsDate, IsOptional, IsString } from 'class-validator'
+import { IsArray, IsDate, IsOptional, IsString } from "class-validator";
 
-export class CreateInternship {
-
-  @IsString()
-  title: string;
-
-  @IsString()
-  companyId: string;
-
-  @IsString()
-  duration: string;
-
-  @IsDate()
-  startDate: Date;
-
-  @IsDate()
-  endDate: Date;
-
-  schedule: Schedule;
-  compensations: Compensations;
-
-  @IsString()
-  descriptionId: string;
-
+export class InternshipDescription {
   @IsArray()
   @IsOptional()
   responsibilities: string[];
@@ -38,27 +15,8 @@ export class CreateInternship {
 
   @IsDate()
   deadline: Date;
-
 }
 
-export enum Schedule {
-  FULL_TIME = 'FULL_TIME',
-  PART_TIME = 'PART_TIME',
-  REMOTE = 'REMOTE'
-}
-
-export enum Compensations {
-  PAID = 'PAID',
-  UNPAID = 'UNPAID'
-}
-
-export class UpdateInternship extends PartialType(CreateInternship) {
-  @IsString()
-  descriptionId: string;
-
-  @IsString()
-  internshipDescriptionId: string;
- }
 /*
 model Internship {
   id                      String                @id @default(auto()) @map("_id") @db.ObjectId
