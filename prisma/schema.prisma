@@ -18,57 +18,58 @@ model Role {
 }
 
 model User {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  email           String         @unique
-  password        String
-  firstName       String
-  middleName      String
-  userName        String         @unique
-  role            Role?          @relation(fields: [roleName], references: [name])
-  roleName        String?
-  profilePic      String
-  imagePublicId   String
-  phoneNum        String
-  hashedRt        String?
-  verified        Boolean?
-  notifications   Notification[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  conversationIds String[]       @db.ObjectId
-  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
-  Student         Student[]
-  Company         Company[]
-  University      University[]
-  College         College[]
-  Department      Department[]
-  Advisor         Advisor[]
-  Mentor          Mentor[]
- messagesSent   Message[]    @relation("Sender")
-  messagesReceived Message[]  @relation("Receiver")
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  email            String         @unique
+  password         String
+  firstName        String
+  middleName       String
+  userName         String         @unique
+  role             Role?          @relation(fields: [roleName], references: [name])
+  roleName         String?
+  profilePic       String
+  imagePublicId    String
+  phoneNum         String
+  hashedRt         String?
+  verified         Boolean?
+  notifications    Notification[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  conversationIds  String[]       @db.ObjectId
+  conversations    Conversation[] @relation(fields: [conversationIds], references: [id])
+  Student          Student[]
+  Company          Company[]
+  University       University[]
+  College          College[]
+  Department       Department[]
+  Advisor          Advisor[]
+  Mentor           Mentor[]
+  messagesSent     Message[]      @relation("Sender")
+  messagesReceived Message[]      @relation("Receiver")
 }
 
 model Student {
-  id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String     @unique @db.ObjectId
-  user           User       @relation(fields: [userId], references: [id])
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String       @unique @db.ObjectId
+  user           User         @relation(fields: [userId], references: [id])
   universityName String
-  University     University @relation(fields: [universityName], references: [name])
+  University     University   @relation(fields: [universityName], references: [name])
   departmentName String
-  department     Department @relation(fields: [departmentName], references: [name])
+  department     Department   @relation(fields: [departmentName], references: [name])
   year           Int
   gpa            Float
   skills         String[]
   resumeUrl      String?
   resumePublicId String?
   isOnInternship Boolean?
-  advisorId      String?    @db.ObjectId
-  advisor        Advisor?   @relation(fields: [advisorId], references: [id])
-  mentorId       String?    @db.ObjectId
-  mentor         Mentor?    @relation(fields: [mentorId], references: [id])
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  advisorId      String?      @db.ObjectId
+  advisor        Advisor?     @relation(fields: [advisorId], references: [id])
+  mentorId       String?      @db.ObjectId
+  mentor         Mentor?      @relation(fields: [mentorId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   Report         Report[]
   Feedback       Feedback[]
+  Evaluation     Evaluation[]
 }
 
 model Internship {
@@ -81,7 +82,7 @@ model Internship {
   endDate                 DateTime
   schedule                Schedule
   compensations           Compensations
-  descriptionId           String?                @unique
+  descriptionId           String?               @unique
   description             InternshipDescription @relation(fields: [internshipDescriptionId], references: [id])
   createdAt               DateTime              @default(now())
   updatedAt               DateTime              @updatedAt
@@ -120,30 +121,26 @@ model Company {
 }
 
 model Conversation {
-
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   participantIds String[]  @db.ObjectId
   participants   User[]    @relation(fields: [participantIds], references: [id])
   messages       Message[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-
 }
 
 model Message {
-
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
   conversationId String       @db.ObjectId
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   senderId       String       @db.ObjectId
-  sender         User         @relation("Sender", fields: [senderId], references: [id]) 
+  sender         User         @relation("Sender", fields: [senderId], references: [id])
   receiverId     String       @db.ObjectId
   receiver       User         @relation("Receiver", fields: [receiverId], references: [id])
   content        String
   read           Boolean
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
-  
 }
 
 model Notification {
@@ -208,29 +205,31 @@ model Department {
 }
 
 model Advisor {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId       String     @db.ObjectId
-  user         User       @relation(fields: [userId], references: [id])
-  departmentId String     @db.ObjectId
-  department   Department @relation(fields: [departmentId], references: [id])
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String       @db.ObjectId
+  user         User         @relation(fields: [userId], references: [id])
+  departmentId String       @db.ObjectId
+  department   Department   @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   Student      Student[]
   Report       Report[]
   Feedback     Feedback[]
+  Evaluation   Evaluation[]
 }
 
 model Mentor {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String     @db.ObjectId
-  user      User       @relation(fields: [userId], references: [id])
-  companyId String     @db.ObjectId
-  company   Company    @relation(fields: [companyId], references: [id])
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Student   Student[]
-  Report    Report[]
-  Feedback  Feedback[]
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String       @db.ObjectId
+  user       User         @relation(fields: [userId], references: [id])
+  companyId  String       @db.ObjectId
+  company    Company      @relation(fields: [companyId], references: [id])
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Student    Student[]
+  Report     Report[]
+  Feedback   Feedback[]
+  Evaluation Evaluation[]
 }
 
 model Feedback {
@@ -273,13 +272,14 @@ model Report {
 }
 
 model Form {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  collegeId   String    @db.ObjectId
-  college     College   @relation(fields: [collegeId], references: [id])
-  questionId  String[]  @db.ObjectId
-  question    Question? @relation(fields: [questionId], references: [id])
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  collegeId   String       @db.ObjectId
+  college     College      @relation(fields: [collegeId], references: [id])
+  questionId  String[]     @db.ObjectId
+  question    Question?    @relation(fields: [questionId], references: [id])
   totalWeight Int
   type        FormType
+  Evaluation  Evaluation[]
 }
 
 model Question {
@@ -288,6 +288,22 @@ model Question {
   weight  Int
   formId  String? @db.ObjectId
   Form    Form[]
+}
+
+model Evaluation {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  studentId      String   @db.ObjectId
+  student        Student  @relation(fields: [studentId], references: [id])
+  mentorId       String   @db.ObjectId
+  mentor         Mentor?  @relation(fields: [mentorId], references: [id])
+  advisorId      String   @db.ObjectId
+  advisor        Advisor? @relation(fields: [advisorId], references: [id])
+  formId         String   @db.ObjectId
+  form           Form?    @relation(fields: [formId], references: [id])
+  evaluationDate DateTime
+  response       Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 enum FormType {
