@@ -12,7 +12,7 @@ export class MessageGateway {
 
   handleConnection(client: Socket, ...args: any[]) {
     const receiverId = client.handshake.query.receiverId; // Extract receiverId from query parameters
-
+     console.log("recivedID : ",receiverId)
     if (Array.isArray(receiverId)) {
       // If receiverId is an array, handle it (e.g., take the first element)
       this.clients[receiverId[0]] = client;
@@ -34,10 +34,11 @@ export class MessageGateway {
 
   @SubscribeMessage('sendMessage')
   async handleSendMessage(client: Socket, data: CreateMessageDto) {
+    
    const { senderId, receiverId } = data;
    const savedMessage =  await this.messageService.createMessage(data );
    const targetClient = this.server.sockets.sockets.get(receiverId);
-   console.log(targetClient)
+   console.log("target clinet is: ",targetClient)
     if (targetClient) {
       // Send the message to the specific client
       targetClient.emit('receiveMessage', savedMessage);
