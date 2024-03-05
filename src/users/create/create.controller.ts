@@ -34,6 +34,10 @@ export class CreateController {
         } catch (err) {
             throw new BadRequestException(err.message);
         }
+        // console.log('image', image)
+        // const imageFile = await this.cloudinaryService.uploadImage(image)
+        // return imageFile;
+
     }
 
     @Post('advisor')
