@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UniversityRegisterDto } from 'src/common/dtos/university-register.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import * as argon from 'argon2';
