@@ -4,6 +4,7 @@ import { CreateMessageDto } from 'src/common/dtos/create-message.dto';
 
 @Controller('message')
 export class MessageController {
+    
     constructor(
         private messageService: MessageService
     ) {}
