@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Login",
+    "dateExported": "2024-03-18T19:09:06.538Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "59e31c60-f447-4cf2-84c5-55f58bf2104c",
+            "colId": "a056f76d-3c55-4acb-92d2-a107fb5c1d71",
+            "containerId": "",
+            "name": "http://localhost:5000/auth/login",
+            "url": "http://localhost:5000/auth/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-18T19:08:56.670Z",
+            "modified": "2024-03-18T19:08:56.670Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"tsion123@gmail.com\",\n  \"password\": \"123password\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

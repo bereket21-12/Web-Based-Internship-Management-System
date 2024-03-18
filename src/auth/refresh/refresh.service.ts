@@ -10,7 +10,7 @@ export class RefreshService {
         private generateJwtService: GenerateJwtService,
         ) {}
 
-    async refreshTokens(userId: string, rt: string) {
+        async refreshTokens(userId: string, rt: string) {
         const user = await this.prismaService.user.findUnique({
             where: {
                 id: userId,

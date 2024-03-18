@@ -1,0 +1,91 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Student Registration",
+    "dateExported": "2024-03-18T18:26:16.616Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "9a7987d7-6ba5-42ab-b918-1c9fabe2e567",
+            "colId": "85326523-df5b-46e2-beea-cd083b025ff7",
+            "containerId": "",
+            "name": "http://localhost:5000/auth/register/student",
+            "url": "http://localhost:5000/auth/register/student",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-18T18:25:17.248Z",
+            "modified": "2024-03-18T18:25:17.248Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "email",
+                        "value": "john.doe@example.com"
+                    },
+                    {
+                        "name": "password",
+                        "value": "password123"
+                    },
+                    {
+                        "name": "firstName",
+                        "value": "John"
+                    },
+                    {
+                        "name": "middleName",
+                        "value": "Doe"
+                    },
+                    {
+                        "name": "userName",
+                        "value": "Johndoe"
+                    },
+                    {
+                        "name": "phoneNum",
+                        "value": "+251935353535"
+                    },
+                    {
+                        "name": "universityName",
+                        "value": "Wolkite University"
+                    },
+                    {
+                        "name": "departmentName",
+                        "value": "Computer Science"
+                    },
+                    {
+                        "name": "year",
+                        "value": "3"
+                    },
+                    {
+                        "name": "gpa",
+                        "value": "3.5"
+                    },
+                    {
+                        "name": "skills",
+                        "value": "JavaScript"
+                    },
+                    {
+                        "name": "skills",
+                        "value": "React"
+                    },
+                    {
+                        "name": "skills",
+                        "value": "Node.js"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "image",
+                        "value": "/home/abel/Downloads/Pictures/e4cfbdcc-48a9-4765-b4d6-0767ed0d8cb7.jpeg"
+                    },
+                    {
+                        "name": "resume",
+                        "value": "/home/abel/Documents/3rd year 1st semester Software engineering courses/Requirements Engineering/RE ch6.pdf"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

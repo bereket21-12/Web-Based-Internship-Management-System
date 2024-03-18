@@ -24,6 +24,10 @@ export class RoleGuard implements CanActivate {
         ]);
 
         const request = context.switchToHttp().getRequest();
+        if (!request['token']) {
+            throw new Error('Token is missing from request');
+        }
+
         const token = request['token'] as TokenDto;
 
         for (const role of requiredRole) {

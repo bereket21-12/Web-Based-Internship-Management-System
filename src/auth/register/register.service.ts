@@ -102,8 +102,8 @@ export class RegisterService {
                     create: {
                         universityName: dto.universityName,
                         departmentName: dto.departmentName,
-                        year: dto.year,
-                        gpa: dto.gpa,
+                        year: Number(dto.year),
+                        gpa: Number(dto.gpa),
                         skills: dto.skills,
                         resumeUrl: dto.resumeUrl,
                     },

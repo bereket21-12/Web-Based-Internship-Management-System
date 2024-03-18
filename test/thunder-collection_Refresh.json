@@ -1,0 +1,32 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Refresh",
+    "dateExported": "2024-03-18T20:01:46.286Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "6df43e11-ccfb-40b1-9171-3965dcdc7e2f",
+            "colId": "f1fd7e7b-fdaf-4a40-ae67-d3e3d0b59bba",
+            "containerId": "",
+            "name": "http://localhost:5000/auth/refresh",
+            "url": "http://localhost:5000/auth/refresh",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-18T19:57:39.820Z",
+            "modified": "2024-03-18T19:57:39.820Z",
+            "headers": [
+                {
+                    "name": "Bearer",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWY4OGQ2ZWYzNWFlMjllNDdiNzM0OTQiLCJlbWFpbCI6InRzaW9uMTIzQGdtYWlsLmNvbSIsInJvbGUiOiJDT01QQU5ZX0hSIiwiaWF0IjoxNzEwNzg5MjY5LCJleHAiOjE3MTEzOTQwNjl9.x7lmrnws_091TLb-VqLv3PezcwMW09a3AzjLANORHGE"
+                }
+            ],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWY4OGQ2ZWYzNWFlMjllNDdiNzM0OTQiLCJlbWFpbCI6InRzaW9uMTIzQGdtYWlsLmNvbSIsInJvbGUiOiJDT01QQU5ZX0hSIiwiaWF0IjoxNzEwNzkxNjg5LCJleHAiOjE3MTEzOTY0ODl9.1piz1F25ecec7S3Y77avQn8E2PrDO3QysDnoqqdWpqU"
+            },
+            "tests": []
+        }
+    ]
+}
