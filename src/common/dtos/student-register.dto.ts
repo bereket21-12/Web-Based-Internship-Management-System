@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Max, Min } from 'class-validator';
 
 export class StudentRegistrationDto {
@@ -45,16 +46,17 @@ export class StudentRegistrationDto {
     @IsString()
     @IsOptional()
     departmentName?: string;
-
-    @IsNotEmpty()
+    
     @IsNumber()
     @Min(1)
     @Max(5)
+    @Type(() => Number)
     year: number;
 
     @IsNumber()
-    @Min(1.00)
-    @Max(4.00)
+    @Min(1)
+    @Max(4)
+    @Type(() => Number)
     gpa: number;
 
     @IsArray()

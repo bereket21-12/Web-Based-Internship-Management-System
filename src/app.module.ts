@@ -10,10 +10,12 @@ import { MessageModule } from './message/message.module';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { MessageService } from './message/message.service';
 import { Mygateway } from './gateway/gateway';
+import { AccessControlService } from './common/access_control/access_control.service';
+
 
 @Module({
   imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,Mygateway],
   controllers: [],
-  providers: [MessageService],
+  providers: [MessageService, AccessControlService],
 })
 export class AppModule { }

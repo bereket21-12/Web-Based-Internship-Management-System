@@ -1,0 +1,91 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "University Registration",
+    "dateExported": "2024-03-18T06:00:00.873Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "af515035-732a-4f72-a76f-2003c7c44295",
+            "colId": "0e1eced0-a1a8-482b-9a1b-20bef8901672",
+            "containerId": "",
+            "name": "http://localhost:5000/auth/register/university",
+            "url": "http://localhost:5000/auth/register/university",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-18T05:59:50.040Z",
+            "modified": "2024-03-18T05:59:50.040Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "universityName",
+                        "value": "Wolkite University"
+                    },
+                    {
+                        "name": "universityEmail",
+                        "value": "wolkiteuniversity.edu@gmail.com"
+                    },
+                    {
+                        "name": "universityPhoneNumber",
+                        "value": "+2511145657595"
+                    },
+                    {
+                        "name": "websiteUrl",
+                        "value": "www.wolkiteuniversity.edu.et"
+                    },
+                    {
+                        "name": "adminUserName",
+                        "value": "drFaris"
+                    },
+                    {
+                        "name": "adminEmail",
+                        "value": "faris123@gmail.com"
+                    },
+                    {
+                        "name": "adminPassword",
+                        "value": "12345678"
+                    },
+                    {
+                        "name": "adminFirstName",
+                        "value": "Faris"
+                    },
+                    {
+                        "name": "adminMiddleName",
+                        "value": "Abebe"
+                    },
+                    {
+                        "name": "adminPhoneNumber",
+                        "value": "+251935486898"
+                    },
+                    {
+                        "name": "address[city]",
+                        "value": "Addis Ababa"
+                    },
+                    {
+                        "name": "address[region]",
+                        "value": "Addis Ababa"
+                    },
+                    {
+                        "name": "address[subcity]",
+                        "value": "Addis Ketema"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "image",
+                        "value": "/home/abel/Downloads/Pictures/Bekiru Photo.jpg"
+                    },
+                    {
+                        "name": "logo",
+                        "value": "/home/abel/Downloads/Pictures/wolkite_logo-removebg-preview.png"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

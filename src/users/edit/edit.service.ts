@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { UpdateAdvisorDto, UpdateCollegeDto, UpdateDepartmentHeadDto, UpdateMentorDto } from 'src/common/dtos';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
@@ -6,9 +7,24 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 export class EditService {
     constructor(
         private prismaService: PrismaService,
+        private cloudinaryService: CloudinaryService
     ) { }
 
     async updateMentor(dto: UpdateMentorDto, _id: string): Promise<any> {
+        const mentorProfilePicUrlPublicId = await this.prismaService.mentor.findUnique({
+            where: {
+                id: _id
+            },
+            select:{
+                user: {
+                    select: {
+                        imagePublicId: true
+                    }
+                }
+            }
+        })
+
+        this.cloudinaryService.deleteFile(mentorProfilePicUrlPublicId.user.imagePublicId);
         const updatedMentor = await this.prismaService.mentor.update({
             where: {
                 id: _id

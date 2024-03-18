@@ -10,4 +10,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     async onModuleDestroy() {
         await this.$disconnect();
     }
+
+    async cleanDatabase() {
+        // Here we are deleting all the data from the database when the app is in production
+        if (process.env.NODE_ENV !== 'production') return;
+        const models = Reflect.ownKeys(this).filter((key) => key[0] !== '_');
+
+        return Promise.all(models.map((modelKey) => this[modelKey].deleteMany()))
+    }
 }

@@ -1,6 +1,7 @@
-import { Body, Controller, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Param, Patch, UseInterceptors } from '@nestjs/common';
 import { UpdateAdvisorDto, UpdateCollegeDto, UpdateDepartmentHeadDto, UpdateMentorDto } from 'src/common/dtos';
 import { EditService } from './edit.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('edit')
 export class EditController {
@@ -9,6 +10,7 @@ export class EditController {
     ) {}
 
     @Patch('mentor')
+    @UseInterceptors(FileInterceptor('image'))
     async updateMentor(@Body() dto: UpdateMentorDto, @Param('id') id: string) {
         return await this.updateService.updateMentor(dto, id);
     }
