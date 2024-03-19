@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Internship Posting",
+    "dateExported": "2024-03-19T13:47:17.728Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "948a41e0-69b4-473b-9193-4916eb84cca1",
+            "colId": "940541fe-1e94-475b-b849-d26f95dc95d7",
+            "containerId": "",
+            "name": "http://localhost:5000/post-internship",
+            "url": "http://localhost:5000/post-internship",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-19T13:45:22.029Z",
+            "modified": "2024-03-19T13:45:22.029Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"Software Engineering Internship\",\n  \"companyId\": \"65f88d6ff35ae29e47b73495\",\n  \"duration\": \"3 months\",\n  \"startDate\": \"2024-03-20T08:00:00.000Z\",\n  \"endDate\": \"2012-04-23T18:25:43.511Z\",\n  \"schedule\": \"FULL_TIME\",\n  \"compensations\": \"PAID\",\n  \"responsibilities\": [\n    \"Developing web applications\",\n    \"Testing software components\"\n  ],\n  \"qualifications\": [\n    \"Strong programming skills\",\n    \"Familiarity with HTML, CSS, JavaScript\"\n  ],\n  \"applicationInstructions\": \"Please submit your resume and cover letter.\",\n  \"deadline\": \"2024-05-15T00:00:00.000Z\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

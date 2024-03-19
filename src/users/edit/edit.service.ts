@@ -67,12 +67,7 @@ export class EditService {
                         // hashedRt: dto.advisorHashedRt,
                         verified: dto.advisorVerified,
                         email: dto.advisorEmail,
-                        password: dto.advisorPassword,
-                        role: {
-                            connect: {
-                                name: dto.role
-                            }
-                        }
+                        password: dto.advisorPassword
                     }
                 },
                 department: {
@@ -101,12 +96,7 @@ export class EditService {
                         hashedRt: dto.departmentHeadHashedRt,
                         verified: dto.departmentHeadVerified,
                         email: dto.departmentHeadEmail,
-                        password: dto.departmentHeadPassword,
-                        role: {
-                            connect: {
-                                name: dto.role
-                            }
-                        }
+                        password: dto.departmentHeadPassword
                     }
                 },
                 college: {
@@ -132,15 +122,11 @@ export class EditService {
                         middleName: dto.deanMiddleName,
                         userName: dto.deanUserName,
                         profilePic: dto.deanProfilePic,
+                        imagePublicId: dto.deanImagePublicId,
                         phoneNum: dto.deanPhoneNum,
                         email: dto.deanEmail,
                         password: dto.deanPassword,
-                        verified: dto.deanVerified,
-                        role: {
-                            connect: {
-                                name: dto.roleName
-                            }
-                        }
+                        verified: dto.deanVerified
                     }
                 },
                 university: {

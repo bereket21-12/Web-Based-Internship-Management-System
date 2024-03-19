@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Internship, Prisma } from '@prisma/client';
-import { CreateInternship, UpdateInternship } from 'src/common/dtos';
+import { CreateInternship, UpdateInternshipDto } from 'src/common/dtos';
 import { InternshipFilterDto } from 'src/common/dtos/internship-filter.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
@@ -64,9 +64,9 @@ export class PostInternshipService {
                 applicationInstructions: dto.applicationInstructions,
                 deadline: dto.deadline
             }
-
         })
-        const internship = this.prismaService.internship.create({
+
+        const internship = await this.prismaService.internship.create({
             data: {
                 title: dto.title,
                 company: {
@@ -74,50 +74,53 @@ export class PostInternshipService {
                         id: dto.companyId
                     }
                 },
+                description: {
+                    connect: {
+                        id: internshipDescription.id
+                    }
+                },
                 duration: dto.duration,
                 startDate: dto.startDate,
                 endDate: dto.endDate,
                 schedule: dto.schedule,
                 compensations: dto.compensations,
-                description: {
-                    connect: {
-                        id: internshipDescription.id
-                    }
-                }
             }
         })
 
         return internship;
     }
 
-    async updateInternship(dto: UpdateInternship, _id: string) {
+    async updateInternship(dto: UpdateInternshipDto, _id:string) {
+        const internship = await this.prismaService.internship.findUnique({
+            where: {
+                id: _id
+            }
+        })
+
+        if (!internship) {
+            throw new Error('Internship not found')
+        }
+
+        const internshipDescriptionId = internship.internshipDescriptionId;
+
         const internshipDescription = await this.prismaService.internshipDescription.update({
             where: {
-                id: dto.descriptionId
+                id: internshipDescriptionId
             },
             data: {
-                responsibilities: {
-                    set: dto.responsibilities
-                },
-                qualifications: {
-                    set: dto.qualifications
-                },
+                responsibilities: dto.responsibilities,
+                qualifications: dto.qualifications,
                 applicationInstructions: dto.applicationInstructions,
                 deadline: dto.deadline
             }
         })
 
-        const internship = await this.prismaService.internship.update({
+        const updatedInternship = await this.prismaService.internship.update({
             where: {
                 id: _id
             },
             data: {
                 title: dto.title,
-                company: {
-                    connect: {
-                        id: dto.companyId
-                    }
-                },
                 duration: dto.duration,
                 startDate: dto.startDate,
                 endDate: dto.endDate,
@@ -131,23 +134,30 @@ export class PostInternshipService {
             }
         })
 
-        return internship;
+        return { updatedInternship, internshipDescription };
     }
 
-    async deleteInternship(dto: CreateInternship, _id: string) {
-        const internship = Promise.all([
+    async deleteInternship(_id: string) {
+        // Fetch the internship
+        const internship = await this.prismaService.internship.findUnique({
+            where: { id: _id },
+        });
+
+        // Check if the internship exists
+        if (!internship) {
+            throw new Error('Internship not found');
+        }
+
+        // Delete the internship and its description
+        await Promise.all([
             this.prismaService.internship.delete({
-                where: {
-                    id: _id
-                }
+                where: { id: _id },
             }),
             this.prismaService.internshipDescription.delete({
-                where: {
-                    id: dto.descriptionId
-                }
-            })
-        ])
+                where: { id: internship.internshipDescriptionId },
+            }),
+        ]);
 
-        return internship;
+        return { message: 'Internship deleted successfully' };
     }
 }

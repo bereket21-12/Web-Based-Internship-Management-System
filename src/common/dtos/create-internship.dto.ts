@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { Transform } from 'class-transformer';
 import { IsArray, IsDate, IsOptional, IsString } from 'class-validator'
 
 export class CreateInternship {
@@ -13,16 +14,15 @@ export class CreateInternship {
   duration: string;
 
   @IsDate()
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
   startDate: Date;
 
   @IsDate()
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
   endDate: Date;
 
   schedule: Schedule;
   compensations: Compensations;
-
-  @IsString()
-  descriptionId: string;
 
   @IsArray()
   @IsOptional()
@@ -37,6 +37,7 @@ export class CreateInternship {
   applicationInstructions: string;
 
   @IsDate()
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
   deadline: Date;
 
 }
@@ -52,13 +53,7 @@ export enum Compensations {
   UNPAID = 'UNPAID'
 }
 
-export class UpdateInternship extends PartialType(CreateInternship) {
-  @IsString()
-  descriptionId: string;
-
-  @IsString()
-  internshipDescriptionId: string;
- }
+export class UpdateInternshipDto extends PartialType(CreateInternship) {}
 /*
 model Internship {
   id                      String                @id @default(auto()) @map("_id") @db.ObjectId

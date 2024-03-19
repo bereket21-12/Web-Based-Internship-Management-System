@@ -83,11 +83,10 @@ model Internship {
   endDate                 DateTime
   schedule                Schedule
   compensations           Compensations
-  descriptionId           String?               @unique
   description             InternshipDescription @relation(fields: [internshipDescriptionId], references: [id])
+  internshipDescriptionId String                @unique @db.ObjectId
   createdAt               DateTime              @default(now())
   updatedAt               DateTime              @updatedAt
-  internshipDescriptionId String                @unique @db.ObjectId
   Report                  Report[]
   Application             Application[]
 }
