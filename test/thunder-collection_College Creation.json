@@ -1,0 +1,75 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "College Creation",
+    "dateExported": "2024-03-19T06:37:00.115Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "5a6d11e0-de21-4c25-8ff7-698bcef5fe23",
+            "colId": "73ec501d-90ec-49ed-a6a3-8b9a205b1aa9",
+            "containerId": "",
+            "name": "http://localhost:5000/create/college",
+            "url": "http://localhost:5000/create/college",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-19T06:36:46.469Z",
+            "modified": "2024-03-19T06:36:46.469Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "name",
+                        "value": "College of Computing and Informatics"
+                    },
+                    {
+                        "name": "email",
+                        "value": "cci.wku@gmail.com"
+                    },
+                    {
+                        "name": "phoneNum",
+                        "value": "+251145678932"
+                    },
+                    {
+                        "name": "deanFirstName",
+                        "value": "Melaku"
+                    },
+                    {
+                        "name": "deanMiddleName",
+                        "value": "Kore"
+                    },
+                    {
+                        "name": "deanUserName",
+                        "value": "melakuk"
+                    },
+                    {
+                        "name": "deanPhoneNum",
+                        "value": "+251945678932"
+                    },
+                    {
+                        "name": "deanEmail",
+                        "value": "melaku.kore.wku@gmail.com"
+                    },
+                    {
+                        "name": "deanPassword",
+                        "value": "12345678"
+                    },
+                    {
+                        "name": "universityId",
+                        "value": "65f7d806f533eb6caecd0f85"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "image",
+                        "value": "/home/abel/Downloads/Pictures/miles morales.png"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

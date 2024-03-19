@@ -86,11 +86,7 @@ export class CreateService {
                 verified: true,
                 email: dto.departmentHeadEmail,
                 password: dto.departmentHeadPassword,
-                role: {
-                    connect: {
-                        name: "DEPARTMENT_HEAD"
-                    }
-                }
+                roleName: "DEPARTMENT_HEAD"
             }
         })
         const newDepartment = await this.prismaService.department.create({
@@ -131,11 +127,7 @@ export class CreateService {
                 verified: true,
                 email: dto.deanEmail,
                 password: dto.deanPassword,
-                role: {
-                    connect: {
-                        name: "COLLEGE_DEAN"
-                    }
-                }
+                roleName: "COLLEGE_DEAN"
             }
         })
         const newCollege = await this.prismaService.college.create({

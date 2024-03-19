@@ -1,0 +1,79 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Department Creation",
+    "dateExported": "2024-03-19T07:14:23.059Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "57656467-1229-4ba0-af76-852f6e3da566",
+            "colId": "82012a2e-b283-466d-9ff8-78edf0ea6d1a",
+            "containerId": "",
+            "name": "http://localhost:5000/create/department-head",
+            "url": "http://localhost:5000/create/department-head",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-19T07:13:58.322Z",
+            "modified": "2024-03-19T07:13:58.322Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "departmentHeadFirstName",
+                        "value": "Kuma"
+                    },
+                    {
+                        "name": "departmentHeadMiddleName",
+                        "value": "Mideksa"
+                    },
+                    {
+                        "name": "departmentHeadUserName",
+                        "value": "kumam"
+                    },
+                    {
+                        "name": "departmentHeadPhoneNum",
+                        "value": "+251134245465"
+                    },
+                    {
+                        "name": "departmentHeadEmail",
+                        "value": "kuma.mid@gmail.com"
+                    },
+                    {
+                        "name": "departmentHeadPassword",
+                        "value": "12345678"
+                    },
+                    {
+                        "name": "departmentEmail",
+                        "value": "seng.cci.wku@gmail.com"
+                    },
+                    {
+                        "name": "departmentPhoneNum",
+                        "value": "+251935344132"
+                    },
+                    {
+                        "name": "collegeId",
+                        "value": "65f9325751a81f9a6d48984b"
+                    },
+                    {
+                        "name": "universityId",
+                        "value": "65f7d806f533eb6caecd0f85"
+                    },
+                    {
+                        "name": "departmentName",
+                        "value": "Software Engineering"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "image",
+                        "value": "/home/abel/Downloads/Pictures/e4cfbdcc-48a9-4765-b4d6-0767ed0d8cb7.jpeg"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

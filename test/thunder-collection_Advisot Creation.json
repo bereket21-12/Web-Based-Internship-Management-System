@@ -1,0 +1,63 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Advisot Creation",
+    "dateExported": "2024-03-19T09:12:31.476Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "27020cb7-53be-4e46-ba3f-90c50a9e4dc4",
+            "colId": "80b7a52d-1306-4a2e-87fc-3bc3abfe75eb",
+            "containerId": "",
+            "name": "http://localhost:5000/create/advisor",
+            "url": "http://localhost:5000/create/advisor",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-19T09:12:19.697Z",
+            "modified": "2024-03-19T09:12:19.697Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "advisorFirstName",
+                        "value": "Alazar"
+                    },
+                    {
+                        "name": "advisorMiddleName",
+                        "value": "Kassa"
+                    },
+                    {
+                        "name": "advisorUserName",
+                        "value": "alazark"
+                    },
+                    {
+                        "name": "advisorPhoneNum",
+                        "value": "+251954627238"
+                    },
+                    {
+                        "name": "advisorEmail",
+                        "value": "alazar.k@gmail.com"
+                    },
+                    {
+                        "name": "advisorPassword",
+                        "value": "12345678"
+                    },
+                    {
+                        "name": "departmentId",
+                        "value": "65f93af8975422838fd50a29"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "image",
+                        "value": "/home/abel/Downloads/Pictures/Miles morales (1).jpeg"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

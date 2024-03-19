@@ -1,0 +1,63 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Mentor Creation",
+    "dateExported": "2024-03-19T05:55:47.899Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "f2369d1d-3ee3-4772-9eea-0448b2cdce43",
+            "colId": "68d8fc63-2a37-4ba5-a6a0-960db7d6f036",
+            "containerId": "",
+            "name": "http://localhost:5000/create/mentor",
+            "url": "http://localhost:5000/create/mentor",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-19T05:55:33.483Z",
+            "modified": "2024-03-19T05:55:33.483Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "mentorFirstName",
+                        "value": "Joseph"
+                    },
+                    {
+                        "name": "mentorMiddleName",
+                        "value": "Wondosen"
+                    },
+                    {
+                        "name": "mentorUserName",
+                        "value": "josy"
+                    },
+                    {
+                        "name": "mentorPhoneNum",
+                        "value": "+251967538934"
+                    },
+                    {
+                        "name": "mentorEmail",
+                        "value": "josy.wende@gmail.com"
+                    },
+                    {
+                        "name": "mentorPassword",
+                        "value": "12345678"
+                    },
+                    {
+                        "name": "companyId",
+                        "value": "65f88d6ff35ae29e47b73495"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "image",
+                        "value": "/home/abel/Downloads/Pictures/Bekiru Photo.pdf"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

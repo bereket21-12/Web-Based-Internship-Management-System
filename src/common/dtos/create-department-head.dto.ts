@@ -23,6 +23,7 @@ export class CreateDepartmentHeadDto {
   departmentHeadPhoneNum: string;
 
   @IsString()
+  @IsOptional()
   departmentHeadHashedRt: string;
 
   @IsBoolean()

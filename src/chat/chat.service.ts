@@ -8,8 +8,6 @@ export class ConversationService {
 
   async createConversation(participantIds: string[]) {
     try {
-
-
       const newConversation = await this.prisma.conversation.create({
         data: {
           participantIds,
@@ -17,8 +15,6 @@ export class ConversationService {
       });
 
      const  conversationId = newConversation.id
-
-
       return conversationId;
     } catch (error) {
       console.error(error);
