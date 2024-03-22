@@ -1,13 +1,14 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsArray, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
 export class CreateQuestionsDto {
     @IsNotEmpty()
     content: string;
 
-    @IsNotEmpty()
+    @Transform(({ value }) => parseInt(value)) // Parse to number
     @IsNumber()
+    @IsNotEmpty()
     weight: number;
 }
 
@@ -21,6 +22,7 @@ export class CreateFormDto {
     @IsNotEmpty()
     collegeId: string;
 
+    @Transform(({ value }) => parseInt(value)) // Parse to number
     @IsNotEmpty()
     @IsNumber()
     totalWeight: number;
@@ -42,6 +44,6 @@ export class CreateFormDto {
 
 }
 
-export class UpdateFormDto extends PartialType(CreateFormDto) {}
+export class UpdateFormDto extends PartialType(CreateFormDto) { }
 
 type FormType = 'ADVISOR' | 'MENTOR'

@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Advisor Assignment",
+    "dateExported": "2024-03-21T17:50:46.264Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "f7362e5c-faaf-49f9-9b10-ea7aa325791b",
+            "colId": "402b12ed-4b22-4e45-8ae0-edc96ce0014f",
+            "containerId": "",
+            "name": "http://localhost:5000/assign/advisor",
+            "url": "http://localhost:5000/assign/advisor",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-21T17:50:34.189Z",
+            "modified": "2024-03-21T17:50:34.189Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"studentId\": \"65f886e6f35ae29e47b73493\",\n  \"advisorId\": \"65f95652fbe78fdd2c9824aa\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

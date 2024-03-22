@@ -1,0 +1,79 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Form Generation",
+    "dateExported": "2024-03-22T06:11:25.318Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "9e7a0041-45d1-4a3a-be7b-f5d56e6b887d",
+            "colId": "b7aa60c1-b05b-48ee-afe9-f34f7452bee3",
+            "containerId": "",
+            "name": "http://localhost:5000/form-generate",
+            "url": "http://localhost:5000/form-generate/",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-22T06:08:46.634Z",
+            "modified": "2024-03-22T06:08:46.634Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "title",
+                        "value": "Sample Form"
+                    },
+                    {
+                        "name": "description",
+                        "value": "This is a sample form for testing purposes"
+                    },
+                    {
+                        "name": "collegeId",
+                        "value": "65f9325751a81f9a6d48984b"
+                    },
+                    {
+                        "name": "totalWeight",
+                        "value": "100"
+                    },
+                    {
+                        "name": "formType",
+                        "value": "ADVISOR"
+                    },
+                    {
+                        "name": "questions[0][content]",
+                        "value": "Question 1 content"
+                    },
+                    {
+                        "name": "questions[0][weight]",
+                        "value": "25"
+                    },
+                    {
+                        "name": "questions[1][content]",
+                        "value": "Question 2 content"
+                    },
+                    {
+                        "name": "questions[1][weight]",
+                        "value": "25"
+                    },
+                    {
+                        "name": "questions[2][content]",
+                        "value": "Question 3 content"
+                    },
+                    {
+                        "name": "questions[2][weight]",
+                        "value": "50"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "/home/abel/Documents/5th Year/Advisor Assignment.pdf"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

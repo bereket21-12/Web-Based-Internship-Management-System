@@ -11,6 +11,7 @@ export class FormGenerateService {
     ) {}
 
     async createForm(dto: CreateFormDto) {
+        dto.totalWeight = parseInt(dto.totalWeight.toString());
         return await this.prismaService.form.create({
             data: {
                 title: dto.title,
@@ -26,7 +27,7 @@ export class FormGenerateService {
                     createMany: {
                         data: dto.questions.map((question: CreateQuestionsDto) => ({ // Use question property
                             content: question.content,
-                            weight: question.weight,
+                            weight: parseInt(question.weight.toString()),
                         })),
                     },
                 },
@@ -42,7 +43,7 @@ export class FormGenerateService {
             data: {
                 title: dto.title,
                 description: dto.description,
-                totalWeight: dto.totalWeight,
+                totalWeight: parseInt(dto.totalWeight.toString()), 
                 type: dto.formType,
                 attachedUrl: dto.attachedFileUrl,
                 attachedFilePublicId: dto.attachedFilePublicId,
@@ -51,7 +52,7 @@ export class FormGenerateService {
                     createMany: {
                         data: dto.questions.map((question: CreateQuestionsDto) => ({ // Use question property
                             content: question.content,
-                            weight: question.weight,
+                            weight: parseInt(question.weight.toString()),
                         })),
                     },
                 },

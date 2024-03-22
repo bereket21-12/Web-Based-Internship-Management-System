@@ -18,10 +18,6 @@ export class CreateApplicationDto {
     status: Status;
 }
 
-export class UpdateApplicationDto extends PartialType(CreateApplicationDto){
-    @IsNotEmpty()
-    @IsString()
-    status: Status;
-}
+export class UpdateApplicationDto extends PartialType(CreateApplicationDto){}
 
 type Status = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CANCELLED';

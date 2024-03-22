@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post, Param } from '@nestjs/common';
 import { ApplyService } from './apply.service';
-import { CreateApplicationDto } from 'src/common/dtos';
+import { CreateApplicationDto, UpdateApplicationDto } from 'src/common/dtos';
 
 @Controller('apply')
 export class ApplyController {
@@ -24,7 +24,7 @@ export class ApplyController {
     }
 
     @Patch(':id')
-    async updateApplication(@Body() dto: CreateApplicationDto, id: string) {
+    async updateApplication(@Body() dto: UpdateApplicationDto, @Param('id') id: string) {
         return await this.applyService.updateApplication(id, dto);
     }
 

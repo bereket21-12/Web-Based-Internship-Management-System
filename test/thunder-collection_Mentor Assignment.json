@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Mentor Assignment",
+    "dateExported": "2024-03-21T17:43:25.524Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "926a9352-dc2d-48e8-936c-a7c0345a06ae",
+            "colId": "caaf0ed1-0d47-4c00-bc9b-8638ad360c90",
+            "containerId": "",
+            "name": "http://localhost:5000/assign/mentor",
+            "url": "http://localhost:5000/assign/mentor",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-21T17:38:45.238Z",
+            "modified": "2024-03-21T17:38:45.238Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"studentId\": \"65f886e6f35ae29e47b73493\",\n  \"mentorId\": \"65f928aaa94d54ec98323af3\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Application",
+    "dateExported": "2024-03-19T18:15:31.836Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "ccd91f2f-26ea-405c-b787-282522317250",
+            "colId": "67ed2d77-c7a3-45ed-b5cf-607847a020da",
+            "containerId": "",
+            "name": "http://localhost:5000/apply",
+            "url": "http://localhost:5000/apply",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-19T18:15:21.614Z",
+            "modified": "2024-03-19T18:15:21.614Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"studentId\": \"65f886e6f35ae29e47b73493\",\n  \"companyId\": \"65f88d6ff35ae29e47b73495\",\n  \"internshipId\": \"65f996d24cab5891eccebdac\",\n  \"status\": \"PENDING\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

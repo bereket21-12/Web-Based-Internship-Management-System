@@ -17,14 +17,11 @@ export class CreateEvaluationDto {
     @IsNotEmpty()
     evaluationDate: Date;
 
-    // Additional properties for storing responses based on question types (see next step)
     @IsOptional()
-    responseA?: string; // Adjust type based on question type
+    responseA?: string; 
 
     @IsOptional()
-    response?: number; // Adjust type based on question type
-
-    // ... Add additional response properties as needed
+    response?: number; 
 }
 
 export class UpdateEvaluationDto extends PartialType(CreateEvaluationDto) {}
