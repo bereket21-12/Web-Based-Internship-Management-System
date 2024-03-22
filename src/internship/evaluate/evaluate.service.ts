@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { CreateEvaluationDto, UpdateEvaluationDto } from 'src/common/dtos';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
@@ -21,31 +22,41 @@ export class EvaluateService {
     }
 
     async createEvaluation(dto: CreateEvaluationDto) {
+        const data: Prisma.EvaluationCreateInput = {
+            student: {
+                connect: {
+                    id: dto.studentId
+                }
+            },
+            form: {
+                connect: {
+                    id: dto.formId
+                }
+            },
+            evaluationDate: dto.evaluationDate,
+            response: dto.response,
+        };
+
+        // Check if mentorId is provided
+        if (dto.mentorId) {
+            data.mentor = {
+                connect: {
+                    id: dto.mentorId
+                }
+            };
+        }
+
+        // Check if advisorId is provided
+        if (dto.advisorId) {
+            data.advisor = {
+                connect: {
+                    id: dto.advisorId
+                }
+            };
+        }
+
         return this.prismaService.evaluation.create({
-            data: {
-                student: {
-                    connect: {
-                        id: dto.studentId
-                    }
-                },
-                mentor: {
-                    connect: {
-                        id: dto.mentorId
-                    }
-                },
-                advisor: {
-                    connect: {
-                        id: dto.advisorId
-                    }
-                },
-                form: {
-                    connect: {
-                        id: dto.formId
-                    }
-                },
-                evaluationDate: dto.evaluationDate,
-                response: dto.response,
-            }
+            data: data,
         });
     }
 
@@ -55,10 +66,14 @@ export class EvaluateService {
                 id: id
             },
             data: {
-                ...dto
+                studentId: dto.studentId,
+                formId: dto.formId,
+                evaluationDate: dto.evaluationDate,
+                response: dto.response,
             }
         });
     }
+
 
     async deleteEvaluation(id: string) {
         return this.prismaService.evaluation.delete({

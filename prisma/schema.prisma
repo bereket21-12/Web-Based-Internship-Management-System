@@ -312,9 +312,9 @@ model Evaluation {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   studentId      String   @db.ObjectId
   student        Student  @relation(fields: [studentId], references: [id])
-  mentorId       String   @db.ObjectId
+  mentorId       String?   @db.ObjectId
   mentor         Mentor?  @relation(fields: [mentorId], references: [id])
-  advisorId      String   @db.ObjectId
+  advisorId      String?   @db.ObjectId
   advisor        Advisor? @relation(fields: [advisorId], references: [id])
   formId         String   @db.ObjectId
   form           Form?    @relation(fields: [formId], references: [id])

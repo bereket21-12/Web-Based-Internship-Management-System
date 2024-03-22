@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Evaluation Creation",
+    "dateExported": "2024-03-22T17:34:40.165Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "a5835551-0779-435a-aeb8-545b16ec8e4b",
+            "colId": "f9205eb3-2fcc-4ab5-b7d8-8e65950c7062",
+            "containerId": "",
+            "name": "http://localhost:5000/evaluate",
+            "url": "http://localhost:5000/evaluate",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-22T17:34:21.494Z",
+            "modified": "2024-03-22T17:34:21.494Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"studentId\":\"65f886e6f35ae29e47b73493\",\n  \"advisorId\": \"65f95652fbe78fdd2c9824aa\",\n  \"formId\": \"65fd1d678c0c7b37fb2ed1f5\",\n  \"evaluationDate\": \"2024-03-23T00:00:00.000Z\",\n  \"responseA\": \"Sample response A\",\n  \"response\": 35\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

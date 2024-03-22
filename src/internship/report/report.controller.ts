@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto, UpdateReportDto } from 'src/common/dtos/report.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('report')
 export class ReportController {
     constructor(
-        private reportService: ReportService
+        private reportService: ReportService,
+        private cloudinaryService: CloudinaryService
     ) {}
 
     @Get()
@@ -19,8 +22,26 @@ export class ReportController {
     }        
 
     @Post()
-    async createReport(@Body() createReportDto: CreateReportDto){
-        return this.reportService.createReport(createReportDto);
+    @UseInterceptors(FileInterceptor('file'))
+    async createReport(@Body() dto: CreateReportDto, @UploadedFile() file: Express.Multer.File){
+        try {
+            let attachmentUrl = " ";
+            let attachmentUrlPublicId = " ";
+            if (file) {
+                const fileURL = await this.cloudinaryService.uploadImage(file).catch(err => {
+                    throw new BadRequestException(`Image upload failed: ${err.message}`);
+                });
+                attachmentUrl = fileURL.url;
+                attachmentUrlPublicId = fileURL.public_id;
+            }
+
+            dto.attachmentUrl = attachmentUrl;
+            // dto.mentorProfilePicUrl = attachmentUrlPublicId;
+            console.log(attachmentUrlPublicId)
+            return this.reportService.createReport(dto);
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     @Patch(':id')

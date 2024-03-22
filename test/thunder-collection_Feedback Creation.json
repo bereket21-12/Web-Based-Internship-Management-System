@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Feedback Creation",
+    "dateExported": "2024-03-22T18:02:40.454Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "474216f9-c51f-4401-9dc7-4d7cc9e69bb2",
+            "colId": "3f0084fa-243b-41a1-b0b6-78b61fb5fb59",
+            "containerId": "",
+            "name": "http://localhost:5000/feedback",
+            "url": "http://localhost:5000/feedback",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-22T18:02:31.386Z",
+            "modified": "2024-03-22T18:02:31.386Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"internId\": \"65f886e6f35ae29e47b73493\",\n  \"mentorId\": \"65f928aaa94d54ec98323af3\",\n  \"rating\": 5,\n  \"comment\": \"You have done a greate job.\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

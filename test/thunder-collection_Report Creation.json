@@ -1,0 +1,79 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Report Creation",
+    "dateExported": "2024-03-22T18:54:09.948Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "97c74117-9bd1-4fc0-9b0c-77c2a1b15229",
+            "colId": "1d9affb4-c8e9-40ee-93ec-71e64ae192b9",
+            "containerId": "",
+            "name": "http://localhost:5000/report",
+            "url": "http://localhost:5000/report",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-22T18:53:58.984Z",
+            "modified": "2024-03-22T18:53:58.984Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "studentId",
+                        "value": "65f886e6f35ae29e47b73493"
+                    },
+                    {
+                        "name": "advisorId",
+                        "value": "65f886e6f35ae29e47b73494"
+                    },
+                    {
+                        "name": "internshipId",
+                        "value": "65f996d24cab5891eccebdac"
+                    },
+                    {
+                        "name": "title",
+                        "value": "Internship Report"
+                    },
+                    {
+                        "name": "description",
+                        "value": "This report summarizes my internship experience"
+                    },
+                    {
+                        "name": "challengesFaced[]",
+                        "value": "Time managemen"
+                    },
+                    {
+                        "name": "challengesFaced[]",
+                        "value": "Communication barriers"
+                    },
+                    {
+                        "name": "lessonsLearned[]",
+                        "value": "Teamwork"
+                    },
+                    {
+                        "name": "lessonsLearned[]",
+                        "value": "Problem-solving"
+                    },
+                    {
+                        "name": "tasksAccomplished[]",
+                        "value": "Developed new feature"
+                    },
+                    {
+                        "name": "tasksAccomplished[]",
+                        "value": "Conducted research"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "/home/abel/Downloads/Documnets/machine-learning [set 1].pdf"
+                    }
+                ]
+            },
+            "tests": []
+        }
+    ]
+}

@@ -18,7 +18,7 @@ export class FeedbackController {
         return this.feedbackService.getFeedbackById(_id);
     }
 
-    @Post(':id')
+    @Post()
     async createFeedback(@Body() createFeedbackDto: CreateFeedbackDto){
         return this.feedbackService.createFeedback(createFeedbackDto);
     }

@@ -1,17 +1,23 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
+import { Transform } from 'class-transformer';
 
 export class CreateEvaluationDto {
     @IsNotEmpty()
+    @IsString()
     studentId: string;
 
+    @Transform(({ value }) => value ? value : null)
     @IsOptional()
+    @IsString()
     mentorId?: string;
 
     @IsOptional()
+    @IsString()
     advisorId?: string;
 
     @IsNotEmpty()
+    @IsString()
     formId: string;
 
     @IsNotEmpty()

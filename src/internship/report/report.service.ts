@@ -22,14 +22,11 @@ export class ReportService {
     }
 
     async createReport(dto) {
-        const { attachmentUrl, ...data } = dto;
-        if (attachmentUrl) {
-            const { secure_url } = await this.cloudinary.uploadPDF(attachmentUrl);
-            data.attachmentUrl = secure_url;
-        }
-        return await this.prismaService.report.create({
-            data
+        const newReport = this.prismaService.report.create({
+            data: dto
         });
+
+        return newReport;
     }
 
     async updateReport(dto, _id: string) {
