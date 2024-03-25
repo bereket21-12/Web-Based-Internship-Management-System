@@ -1,24 +1,23 @@
 {
     "version": 2,
-    "env": {
-        "DATABASE_URL": "DATABASE_URL",
-        "JWT_SECRET": "JWT_SECRET",
-        "RT_SECRET": "RT_SECRET",
-        "CLOUDINARY_CLOUD_NAME": "CLOUDINARY_CLOUD_NAME",
-        "CLOUDINARY_API_KEY": "CLOUDINARY_API_KEY",
-        "CLOUDINARY_API_SECRET": "CLOUDINARY_API_SECRET"
-    },
     "builds": [
         {
-            "src": "main.ts",
-            "use": "@vercel/node" 
+        "src": "main.ts",
+        "use": "@vercel/node"
         }
     ],
     "routes": [
-        { 
-            "src": "/(.*)", 
-            "dest": "main.ts",
-            "methods": ["GET", "POST", "PATCH", "DELETE"]
+        {
+        "src": "/(.*)",
+        "dest": "main.ts"
         }
-    ]
+    ],
+    "env": {
+        "DATABASE_URL": "@database_url",
+        "JWT_SECRET": "@jwt_secret",
+        "RT_SECRET": "@rt_secret",
+        "CLOUDINARY_CLOUD_NAME": "@cloudinary_cloud_name",
+        "CLOUDINARY_API_KEY": "@cloudinary_api_key",
+        "CLOUDINARY_API_SECRET": "@cloudinary_api_secret"
+    }
 }
