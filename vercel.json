@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "env": {
+        "DATABASE_URL": "mongodb+srv://abel5173:5173@cluster0.5nbscbg.mongodb.net/prisma-mongodb?retryWrites=true&w=majority",
+        "JWT_SECRET": "abel5173",
+        "RT_SECRET": "abel5173",
+        "CLOUDINARY_CLOUD_NAME": "dtwxnkgdf",
+        "CLOUDINARY_API_KEY": "832546225457644",
+        "CLOUDINARY_API_SECRET": "1XwtZpCYwLu_hOOcT1bKt49KFNY"
+    },
+    "builds": [
+        {
+            "src": "main.ts",
+            "use": "@vercel/node" 
+        }
+    ],
+    "routes": [
+        { 
+            "src": "/(.*)", 
+            "dest": "main.ts",
+            "methods": ["GET", "POST", "PATCH", "DELETE"]
+        }
+    ]
+}
