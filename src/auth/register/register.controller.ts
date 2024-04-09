@@ -3,7 +3,6 @@ import { UniversityRegisterDto } from 'src/common/dtos/university-register.dto';
 import { RegisterService } from './register.service';
 import { Tokens } from 'src/common/types';
 import { CompanyRegistrationDto } from 'src/common/dtos/company-register.dto';
-import { StudentRegistrationDto } from 'src/common/dtos/student-register.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
@@ -99,8 +98,7 @@ export class RegisterController {
     async registerStudent(
         @Body() dto: any,
         @UploadedFiles() files: { image?: Express.Multer.File[], resume?: Express.Multer.File[] }
-    )
-    // : Promise<Tokens>
+    ): Promise<Tokens>
      {
         console.log(files, 'files')
         let studentProfilePicUrl = " ";
