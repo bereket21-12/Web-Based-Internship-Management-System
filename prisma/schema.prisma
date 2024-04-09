@@ -51,10 +51,10 @@ model Student {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
   userId         String        @unique @db.ObjectId
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  universityName String
-  University     University    @relation(fields: [universityName], references: [name])
-  departmentName String
-  department     Department    @relation(fields: [departmentName], references: [name])
+  universityId   String?       @unique @db.ObjectId
+  University     University?   @relation(fields: [universityId], references: [id])
+  departmentId   String?       @unique @db.ObjectId
+  department     Department?   @relation(fields: [departmentId], references: [id])
   year           Int
   gpa            Float
   skills         String[]
@@ -312,9 +312,9 @@ model Evaluation {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   studentId      String   @db.ObjectId
   student        Student  @relation(fields: [studentId], references: [id])
-  mentorId       String?   @db.ObjectId
+  mentorId       String?  @db.ObjectId
   mentor         Mentor?  @relation(fields: [mentorId], references: [id])
-  advisorId      String?   @db.ObjectId
+  advisorId      String?  @db.ObjectId
   advisor        Advisor? @relation(fields: [advisorId], references: [id])
   formId         String   @db.ObjectId
   form           Form?    @relation(fields: [formId], references: [id])

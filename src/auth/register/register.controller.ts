@@ -97,9 +97,12 @@ export class RegisterController {
         { name: 'resume', maxCount: 1 }
     ]))
     async registerStudent(
-        @Body() dto: StudentRegistrationDto,
+        @Body() dto: any,
         @UploadedFiles() files: { image?: Express.Multer.File[], resume?: Express.Multer.File[] }
-    ): Promise<Tokens> {
+    )
+    // : Promise<Tokens>
+     {
+        console.log(files, 'files')
         let studentProfilePicUrl = " ";
         let imagePublicId = " ";
 

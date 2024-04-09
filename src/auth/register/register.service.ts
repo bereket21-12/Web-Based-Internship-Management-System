@@ -86,6 +86,14 @@ export class RegisterService {
     async registerStudent(dto: StudentRegistrationDto): Promise<Tokens> {
         const hashedPassword = await argon.hash(dto.password)
 
+        const university = dto.universityName ? await this.prismaService.university.findUnique({
+            where: { name: dto.universityName },
+        }) : null;
+
+        const department = dto.departmentName ? await this.prismaService.department.findUnique({
+            where: { name: dto.departmentName },
+        }) : null;
+
         const newStudent = await this.prismaService.user.create({
             data: {
                 email: dto.email,
@@ -98,22 +106,36 @@ export class RegisterService {
                 phoneNum: dto.phoneNum,
                 roleName: 'STUDENT',
                 verified: dto.verified ?? false,
-                Student: {
-                    create: {
-                        universityName: dto.universityName,
-                        departmentName: dto.departmentName,
-                        year: Number(dto.year),
-                        gpa: Number(dto.gpa),
-                        skills: dto.skills,
-                        resumeUrl: dto.resumeUrl,
-                    },
-                },
             },
         });
 
+        const student = await this.prismaService.student.create({
+            data: {
+                user: {
+                    connect: {
+                        id: newStudent.id
+                    }
+                },
+                University: {
+                    connect: {
+                        id: university?.id
+                    }
+                },
+                department: {
+                    connect: {
+                        id: department?.id
+                    }
+                },
+                year: Number(dto.year),
+                gpa: Number(dto.gpa),
+                skills: dto.skills,
+                resumeUrl: dto.resumeUrl,
+            }
+        })
 
-        const tokens = await this.generateJwtService.getToken(newStudent.id, dto.email, 'STUDENT');
-        await this.updateRtHash(newStudent.id, tokens.refresh_token);
+        const tokens = await this.generateJwtService.getToken(student.id, dto.email, 'STUDENT');
+        // await this.updateRtHash(student.id, tokens.refresh_token);
+        console.log(tokens)
         return tokens;
     }
 
