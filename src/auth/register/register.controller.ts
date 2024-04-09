@@ -23,10 +23,10 @@ export class RegisterController {
         { name: 'logo', maxCount: 1 }
     ]))
     async registerUniversity(
-        @Body() dto: UniversityRegisterDto,
+        @Body() dto: any,
         @UploadedFiles() files: { image?: Express.Multer.File[], logo?: Express.Multer.File[] }
     ): Promise<any> {
-        let logoUrl = ' '
+        let logoUrl = ' ';
         let logoId = ' ';
 
         let adminProfilePicUrl = '';
