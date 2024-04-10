@@ -11,10 +11,12 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { MessageService } from './message/message.service';
 import { SocketGateway } from './gateway/gateway';
 import { AccessControlService } from './common/access_control/access_control.service';
+import { UniversityModule } from './university/university.module';
+import { DepartmentModule } from './department/department.module';
 
 
 @Module({
-  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway],
+  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway, UniversityModule, DepartmentModule],
   controllers: [],
   providers: [MessageService, AccessControlService],
 })
