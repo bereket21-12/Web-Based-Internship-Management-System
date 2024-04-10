@@ -16,38 +16,68 @@ export class RegisterService {
         private cloudinary: CloudinaryService,
     ) { }
 
-    async registerUniversity(dto: UniversityRegisterDto): Promise<Tokens> {
-        const hashedPassword = await argon.hash(dto.adminPassword)
-
-        const newUniversity = await this.prismaService.university.create({
-            data: {
-                name: dto.universityName,
-                email: dto.universityEmail,
-                phoneNum: dto.universityPhoneNumber,
-                websiteUrl: dto.websiteUrl,
-                logoUrl: dto.universityLogoUrl,
-                logoPublicId: dto.logoPublicId,
-                address: dto.address,
-                universityAdmin: {
-                    create: {
-                        userName: dto.adminUserName,
-                        email: dto.adminEmail,
-                        password: hashedPassword,
-                        firstName: dto.adminFirstName,
-                        middleName: dto.adminMiddleName,
-                        profilePic: dto.adminProfilePicture,
-                        imagePublicId: dto.adminImagePublicId,
-                        phoneNum: dto.adminPhoneNumber,
-                        roleName: 'UNIVERSITY_ADMIN',
-                    },
+    async registerUniversity(dto: any): Promise<Tokens> {
+        try {
+            const hashedPassword = await argon.hash(dto.adminPassword);
+    
+            // Create a new user for university admin
+            const newAdminUser = await this.prismaService.user.create({
+                data: {
+                    userName: dto.adminUserName,
+                    email: dto.adminEmail,
+                    password: hashedPassword,
+                    firstName: dto.adminFirstName,
+                    middleName: dto.adminMiddleName,
+                    profilePic: dto.adminProfilePicture,
+                    imagePublicId: dto.adminImagePublicId,
+                    phoneNum: dto.adminPhoneNumber,
+                    roleName: 'UNIVERSITY_ADMIN'
                 }
+            });
+    
+            // Check if the new user was created successfully
+            if (!newAdminUser || !newAdminUser.id) {
+                throw new Error('Failed to create university admin user.');
             }
-        })
-
-        const tokens = await this.generateJwtService.getToken(newUniversity.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
-        await this.updateRtHash(newUniversity.universityAdminId, tokens.refresh_token);
-        return tokens;
+    
+            // Create a new university and connect it to the admin user
+            const newUniversity = await this.prismaService.university.create({
+                data: {
+                    universityAdmin: {
+                        connect: {
+                            id: newAdminUser.id
+                        }
+                    },
+                    name: dto.universityName,
+                    email: dto.universityEmail,
+                    phoneNum: dto.universityPhoneNumber,
+                    websiteUrl: dto.websiteUrl,
+                    logoUrl: dto.universityLogoUrl,
+                    logoPublicId: dto.logoPublicId,
+                    address: dto.address
+                }
+            });
+    
+            // Check if the new university was created successfully
+            if (!newUniversity || !newUniversity.id) {
+                throw new Error('Failed to create university.');
+            }
+    
+            // Generate tokens for the admin user
+            const tokens = await this.generateJwtService.getToken(newAdminUser.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
+    
+            // Update refresh token hash for the admin user
+            await this.updateRtHash(newAdminUser.id, tokens.refresh_token);
+    
+            return tokens;
+        } catch (error) {
+            // Handle any errors
+            console.error('Error registering university:', error);
+            throw error;
+        }
     }
+    
+    
 
     async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
         const hashedPassword = await argon.hash(dto.HRPassword)
