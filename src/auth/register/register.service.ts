@@ -82,6 +82,20 @@ export class RegisterService {
     async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
         const hashedPassword = await argon.hash(dto.HRPassword)
 
+        const newHR = await this.prismaService.user.create({
+            data: {
+                userName: dto.HRUserName,
+                email: dto.HREmail,
+                password: hashedPassword,
+                firstName: dto.HRFirstName,
+                middleName: dto.HRMiddleName,
+                profilePic: dto.HRProfilePicture,
+                imagePublicId: dto.HRImagePublicId,
+                phoneNum: dto.HRPhoneNumber,
+                roleName: 'COMPANY_HR',
+            }
+        })
+
         const newCompany = await this.prismaService.company.create({
             data: {
                 name: dto.companyName,
@@ -93,23 +107,15 @@ export class RegisterService {
                 industry: dto.industryType,
                 address: dto.address,
                 companyHR: {
-                    create: {
-                        userName: dto.HRUserName,
-                        email: dto.HREmail,
-                        password: hashedPassword,
-                        firstName: dto.HRFirstName,
-                        middleName: dto.HRMiddleName,
-                        profilePic: dto.HRProfilePicture,
-                        imagePublicId: dto.HRImagePublicId,
-                        phoneNum: dto.HRPhoneNumber,
-                        roleName: 'COMPANY_HR',
-                    },
+                    connect: {
+                        id: newHR.id
+                    }
                 }
             }
         })
 
         const tokens = await this.generateJwtService.getToken(newCompany.id, dto.HREmail, 'COMPANY_HR');
-        await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
+        // await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
         return tokens;
     }
 

@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, Length, ValidateNested } from 'class-validator';
 import { AddressDto } from './address.dto';
+import { Type } from 'class-transformer';
 
 export class CompanyRegistrationDto {
     @IsString()
@@ -66,6 +67,6 @@ export class CompanyRegistrationDto {
     industryType: string;
 
     @ValidateNested()
-    @IsOptional()
+    @Type(() => AddressDto)
     address?: AddressDto;
 }

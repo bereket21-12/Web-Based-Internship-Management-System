@@ -1,8 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { UniversityRegisterDto } from 'src/common/dtos/university-register.dto';
 import { RegisterService } from './register.service';
 import { Tokens } from 'src/common/types';
-import { CompanyRegistrationDto } from 'src/common/dtos/company-register.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
