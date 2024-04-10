@@ -60,7 +60,7 @@ export class RegisterController {
         { name: 'logo', maxCount: 1 }
     ]))
     async registerCompany(
-        @Body() dto: CompanyRegistrationDto,
+        @Body() dto: any,
         @UploadedFiles() files: { image?: Express.Multer.File[], logo?: Express.Multer.File[] }
     ): Promise<any> {
 
