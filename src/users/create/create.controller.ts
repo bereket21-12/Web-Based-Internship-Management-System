@@ -1,8 +1,12 @@
-import { BadRequestException, Body, Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateAdvisorDto, CreateCollegeDto, CreateDepartmentHeadDto, CreateMentorDto } from 'src/common/dtos';
 import { CreateService } from './create.service';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { Role } from 'src/common/constants/role.enum';
+import { AuthGuard } from 'src/common/guards';
+import { RoleGuard } from 'src/common/guards/role.guard';
 
 @Controller('create')
 export class CreateController {
@@ -86,6 +90,8 @@ export class CreateController {
     }
 
     @Post('college')
+    @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN)
+    @UseGuards(AuthGuard, RoleGuard)
     @UseInterceptors(FileInterceptor('image'))
     async createCollege(@Body() dto: CreateCollegeDto, @UploadedFile() image: Express.Multer.File) {
         try {
