@@ -7,7 +7,7 @@ import { CommonModule } from './common/common.module';
 import { ChatModule } from './chat/chat.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MessageModule } from './message/message.module';
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+// import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { MessageService } from './message/message.service';
 import { SocketGateway } from './gateway/gateway';
 import { AccessControlService } from './common/access_control/access_control.service';

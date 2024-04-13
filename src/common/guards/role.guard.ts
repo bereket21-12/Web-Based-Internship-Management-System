@@ -25,11 +25,12 @@ export class RoleGuard implements CanActivate {
         ]);
 
         const request = context.switchToHttp().getRequest(); // The switchToHttp() method returns an object that provides access to the request and response objects. The getRequest() method returns the request object.
-        if (!request['token']) {
+        if (!request['user']) {
+            console.log('Request: ', request);
             throw new Error('Token is missing from request');
         }
 
-        const token = request['token'] as TokenDto;
+        const token = request['user'] as TokenDto;
 
         for (const role of requiredRole) {
             const result = this.accessControlService.isAuthorized({
