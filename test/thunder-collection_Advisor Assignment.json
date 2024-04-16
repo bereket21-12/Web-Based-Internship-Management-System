@@ -11,7 +11,7 @@
             "containerId": "",
             "name": "http://localhost:5000/assign/advisor",
             "url": "http://localhost:5000/assign/advisor",
-            "method": "POST",
+            "method": "POST ",
             "sortNum": 10000,
             "created": "2024-03-21T17:50:34.189Z",
             "modified": "2024-03-21T17:50:34.189Z",
