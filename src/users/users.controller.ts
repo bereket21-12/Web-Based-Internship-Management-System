@@ -17,8 +17,8 @@ export class UsersController {
     private static defaultImagePublicId = '';
 
     @Post()
-    @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
-    @UseGuards(AtGuard, RoleGuard)
+ //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
+ //   @UseGuards(AtGuard, RoleGuard)
     @UseInterceptors(FileInterceptor('image'))
     async createUser(@Body() user: any, @UploadedFile() image: Express.Multer.File) {
         try {
