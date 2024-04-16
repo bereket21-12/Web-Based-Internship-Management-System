@@ -6,6 +6,8 @@ import { GenerateJwtService } from '../jwt/generate.jwt.service';
 import { StudentRegistrationDto } from 'src/common/dtos/student-register.dto';
 import { CompanyRegistrationDto } from 'src/common/dtos/company-register.dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { collegeRegisterDto } from 'src/common/dtos/college.dto';
+import { departmentRegisterDto } from 'src/common/dtos/department.dto';
 
 @Injectable()
 export class RegisterService {
@@ -185,6 +187,63 @@ export class RegisterService {
             }
         })
     }
+
+    async registerCollege(dto :collegeRegisterDto){
+
+            try {
+                
+                await  this.prismaService.college.create({
+
+                    data:{
+                        name:dto.name,
+                        email:dto.email,
+                        phoneNum:dto.phoneNum,
+                        university :{
+                            connect: {
+                                id: dto.universityId
+                            }
+                    }
+                }})
+                
+            } catch (error) {
+                console.log(error)
+                
+            }
+
+
+
+    }
+
+    async registerDepartment(dto :departmentRegisterDto){
+
+        try {
+            
+            await  this.prismaService.department.create({
+
+                data:{
+                    name:dto.name,
+                    email:dto.email,
+                    phoneNum:dto.phoneNum,
+                    University :{
+                        connect: {
+                            id: dto.universityId
+                        }
+                },
+                college :{
+                    connect: {
+                        id: dto.collegeId
+                    }
+            }
+            }})
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+
+
+
+}
 
     // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
     //     // Define a default image URL

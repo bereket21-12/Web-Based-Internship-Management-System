@@ -191,8 +191,8 @@ model College {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String       @unique
   departments   Department[]
-  collegeDeanId String       @db.ObjectId
-  collegeDean   User         @relation(fields: [collegeDeanId], references: [id])
+  collegeDeanId String?      @db.ObjectId
+  collegeDean   User?        @relation(fields: [collegeDeanId], references: [id])
   universityId  String       @db.ObjectId
   university    University   @relation(fields: [universityId], references: [id])
   email         String
@@ -205,8 +205,8 @@ model College {
 model Department {
   id               String      @id @default(auto()) @map("_id") @db.ObjectId
   name             String      @unique
-  departmentHeadId String      @db.ObjectId
-  departmentHead   User        @relation(fields: [departmentHeadId], references: [id])
+  departmentHeadId String?      @db.ObjectId
+  departmentHead   User?        @relation(fields: [departmentHeadId], references: [id])
   collegeId        String      @db.ObjectId
   college          College     @relation(fields: [collegeId], references: [id])
   email            String

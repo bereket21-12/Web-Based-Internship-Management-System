@@ -50,6 +50,29 @@ export class RegisterController {
         console.log(dto.universityLogoUrl, dto.logoPublicId, 'logo');
         return this.registerService.registerUniversity(dto);
     }
+    @Post('college')
+    @HttpCode(HttpStatus.CREATED)
+   
+    async registerCollege(
+        @Body() dto: any,
+    ): Promise<any> {
+        return this.registerService.registerCollege(dto);
+ 
+
+
+    }
+
+    @Post('department')
+    @HttpCode(HttpStatus.CREATED)
+   
+    async registerDepartmet(
+        @Body() dto: any,
+    ): Promise<any> {
+        return this.registerService.registerDepartment(dto);
+ 
+
+
+    }
 
     @Post('company')
     @HttpCode(HttpStatus.CREATED)

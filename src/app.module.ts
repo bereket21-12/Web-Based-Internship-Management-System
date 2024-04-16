@@ -13,10 +13,11 @@ import { SocketGateway } from './gateway/gateway';
 import { AccessControlService } from './common/access_control/access_control.service';
 import { UniversityModule } from './university/university.module';
 import { DepartmentModule } from './department/department.module';
+import { CollegeModule } from './college/college.module';
 
 
 @Module({
-  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway, UniversityModule, DepartmentModule],
+  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway, UniversityModule, DepartmentModule, CollegeModule],
   controllers: [],
   providers: [MessageService, AccessControlService],
 })
