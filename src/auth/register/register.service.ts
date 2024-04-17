@@ -20,7 +20,7 @@ export class RegisterService {
     async registerUniversity(dto: any): Promise<Tokens> {
         try {
             const hashedPassword = await argon.hash(dto.adminPassword);
-    
+
             // Create a new user for university admin
             const newAdminUser = await this.prismaService.user.create({
                 data: {
@@ -35,12 +35,12 @@ export class RegisterService {
                     roleName: 'UNIVERSITY_ADMIN'
                 }
             });
-    
+
             // Check if the new user was created successfully
             if (!newAdminUser || !newAdminUser.id) {
                 throw new Error('Failed to create university admin user.');
             }
-    
+
             // Create a new university and connect it to the admin user
             const newUniversity = await this.prismaService.university.create({
                 data: {
@@ -58,18 +58,18 @@ export class RegisterService {
                     address: dto.address
                 }
             });
-    
+
             // Check if the new university was created successfully
             if (!newUniversity || !newUniversity.id) {
                 throw new Error('Failed to create university.');
             }
-    
+
             // Generate tokens for the admin user
             const tokens = await this.generateJwtService.getToken(newAdminUser.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
-    
+
             // Update refresh token hash for the admin user
             await this.updateRtHash(newAdminUser.id, tokens.refresh_token);
-    
+
             return tokens;
         } catch (error) {
             // Handle any errors
@@ -77,11 +77,11 @@ export class RegisterService {
             throw error;
         }
     }
-    
+
     async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
         const result = this.prismaService.$transaction(async (prisma) => {
             const hashedPassword = await argon.hash(dto.HRPassword)
-    
+
             const newHR = await prisma.user.create({
                 data: {
                     userName: dto.HRUserName,
@@ -95,7 +95,7 @@ export class RegisterService {
                     roleName: 'COMPANY_HR',
                 }
             })
-    
+
             const newCompany = await prisma.company.create({
                 data: {
                     name: dto.companyName,
@@ -113,7 +113,7 @@ export class RegisterService {
                     }
                 }
             })
-    
+
             const tokens = await this.generateJwtService.getToken(newCompany.id, dto.HREmail, 'COMPANY_HR');
             await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
             return tokens;
@@ -286,62 +286,58 @@ export class RegisterService {
         })
     }
 
-    async registerCollege(dto :collegeRegisterDto){
-
-            try {
-                
-                await  this.prismaService.college.create({
-
-                    data:{
-                        name:dto.name,
-                        email:dto.email,
-                        phoneNum:dto.phoneNum,
-                        university :{
-                            connect: {
-                                id: dto.universityId
-                            }
-                    }
-                }})
-                
-            } catch (error) {
-                console.log(error)
-                
-            }
-
-
-
-    }
-
-    async registerDepartment(dto :departmentRegisterDto){
+    async registerCollege(dto: collegeRegisterDto) {
 
         try {
-            
-            await  this.prismaService.department.create({
-
-                data:{
-                    name:dto.name,
-                    email:dto.email,
-                    phoneNum:dto.phoneNum,
-                    University :{
+            await this.prismaService.college.create({
+                data: {
+                    name: dto.name,
+                    email: dto.email,
+                    phoneNum: dto.phoneNum,
+                    university: {
                         connect: {
                             id: dto.universityId
                         }
-                },
-                college :{
-                    connect: {
-                        id: dto.collegeId
                     }
-            }
-            }})
-            
+                }
+            })
+
         } catch (error) {
             console.log(error)
-            
+        }
+    }
+
+    async registerDepartment(dto: departmentRegisterDto) {
+
+        try {
+
+            await this.prismaService.department.create({
+
+                data: {
+                    name: dto.name,
+                    email: dto.email,
+                    phoneNum: dto.phoneNum,
+                    University: {
+                        connect: {
+                            id: dto.universityId
+                        }
+                    },
+                    college: {
+                        connect: {
+                            id: dto.collegeId
+                        }
+                    }
+                }
+            })
+
+        } catch (error) {
+            console.log(error)
+
         }
 
 
 
-}
+    }
 
     // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
     //     // Define a default image URL
