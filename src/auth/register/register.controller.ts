@@ -3,6 +3,7 @@ import { RegisterService } from './register.service';
 import { Tokens } from 'src/common/types';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { collegeRegisterDto } from 'src/common/dtos/college.dto';
 
 @Controller('auth/register')
 export class RegisterController {
@@ -50,17 +51,7 @@ export class RegisterController {
         console.log(dto.universityLogoUrl, dto.logoPublicId, 'logo');
         return this.registerService.registerUniversity(dto);
     }
-    @Post('college')
-    @HttpCode(HttpStatus.CREATED)
-   
-    async registerCollege(
-        @Body() dto: any,
-    ): Promise<any> {
-        return this.registerService.registerCollege(dto);
- 
 
-
-    }
 
     @Post('department')
     @HttpCode(HttpStatus.CREATED)

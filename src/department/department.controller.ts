@@ -16,6 +16,10 @@ export class DepartmentController {
     async getDepartmentById(@Param('id') id: string) {
         return await this.departmentService.getDepartmentById(id);
     }
+    @Get('un/:id')
+    async getDepartmentByuniversityId(@Param('id') id: string) {
+        return this.departmentService.getDepartmentByuniversityId(id);
+    }
 
     @Patch(':id')
     async updateDepartment(@Body() dto, @Param('id') id: string) {

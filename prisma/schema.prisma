@@ -189,7 +189,7 @@ model University {
 
 model College {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String       @unique
+  Collegename    String       @unique
   departments   Department[]
   collegeDeanId String?      @db.ObjectId
   collegeDean   User?        @relation(fields: [collegeDeanId], references: [id])

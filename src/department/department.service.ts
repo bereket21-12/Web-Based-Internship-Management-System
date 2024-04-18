@@ -23,6 +23,15 @@ export class DepartmentService {
         return department;
     }
 
+    async getDepartmentByuniversityId(_id: string) {
+        const college = await this.prismaService.department.findMany({
+            where: {
+             universityId :_id
+            }
+        });
+
+        return college
+    }
     async updateDepartment(dto, _id: string) {
         return await this.prismaService.department.update({
             where: {

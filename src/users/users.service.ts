@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from 'src/common/dtos';
 import { PrismaService } from 'src/common/prisma/prisma.service';
+import * as argon from 'argon2';
 
 @Injectable()
 export class UsersService {
@@ -9,6 +10,9 @@ export class UsersService {
     ) { }
 
     async createStaffUser(createUserDto: CreateUserDto): Promise<any> {
+
+        const hashedPassword = await argon.hash(createUserDto.userPassword);
+
         const newStaffUser = await this.prismaService.user.create({
             data: {
                 firstName: createUserDto.firstName,
@@ -19,7 +23,7 @@ export class UsersService {
                 phoneNum: createUserDto.phoneNum,
                 verified: false,// since verified is optional and can be verified later by the admin we set it to false
                 email: createUserDto.email,
-                password: createUserDto.userPassword,
+                password: hashedPassword,
                 roleName: createUserDto.roleName
             }
         })
@@ -41,6 +45,8 @@ export class UsersService {
     }
 
     async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<any> {
+        const hashedPassword = await argon.hash(updateUserDto.userPassword);
+
         const updatedUser = await this.prismaService.user.update({
             where: {
                 id: id
@@ -54,7 +60,7 @@ export class UsersService {
                 phoneNum: updateUserDto.phoneNum,
                 verified: updateUserDto.userVerified,
                 email: updateUserDto.email,
-                password: updateUserDto.userPassword,
+                password: hashedPassword,
             }
         });
         return updatedUser;

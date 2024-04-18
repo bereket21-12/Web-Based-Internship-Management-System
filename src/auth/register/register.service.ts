@@ -188,31 +188,7 @@ export class RegisterService {
         })
     }
 
-    async registerCollege(dto :collegeRegisterDto){
-
-            try {
-                
-                await  this.prismaService.college.create({
-
-                    data:{
-                        name:dto.name,
-                        email:dto.email,
-                        phoneNum:dto.phoneNum,
-                        university :{
-                            connect: {
-                                id: dto.universityId
-                            }
-                    }
-                }})
-                
-            } catch (error) {
-                console.log(error)
-                
-            }
-
-
-
-    }
+   
 
     async registerDepartment(dto :departmentRegisterDto){
 

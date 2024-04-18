@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { collegeRegisterDto } from 'src/common/dtos/college.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
 
 @Injectable()
 export class CollegeService {
     constructor(private prismaService :PrismaService){}
-
 
      async allColleges (){
 
@@ -14,8 +14,34 @@ export class CollegeService {
         return colleges;
     }
 
+    async registerCollege(dto :collegeRegisterDto){
+
+        try {
+            
+         const  college =  await  this.prismaService.college.create({
+
+                data:{
+                    phoneNum:dto.phoneNum,
+                    Collegename:dto.Collegename,
+                    email:dto.email,
+                    university :{
+                        connect: {
+                            id: dto.universityId
+                        }
+                    }
+                }})
+               
+                return college
+               
+        } catch (error) {
+            console.log(error)
+            
+        }
+return null
+
+}
     async getcollegeById(_id: string) {
-        const college = await this.prismaService.college.findUnique({
+        const college = await this.prismaService.college.findMany({
             where: {
                 id: _id
             }

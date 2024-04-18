@@ -1,22 +1,8 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl, Length } from "class-validator";
-import { AddressDto } from "./address.dto";
-
-// name          String       @unique
-// departments   Department[]
-// collegeDeanId String       @db.ObjectId
-// collegeDean   User         @relation(fields: [collegeDeanId], references: [id])
-// universityId  String       @db.ObjectId
-// university    University   @relation(fields: [universityId], references: [id])
-// email         String
-// phoneNum      String
-// createdAt     DateTime     @default(now())
-// updatedAt     DateTime     @updatedAt
-// Form          Form[]
-
+import { IsEmail, IsNotEmpty,  IsString, Length } from "class-validator";
 export class collegeRegisterDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    Collegename: string;
 
     @IsNotEmpty()
     @IsEmail()
