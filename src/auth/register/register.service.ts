@@ -332,11 +332,7 @@ export class RegisterService {
 
         } catch (error) {
             console.log(error)
-
         }
-
-
-
     }
 
     // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
