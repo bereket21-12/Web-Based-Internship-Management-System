@@ -1,6 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { LoginDto } from 'src/common/dtos';
 import { Tokens } from 'src/common/types';
 
 @Controller('auth/login')
@@ -9,7 +8,8 @@ export class LoginController {
 
     @Post()
     @HttpCode(HttpStatus.OK)
-    login(@Body() dto: LoginDto): Promise<Tokens> {
+    login(@Body() dto: any): Promise<Tokens>{
+        console.log('LoginController.login', dto)
         return this.loginService.login(dto);
     }
 }

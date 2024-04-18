@@ -10,23 +10,38 @@ export class LoginService {
     constructor(
         private prismaService: PrismaService,
         private generateJwtService: GenerateJwtService,
-        ) {}
+    ) { }
 
     async login(dto: LoginDto): Promise<Tokens> {
-        const user = this.prismaService.user.findUnique({
+        console.log('LoginService.login', dto);
+
+        // Retrieve user and await the Promise resolution
+        const user = await this.prismaService.user.findUnique({
             where: {
                 email: dto.email
             }
-        })
-        if (!user) throw new ForbiddenException('Invalid email or password');
+        });
 
-        const passwordMatches = await argon.verify((await user).password, dto.password);
-        if (!passwordMatches) throw new ForbiddenException('Invalid email or password');
+        // Check if user exists and the password hash is available
+        if (!user || !user.password) {
+            throw new ForbiddenException('Invalid email or password');
+        }
 
-        const tokens = await this.generateJwtService.getToken((await user).id, (await user).email, (await user).roleName);
-        await this.updateRtHash((await user).id, tokens.refresh_token);
-        return tokens;
+        // Verify the password
+        const passwordMatches = await argon.verify(user.password, dto.password);
+        if (!passwordMatches) {
+            throw new ForbiddenException('Invalid email or password');
+        }
+
+        // Generate tokens
+        const tokens = await this.generateJwtService.getToken(user.id, user.email, user.roleName);
+
+        // Update refresh token hash in the database
+        await this.updateRtHash(user.id, tokens.refresh_token);
+        console.log('tokens', tokens);
+        return JSON.parse(JSON.stringify(tokens)) as Tokens;
     }
+
 
     async updateRtHash(userId: string, rtHash: string) {
         const hash = await argon.hash(rtHash);
