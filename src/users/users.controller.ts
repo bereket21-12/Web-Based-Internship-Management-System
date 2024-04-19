@@ -16,6 +16,12 @@ export class UsersController {
     private static defaultImageUrl = '';
     private static defaultImagePublicId = '';
 
+        
+    @Get("role")
+    async user(){
+console.log("it is me ")
+        return await this.userService.getNormalUser()
+    }
     @Post()
  //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
  //   @UseGuards(AtGuard, RoleGuard)
@@ -81,6 +87,14 @@ export class UsersController {
     @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
     @UseGuards(AtGuard, RoleGuard)
     async deleteUser(@Param('id') id: string) {
+        
         return await this.userService.deleteUser(id);
     }
+
+    @Post(':userId/assign/:roleName')
+    async assignRoleToUser(@Param('userId') userId: string, @Param('roleName') roleName: string) {
+        
+        return this.userService.assignRoleToUser(userId, roleName);
+    }
+
 }

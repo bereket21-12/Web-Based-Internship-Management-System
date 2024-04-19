@@ -86,4 +86,25 @@ export class UsersService {
         });
         return deletedUser;
     }
+    async getNormalUser(): Promise<any> {
+        const usersWithoutRole = await this.prismaService.user.findMany({
+            where: {
+                OR: [
+                    { role: null },
+                    { roleName: null }
+                ]
+            }
+        });
+        return usersWithoutRole;
+    }
+
+    async assignRoleToUser(userId: string, roleName: string): Promise<any> {
+        
+        return this.prismaService.user.update({
+            where: { id: userId },
+            data: { roleName: roleName }
+        });
+    }
+    
 }
+

@@ -292,7 +292,7 @@ export class RegisterService {
 
         try {
 
-            await this.prismaService.department.create({
+           const dep =  await this.prismaService.department.create({
 
                 data: {
                     name: dto.name,
@@ -311,9 +311,12 @@ export class RegisterService {
                 }
             })
 
+            return dep
         } catch (error) {
             console.log(error)
         }
+
+        return null
     }
 
     // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
