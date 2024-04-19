@@ -60,9 +60,6 @@ export class RegisterController {
         @Body() dto: any,
     ): Promise<any> {
         return this.registerService.registerDepartment(dto);
- 
-
-
     }
 
     @Post('company')

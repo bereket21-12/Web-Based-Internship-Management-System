@@ -16,4 +16,9 @@ export class SetPermissionService {
 
         return roleIds
     }
+    
+    async getRoles() {
+        const roles = await this.prismaService.role.findMany();
+        return roles
+    }
 }

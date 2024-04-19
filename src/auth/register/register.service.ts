@@ -182,7 +182,11 @@ export class RegisterService {
                     profilePic: dto.profilePic,
                     imagePublicId: dto.imagePublicId,
                     phoneNum: dto.phoneNum,
-                    roleName: 'STUDENT',
+                    role: {
+                        connect: {
+                            name: 'STUDENT'
+                        }
+                    },
                     verified: dto.verified ?? false,
                 },
             });
