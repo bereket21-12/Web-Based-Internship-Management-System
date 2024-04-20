@@ -44,6 +44,22 @@ export class UsersService {
         return user;
     }
 
+    async getAllUnivesityUsers(id: string): Promise<any> {
+        const allUsers = await this.prismaService.user.findMany({
+            where: {
+                University: {
+                    some: {
+                        id: id
+                    }
+                }
+            }
+        });;
+        return allUsers;
+    }
+
+
+    
+
     async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<any> {
         const hashedPassword = await argon.hash(updateUserDto.userPassword);
 
@@ -86,6 +102,7 @@ export class UsersService {
         });
         return deletedUser;
     }
+
     async getNormalUser(): Promise<any> {
         const usersWithoutRole = await this.prismaService.user.findMany({
             where: {
@@ -99,7 +116,7 @@ export class UsersService {
     }
 
     async assignRoleToUser(userId: string, roleName: string): Promise<any> {
-        
+
         return this.prismaService.user.update({
             where: { id: userId },
             data: { roleName: roleName }

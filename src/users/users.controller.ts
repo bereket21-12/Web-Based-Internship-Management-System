@@ -19,8 +19,12 @@ export class UsersController {
         
     @Get("role")
     async user(){
-console.log("it is me ")
         return await this.userService.getNormalUser()
+    }
+
+    @Get("university/:id")
+    async Universityuser(@Param('id') id: string){
+        return await this.userService.getAllUnivesityUsers(id)
     }
     @Post()
  //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
@@ -87,7 +91,7 @@ console.log("it is me ")
     @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
     @UseGuards(AtGuard, RoleGuard)
     async deleteUser(@Param('id') id: string) {
-        
+
         return await this.userService.deleteUser(id);
     }
 
