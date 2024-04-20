@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { connect } from 'http2';
 import { collegeRegisterDto } from 'src/common/dtos/college.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
@@ -9,7 +10,14 @@ export class CollegeService {
 
      async allColleges (){
 
-        const colleges = await this.prismaService.college.findMany();
+        const colleges = await this.prismaService.college.findMany({
+
+            
+                include: {
+                    collegeDean: true,
+                },
+        
+        });
 
         return colleges;
     }
@@ -28,7 +36,13 @@ export class CollegeService {
                         connect: {
                             id: dto.universityId
                         }
+                    },
+                    collegeDean :{
+                        connect:{
+                            id:dto.collegeDeanId
+                        }
                     }
+                    
                 }})
                
                 return college
@@ -40,14 +54,18 @@ export class CollegeService {
 return null
 
 }
-    async getcollegeById(_id: string) {
-        const college = await this.prismaService.college.findMany({
-            where: {
-                id: _id
-            }
+    async getCollegeById(id: string) {
+
+        const college = await this.prismaService.college.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            departments: true,
+        },
         });
 
-        return college
+        return college;
     }
 
     async getcollegeByuniversityId(_id: string) {
@@ -76,7 +94,17 @@ return null
         });
     }
       
-
+    async getCollegeDep() {
+        const collegesWithDepartments = await this.prismaService.college.findMany({
+          include: {
+            departments: true,
+            collegeDean:true
+            
+          },
+        });
+    
+        return collegesWithDepartments;
+      }
 
 
 

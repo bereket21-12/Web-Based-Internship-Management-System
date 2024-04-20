@@ -8,7 +8,13 @@ export class DepartmentService {
     ) { }
 
     async getDepartments() {
-        const departments = await this.prismaService.department.findMany();
+        const departments = await this.prismaService.department.findMany({
+            include: {
+                departmentHead: true,
+                
+              },
+        })
+        ;
 
         return departments;
     }
@@ -22,11 +28,31 @@ export class DepartmentService {
 
         return department;
     }
+    async getDepartmentsByCollegeId(collegeId: string) {
+        const departments = await this.prismaService.department.findMany({
+          where: {
+            collegeId: collegeId,
+          },
+        });
+    
+        return departments;
+      }
 
+      
     async getDepartmentByuniversityId(_id: string) {
         const college = await this.prismaService.department.findMany({
             where: {
              universityId :_id
+            }
+        });
+
+        return college
+    }
+
+    async getDepartmentByCollegeId(_id: string) {
+        const college = await this.prismaService.department.findMany({
+            where: {
+             collegeId :_id
             }
         });
 

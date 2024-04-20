@@ -8,6 +8,15 @@ export class CollegeController {
         private CollegeService: CollegeService,
     ) {}
 
+    @Get()
+    async getColleges() {
+        return this.CollegeService.allColleges();
+    }
+    @Get("dep")
+    async getcollegewithDep() {
+        return this.CollegeService.getCollegeDep();
+    }
+
     @Post('create')
     // @HttpCode(HttpStatus.CREATED)
     async registerCollege(
@@ -18,16 +27,14 @@ export class CollegeController {
         return this.CollegeService.registerCollege(dto);
  
     }
-        @Get()
-        async getUniversities() {
-            return this.CollegeService.allColleges();
-        }
+
     
 
         @Get(':id')
         async getUniversityById(@Param('id') id: string) {
-            return this.CollegeService.getcollegeById(id);
+            return this.CollegeService.getCollegeById(id);
         }
+
 
         @Get('un/:id')
         async getUniversityByuniversityId(@Param('id') id: string) {

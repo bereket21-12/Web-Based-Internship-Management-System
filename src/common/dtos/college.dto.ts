@@ -4,6 +4,10 @@ export class collegeRegisterDto {
     @IsNotEmpty()
     Collegename: string;
 
+    @IsString()
+    @IsNotEmpty()
+    collegeDeanId: string;
+
     @IsNotEmpty()
     @IsEmail()
     email: string;

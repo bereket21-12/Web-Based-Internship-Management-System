@@ -12,6 +12,11 @@ export class DepartmentController {
         return await this.departmentService.getDepartments();
     }
 
+    @Get("college")
+    async getDepartmentsbyCollege(@Param('id') id: string) {
+        return await this.departmentService.getDepartmentByCollegeId(id);
+    }
+
     @Get(':id')
     async getDepartmentById(@Param('id') id: string) {
         return await this.departmentService.getDepartmentById(id);

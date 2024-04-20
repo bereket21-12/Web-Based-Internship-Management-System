@@ -57,6 +57,22 @@ export class UsersService {
         return allUsers;
     }
 
+        async getAllUniversityStudents(id: string): Promise<any> {
+        const allUniversity = await this.prismaService.student.findMany({
+            where: {
+
+                 universityId:id
+
+                }
+         
+            })
+       
+        return allUniversity;
+    }
+
+ 
+
+    
 
     
 

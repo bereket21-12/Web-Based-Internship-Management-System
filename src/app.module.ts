@@ -14,10 +14,11 @@ import { AccessControlService } from './common/access_control/access_control.ser
 import { UniversityModule } from './university/university.module';
 import { DepartmentModule } from './department/department.module';
 import { CollegeModule } from './college/college.module';
+import { StudentModule } from './student/student.module';
 
 
 @Module({
-  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway, UniversityModule, DepartmentModule, CollegeModule],
+  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway, UniversityModule, DepartmentModule, CollegeModule, StudentModule],
   controllers: [],
   providers: [MessageService, AccessControlService],
 })
