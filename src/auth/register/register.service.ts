@@ -6,7 +6,6 @@ import { GenerateJwtService } from '../jwt/generate.jwt.service';
 import { StudentRegistrationDto } from 'src/common/dtos/student-register.dto';
 import { CompanyRegistrationDto } from 'src/common/dtos/company-register.dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { collegeRegisterDto } from 'src/common/dtos/college.dto';
 import { departmentRegisterDto } from 'src/common/dtos/department.dto';
 
 @Injectable()
@@ -162,17 +161,17 @@ export class RegisterService {
     // }
 
     async registerStudent(dto: StudentRegistrationDto): Promise<Tokens> {
-        const result = this.prismaService.$transaction(async (prisma) => {
+        try {
             const hashedPassword = await argon.hash(dto.password)
-            const university = dto.universityName ? await prisma.university.findUnique({
+            const university = dto.universityName ? await this.prismaService.university.findUnique({
                 where: { name: dto.universityName },
             }) : null;
 
-            const department = dto.departmentName ? await prisma.department.findUnique({
+            const department = dto.departmentName ? await this.prismaService.department.findUnique({
                 where: { name: dto.departmentName },
             }) : null;
 
-            const newStudent = await prisma.user.create({
+            const newStudent = await this.prismaService.user.create({
                 data: {
                     email: dto.email,
                     password: hashedPassword,
@@ -191,7 +190,7 @@ export class RegisterService {
                 },
             });
 
-            const student = await prisma.student.create({
+            const student = await this.prismaService.student.create({
                 data: {
                     user: {
                         connect: {
@@ -214,13 +213,14 @@ export class RegisterService {
                     resumeUrl: dto.resumeUrl,
                 }
             })
-
-            const tokens = await this.generateJwtService.getToken(student.id, dto.email, 'STUDENT');
-            await this.updateRtHash(student.id, tokens.refresh_token);
+            console.log("cheking user role: ", newStudent.roleName)
+            const tokens = await this.generateJwtService.getToken(newStudent.id, newStudent.email, newStudent.roleName);
+            await this.updateRtHash(newStudent.id, tokens.refresh_token);
             return tokens;
-        })
-
-        return result;
+        } catch (error) {
+            console.log(error)
+            return error
+        }
     }
 
     // async registerStudent(dto: StudentRegistrationDto): Promise<Tokens> {
@@ -290,13 +290,13 @@ export class RegisterService {
         })
     }
 
-   
+
 
     async registerDepartment(dto: departmentRegisterDto) {
 
         try {
 
-           const dep =  await this.prismaService.department.create({
+            const dep = await this.prismaService.department.create({
 
                 data: {
                     name: dto.name,

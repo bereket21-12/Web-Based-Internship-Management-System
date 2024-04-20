@@ -3,7 +3,6 @@ import { RegisterService } from './register.service';
 import { Tokens } from 'src/common/types';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { collegeRegisterDto } from 'src/common/dtos/college.dto';
 
 @Controller('auth/register')
 export class RegisterController {
