@@ -76,7 +76,7 @@ export class UsersController {
     @Get(':id')
     @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR, Role.STUDENT, Role.ADVISOR, Role.COLLEGE_DEAN, Role.MENTOR, Role.DEPARTMENT_HEAD)
     @UseGuards(AtGuard, RoleGuard)
-    async getUserById(@Param('id') id: string){
+    async getUserById(@Param('id') id: string) {
         return await this.userService.getUserById(id);
     }
 
@@ -112,7 +112,7 @@ export class UsersController {
 
     @Post(':userId/assign/:roleName')
     async assignRoleToUser(@Param('userId') userId: string, @Param('roleName') roleName: string) {
-        
+
         return this.userService.assignRoleToUser(userId, roleName);
     }
 

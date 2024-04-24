@@ -92,10 +92,10 @@ export class RegisterService {
         }
       }
     async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
-        const result = this.prismaService.$transaction(async (prisma) => {
+        try {
             const hashedPassword = await argon.hash(dto.HRPassword)
 
-            const newHR = await prisma.user.create({
+            const newHR = await this.prismaService.user.create({
                 data: {
                     userName: dto.HRUserName,
                     email: dto.HREmail,
@@ -109,7 +109,7 @@ export class RegisterService {
                 }
             })
 
-            const newCompany = await prisma.company.create({
+            const newCompany = await this.prismaService.company.create({
                 data: {
                     name: dto.companyName,
                     email: dto.companyEmail,
@@ -130,8 +130,10 @@ export class RegisterService {
             const tokens = await this.generateJwtService.getToken(newCompany.id, dto.HREmail, 'COMPANY_HR');
             await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
             return tokens;
-        })
-        return result;
+        } catch (error) {
+            console.log(error)
+            return error
+        }
     }
 
     // async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {

@@ -39,7 +39,9 @@ export class LoginService {
         // Update refresh token hash in the database
         await this.updateRtHash(user.id, tokens.refresh_token);
         console.log('tokens', tokens);
-        return JSON.parse(JSON.stringify(tokens)) as Tokens;
+        const userWithTokens = { user, ...JSON.parse(JSON.stringify(tokens)) as Tokens };
+        console.log(userWithTokens)
+        return userWithTokens;
     }
 
 

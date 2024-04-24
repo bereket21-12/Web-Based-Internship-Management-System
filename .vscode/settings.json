@@ -1,3 +1,4 @@
 {
-  "editor.guides.bracketPairs": true
+  "editor.guides.bracketPairs": true,
+  "editor.fontSize": 12
 }

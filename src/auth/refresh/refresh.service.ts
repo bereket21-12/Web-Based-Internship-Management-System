@@ -22,6 +22,7 @@ export class RefreshService {
         if (!rtMatches) throw new ForbiddenException('Access denied');
 
         const tokens = await this.generateJwtService.getToken((await user).id, (await user).email, (await user).roleName);
+        console.log("Refreshed Token: ", tokens.refresh_tokengit)
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }
