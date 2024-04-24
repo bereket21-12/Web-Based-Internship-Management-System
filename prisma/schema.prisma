@@ -11,19 +11,19 @@ datasource db {
 }
 
 model Role {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  users       User[]
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String @unique
+  users User[]
 }
 
 model User {
-  id               String         @id @default(auto()) @map("_id") @db.ObjectId
-  email            String         @unique
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  email            String           @unique
   password         String
   firstName        String
   middleName       String
-  userName         String         @unique
-  role             Role?          @relation(fields: [roleName], references: [name])
+  userName         String           @unique
+  role             Role?            @relation(fields: [roleName], references: [name])
   roleName         String?
   profilePic       String
   imagePublicId    String
@@ -31,19 +31,20 @@ model User {
   hashedRt         String?
   verified         Boolean?
   notifications    Notification[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  conversationIds  String[]       @db.ObjectId
-  conversations    Conversation[] @relation(fields: [conversationIds], references: [id])
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  conversationIds  String[]         @db.ObjectId
+  conversations    Conversation[]   @relation(fields: [conversationIds], references: [id])
   Student          Student[]
   Company          Company[]
-  University       University[]
-  College          College[]
-  Department       Department[]
+  universityUsers  UniversityUser[]
+  colleges         College[]
+  departments      Department[]
   Advisor          Advisor[]
   Mentor           Mentor[]
-  messagesSent     Message[]      @relation("Sender")
-  messagesReceived Message[]      @relation("Receiver")
+  messagesSent     Message[]        @relation("Sender")
+  messagesReceived Message[]        @relation("Receiver")
+  University       University[]
 }
 
 model Student {
@@ -168,30 +169,40 @@ model Notification {
 }
 
 model University {
-  id                String       @id @default(auto()) @map("_id") @db.ObjectId
-  name              String       @unique
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
+  name              String           @unique
   logoUrl           String
   logoPublicId      String
   websiteUrl        String?
   college           College[]
   departments       Department[]
-  universityAdminId String       @db.ObjectId
-  verified          Boolean      @default(false)
-  universityAdmin   User         @relation(fields: [universityAdminId], references: [id])
-  email             String       @unique
+  universityAdminId String           @db.ObjectId
+  verified          Boolean          @default(false)
+  universityAdmin   User?            @relation(fields: [userId], references: [id])
+  email             String           @unique
   phoneNum          String
   address           Address?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
   Student           Student[]
+  universityUsers   UniversityUser[]
+  userId            String?          @db.ObjectId
+}
+
+model UniversityUser {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  university   University @relation(fields: [universityId], references: [id])
+  universityId String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
 }
 
 model College {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  Collegename    String       @unique
+  Collegename   String       @unique
   departments   Department[]
-  collegeDeanId String     @db.ObjectId
-  collegeDean   User        @relation(fields: [collegeDeanId], references: [id])
+  collegeDeanId String       @db.ObjectId
+  collegeDean   User         @relation(fields: [collegeDeanId], references: [id])
   universityId  String       @db.ObjectId
   university    University   @relation(fields: [universityId], references: [id])
   email         String
@@ -202,19 +213,19 @@ model College {
 }
 
 model Department {
-  id               String      @id @default(auto()) @map("_id") @db.ObjectId
-  name             String      @unique
-  departmentHeadId String?      @db.ObjectId
-  departmentHead   User?        @relation(fields: [departmentHeadId], references: [id])
-  collegeId        String      @db.ObjectId
-  college          College     @relation(fields: [collegeId], references: [id])
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  name             String     @unique
+  departmentHeadId String     @db.ObjectId
+  departmentHead   User       @relation(fields: [departmentHeadId], references: [id])
+  collegeId        String     @db.ObjectId
+  college          College    @relation(fields: [collegeId], references: [id])
   email            String
   phoneNum         String
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
   Student          Student[]
-  University       University? @relation(fields: [universityId], references: [id])
-  universityId     String?     @db.ObjectId
+  University       University @relation(fields: [universityId], references: [id])
+  universityId     String     @db.ObjectId
   Advisor          Advisor[]
 }
 

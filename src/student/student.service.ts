@@ -15,6 +15,7 @@ export class StudentService {
         include: {
             advisor: true,
             department:true,
+            user:true
             
             
         },

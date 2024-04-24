@@ -18,65 +18,79 @@ export class RegisterService {
 
     async registerUniversity(dto: any): Promise<Tokens> {
         try {
-            const hashedPassword = await argon.hash(dto.adminPassword);
+          const hashedPassword = await argon.hash(dto.adminPassword);
+    
+          // Create a new user for university admin
+          const newAdminUser = await this.prismaService.user.create({
+            data: {
+              userName: dto.adminUserName,
+              email: dto.adminEmail,
+              password: hashedPassword,
+              firstName: dto.adminFirstName,
+              middleName: dto.adminMiddleName,
+              profilePic: dto.adminProfilePicture,
+              imagePublicId: dto.adminImagePublicId,
+              phoneNum: dto.adminPhoneNumber,
+              roleName: 'UNIVERSITY_ADMIN',
+              notifications: dto.adminNotifications,
+              conversationIds: dto.adminConversationIds,
+              
+            },
+          });
+    
+          // Check if the new user was created successfully
+          if (!newAdminUser || !newAdminUser.id) {
+            throw new Error('Failed to create university admin user.');
+          }
+    
+          // Create a new university admin user record
 
-            // Create a new user for university admin
-            const newAdminUser = await this.prismaService.user.create({
-                data: {
-                    userName: dto.adminUserName,
-                    email: dto.adminEmail,
-                    password: hashedPassword,
-                    firstName: dto.adminFirstName,
-                    middleName: dto.adminMiddleName,
-                    profilePic: dto.adminProfilePicture,
-                    imagePublicId: dto.adminImagePublicId,
-                    phoneNum: dto.adminPhoneNumber,
-                    roleName: 'UNIVERSITY_ADMIN'
-                }
-            });
+    
+          // Create a new university
+          const newUniversity = await this.prismaService.university.create({
+            data: {
+              name: dto.universityName,
+              email: dto.universityEmail,
+              phoneNum: dto.universityPhoneNumber,
+              websiteUrl: dto.websiteUrl,
+              logoUrl: dto.universityLogoUrl,
+              logoPublicId: dto.logoPublicId,
+              address: dto.address,
+              verified: dto.verified,
+              universityAdminId: newAdminUser.id,
+              // Add other fields here
+            },
+          });
 
-            // Check if the new user was created successfully
-            if (!newAdminUser || !newAdminUser.id) {
-                throw new Error('Failed to create university admin user.');
-            }
-
-            // Create a new university and connect it to the admin user
-            const newUniversity = await this.prismaService.university.create({
-                data: {
-                    universityAdmin: {
-                        connect: {
-                            id: newAdminUser.id
-                        }
-                    },
-                    name: dto.universityName,
-                    email: dto.universityEmail,
-                    phoneNum: dto.universityPhoneNumber,
-                    websiteUrl: dto.websiteUrl,
-                    logoUrl: dto.universityLogoUrl,
-                    logoPublicId: dto.logoPublicId,
-                    address: dto.address
-                }
-            });
-
-            // Check if the new university was created successfully
-            if (!newUniversity || !newUniversity.id) {
-                throw new Error('Failed to create university.');
-            }
-
-            // Generate tokens for the admin user
-            const tokens = await this.generateJwtService.getToken(newAdminUser.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
-
-            // Update refresh token hash for the admin user
-            await this.updateRtHash(newAdminUser.id, tokens.refresh_token);
-
-            return tokens;
+          await this.prismaService.universityUser.create({
+            data: {
+              university: {
+                connect: { id: newUniversity.id },
+              },
+              user: {
+                connect: { id: newAdminUser.id },
+              },
+            },
+          });
+    
+          // Check if the new university was created successfully
+          if (!newUniversity || !newUniversity.id) {
+            throw new Error('Failed to create university.');
+          }
+    
+          // Generate tokens for the admin user
+          const tokens = await this.generateJwtService.getToken(newAdminUser.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
+    
+          // Update refresh token hash for the admin user
+          await this.updateRtHash(newAdminUser.id, tokens.refresh_token);
+    
+          return tokens;
         } catch (error) {
-            // Handle any errors
-            console.error('Error registering university:', error);
-            throw error;
+          // Handle any errors
+          console.error('Error registering university:', error);
+          throw error;
         }
-    }
-
+      }
     async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
         const result = this.prismaService.$transaction(async (prisma) => {
             const hashedPassword = await argon.hash(dto.HRPassword)
@@ -311,7 +325,15 @@ export class RegisterService {
                         connect: {
                             id: dto.collegeId
                         }
+                    },
+                    departmentHead:{
+                        connect:{
+                            id:dto.departmentHeadId
+                        }
                     }
+
+
+                    
                 }
             })
 

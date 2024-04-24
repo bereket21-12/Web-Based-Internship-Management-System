@@ -16,6 +16,9 @@ export class UniversityService {
         const university = await this.prismaService.university.findUnique({
             where: {
                 id: _id
+            },
+            include:{
+                departments:true
             }
         });
 

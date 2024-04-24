@@ -43,7 +43,11 @@ export class CollegeService {
                         }
                     }
                     
-                }})
+                }}).then(
+
+                    
+                )
+                
                
                 return college
                
@@ -56,12 +60,13 @@ return null
 }
     async getCollegeById(id: string) {
 
-        const college = await this.prismaService.college.findUnique({
-        where: {
-            id,
-        },
+        const college = await this.prismaService.college.findMany({
+            where: {
+                universityId :id
+               },
         include: {
             departments: true,
+            collegeDean:true
         },
         });
 

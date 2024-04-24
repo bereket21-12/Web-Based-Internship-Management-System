@@ -15,22 +15,36 @@ export class UsersController {
 
     private static defaultImageUrl = '';
     private static defaultImagePublicId = '';
-
+    @Get("assign")
+    async notHeadandDeanuser(){
+        return await this.userService.getNotDeanandHeadUser()
+    }
         
     @Get("role")
     async user(){
         return await this.userService.getNormalUser()
     }
 
+    @Get("head")
+    async head(){
+        return await this.userService.getDEPARTMENT_HEAD()
+    }
+
+    @Get("dean")
+    async dean(){
+        return await this.userService.getCOLLEGE_DEAN()
+    }
+
     @Get("university/:id")
     async Universityuser(@Param('id') id: string){
+        console.log("univesity Users")
         return await this.userService.getAllUnivesityUsers(id)
     }
-    @Post()
+    @Post(":id")
  //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
  //   @UseGuards(AtGuard, RoleGuard)
     @UseInterceptors(FileInterceptor('image'))
-    async createUser(@Body() user: any, @UploadedFile() image: Express.Multer.File) {
+    async createUser(@Body() user: any, @UploadedFile() image: Express.Multer.File ,@Param('id') id:any) {
         try {
             let deanProfilePic = UsersController.defaultImageUrl;
             let imagePublicId = UsersController.defaultImagePublicId;
@@ -45,7 +59,8 @@ export class UsersController {
 
             user.profilePic = imagePublicId;
             user.profilePicPublicId = deanProfilePic;
-            return await this.userService.createStaffUser(user);
+            console.log(id)
+            return await this.userService.createStaffUser(user,id);
         } catch (err) {
             throw new Error(err);
         }
@@ -66,8 +81,8 @@ export class UsersController {
     }
 
     @Patch(':id')
-    @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR, Role.STUDENT, Role.ADVISOR, Role.COLLEGE_DEAN, Role.MENTOR, Role.DEPARTMENT_HEAD)
-    @UseGuards(AtGuard, RoleGuard)
+    // @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR, Role.STUDENT, Role.ADVISOR, Role.COLLEGE_DEAN, Role.MENTOR, Role.DEPARTMENT_HEAD)
+    // @UseGuards(AtGuard, RoleGuard)
     @UseInterceptors(FileInterceptor('image'))
     async updateUser(@Body() user: any, @Param('id') id: string, @UploadedFile() image: Express.Multer.File) {
         if (image) {

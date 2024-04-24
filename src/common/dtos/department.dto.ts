@@ -29,6 +29,9 @@ export class departmentRegisterDto {
     @IsNotEmpty()
     @Length(8, 20)
     phoneNum: string;
+    @IsString()
+    @IsNotEmpty()
+    departmentHeadId:string
 
     @IsString()
     @IsNotEmpty()
@@ -37,6 +40,7 @@ export class departmentRegisterDto {
     @IsString()
     @IsNotEmpty()
     universityId: string;
+    
 
     
 }

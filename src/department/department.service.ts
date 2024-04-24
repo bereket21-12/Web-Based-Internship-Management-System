@@ -23,7 +23,8 @@ export class DepartmentService {
         const department = await this.prismaService.department.findUnique({
             where: {
                 id: _id
-            }
+            },
+
         });
 
         return department;
@@ -43,6 +44,10 @@ export class DepartmentService {
         const college = await this.prismaService.department.findMany({
             where: {
              universityId :_id
+            },
+            include:{
+                departmentHead:true,
+            
             }
         });
 

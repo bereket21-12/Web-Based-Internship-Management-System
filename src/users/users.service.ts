@@ -9,26 +9,36 @@ export class UsersService {
         private prismaService: PrismaService,
     ) { }
 
-    async createStaffUser(createUserDto: CreateUserDto): Promise<any> {
-
+    async createStaffUser(createUserDto: CreateUserDto, universityId: any): Promise<any> {
         const hashedPassword = await argon.hash(createUserDto.userPassword);
-
-        const newStaffUser = await this.prismaService.user.create({
+    
+        const newUser = await this.prismaService.user.create({
             data: {
-                firstName: createUserDto.firstName,
-                middleName: createUserDto.middleName,
-                userName: createUserDto.userName,
-                profilePic: createUserDto.profilePic,
-                imagePublicId: createUserDto.profilePicPublicId,
-                phoneNum: createUserDto.phoneNum,
-                verified: false,// since verified is optional and can be verified later by the admin we set it to false
-                email: createUserDto.email,
-                password: hashedPassword,
-                roleName: createUserDto.roleName
-            }
-        })
-        return newStaffUser;
+              firstName: createUserDto.firstName,
+              middleName: createUserDto.middleName,
+              userName: createUserDto.userName,
+              profilePic: createUserDto.profilePic,
+              imagePublicId: createUserDto.profilePicPublicId,
+              phoneNum: createUserDto.phoneNum,
+              verified: false,
+              email: createUserDto.email,
+              password: hashedPassword,
+              roleName: createUserDto.roleName,
+            },
+          });
+      
+          // Create the association between the user and the university
+          await this.prismaService.universityUser.create({
+            data: {
+              universityId: universityId,
+              userId: newUser.id,
+            },
+          });
+      
+          return newUser;
     }
+    
+    
 
     async getAllUsers(): Promise<any> {
         const allUsers = await this.prismaService.user.findMany();
@@ -45,15 +55,15 @@ export class UsersService {
     }
 
     async getAllUnivesityUsers(id: string): Promise<any> {
-        const allUsers = await this.prismaService.user.findMany({
+        const allUsers = await this.prismaService.universityUser.findMany({
             where: {
-                University: {
-                    some: {
-                        id: id
-                    }
-                }
-            }
-        });;
+                universityId: id
+                    
+              },
+              include:{
+                user:true
+              }
+    })
         return allUsers;
     }
 
@@ -76,24 +86,13 @@ export class UsersService {
 
     
 
-    async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<any> {
-        const hashedPassword = await argon.hash(updateUserDto.userPassword);
+    async updateUser(updateUserDto, id: string): Promise<any> {
 
         const updatedUser = await this.prismaService.user.update({
             where: {
                 id: id
             },
-            data: {
-                firstName: updateUserDto.firstName,
-                middleName: updateUserDto.middleName,
-                userName: updateUserDto.userName,
-                profilePic: updateUserDto.profilePic,
-                imagePublicId: updateUserDto.profilePicPublicId,
-                phoneNum: updateUserDto.phoneNum,
-                verified: updateUserDto.userVerified,
-                email: updateUserDto.email,
-                password: hashedPassword,
-            }
+            data: updateUserDto
         });
         return updatedUser;
     }
@@ -127,6 +126,42 @@ export class UsersService {
                     { roleName: null }
                 ]
             }
+        });
+        return usersWithoutRole;
+    }
+
+    async getCOLLEGE_DEAN(): Promise<any> {
+        const usersWithoutRole = await this.prismaService.user.findMany({
+            where: {
+                
+                
+                roleName: "COLLEGE_DEAN"
+            
+            }
+        });
+        return usersWithoutRole;
+    }
+    async getDEPARTMENT_HEAD(): Promise<any> {
+        const usersWithoutRole = await this.prismaService.user.findMany({
+            where: {
+                
+                
+                roleName: "DEPARTMENT_HEAD"
+            
+            }
+        });
+        return usersWithoutRole;
+    }
+
+    async getNotDeanandHeadUser(): Promise<any> {
+        const usersWithoutRole = await this.prismaService.user.findMany({
+            // where: {
+            //     AND: [
+            //         { College: null },
+            //         { Department: null },
+                    
+            //     ]
+            // }
         });
         return usersWithoutRole;
     }

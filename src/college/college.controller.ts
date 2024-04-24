@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch,Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch,Post ,Header} from '@nestjs/common';
 import { CollegeService } from './college.service';
 
 
@@ -12,9 +12,21 @@ export class CollegeController {
     async getColleges() {
         return this.CollegeService.allColleges();
     }
+    @Get(':id')
+    @Header('Access-Control-Allow-Origin', '*')
+    async getUniversityById(@Param('id') id: string) {
+        return this.CollegeService.getCollegeById(id);
+    }
+
     @Get("dep")
     async getcollegewithDep() {
         return this.CollegeService.getCollegeDep();
+    }
+    @Get('un/:id')
+    @Header('Access-Control-Allow-Origin', '*')
+
+    async getUniversityByuniversityId(@Param('id') id: string) {
+        return this.CollegeService.getcollegeByuniversityId(id);
     }
 
     @Post('create')
@@ -27,21 +39,8 @@ export class CollegeController {
         return this.CollegeService.registerCollege(dto);
  
     }
-
     
-
-        @Get(':id')
-        async getUniversityById(@Param('id') id: string) {
-            return this.CollegeService.getCollegeById(id);
-        }
-
-
-        @Get('un/:id')
-        async getUniversityByuniversityId(@Param('id') id: string) {
-            return this.CollegeService.getcollegeByuniversityId(id);
-        }
-    
-        @Patch(':id')
+        @Patch('update/:id')
         async updateUniversity(@Body() dto, @Param('id') id: string) {
             return this.CollegeService.updatecollege(dto, id);
         }
