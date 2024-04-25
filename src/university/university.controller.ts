@@ -16,6 +16,11 @@ constructor(
         return this.universityService.getUniversityById(id);
     }
 
+    @Get('uncount/:id')
+    async getCountUniversityStaff(@Param('id') id: string) {
+        return this.universityService.getCountUniversityById(id);
+    }
+
     @Patch(':id')
     async updateUniversity(@Body() dto, @Param('id') id: string) {
         return this.universityService.updateUniversity(dto, id);

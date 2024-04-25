@@ -23,7 +23,6 @@ export class CollegeService {
     }
 
     async registerCollege(dto :collegeRegisterDto){
-
         try {
             
          const  college =  await  this.prismaService.college.create({

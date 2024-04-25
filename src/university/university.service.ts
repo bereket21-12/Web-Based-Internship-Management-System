@@ -25,6 +25,23 @@ export class UniversityService {
         return university;
     }
 
+    async getCountUniversityById(_id: string) {
+        const university = await this.prismaService.university.findUnique({
+
+            where: {
+                id: _id
+            },
+            include:{
+                departments:true,
+                college:true,
+                Student:true,
+                universityUsers:true,
+            }
+        });
+
+        return [university.Student.length,university.departments.length,university.college.length,university.universityUsers.length]
+    }
+
     async updateUniversity(dto, _id: string) {
         return await this.prismaService.university.update({
             where: {
