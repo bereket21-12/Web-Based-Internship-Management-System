@@ -15,6 +15,10 @@ constructor(
     async getUniversityById(@Param('id') id: string) {
         return this.universityService.getUniversityById(id);
     }
+        @Get('user/:id')
+    async getUniversityByUserId(@Param('id') id: string) {
+        return this.universityService.filterUniversityByUserID(id);
+    }
 
     @Get('uncount/:id')
     async getCountUniversityStaff(@Param('id') id: string) {

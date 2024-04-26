@@ -54,18 +54,23 @@ export class UsersService {
         return user;
     }
 
-    async getAllUnivesityUsers(id: string): Promise<any> {
+    async getAllUniversityUsers(id: string): Promise<any> {
         const allUsers = await this.prismaService.universityUser.findMany({
             where: {
-                universityId: id
-                    
-              },
-              include:{
-                user:true
-              }
-    })
+                universityId: id,
+                user: {
+                    roleName: {
+                        not: "student"
+                    }
+                }
+            },
+            include: {
+                user: true
+            }
+        });
         return allUsers;
     }
+
 
         async getAllUniversityStudents(id: string): Promise<any> {
         const allUniversity = await this.prismaService.student.findMany({
@@ -118,13 +123,18 @@ export class UsersService {
         return deletedUser;
     }
 
-    async getNormalUser(): Promise<any> {
+    async getNormalUser(id:string): Promise<any> {
         const usersWithoutRole = await this.prismaService.user.findMany({
             where: {
                 OR: [
                     { role: null },
                     { roleName: null }
-                ]
+                ],
+                universityUsers:{
+                    every:{
+                        universityId:id
+                    }
+                }
             }
         });
         return usersWithoutRole;

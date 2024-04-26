@@ -3,59 +3,71 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
 export class UniversityService {
-    constructor(
-        private prismaService: PrismaService
-    ) { }
-    async getUniversities() {
-        const universities = await this.prismaService.university.findMany();
+  constructor(private prismaService: PrismaService) {}
+  async getUniversities() {
+    const universities = await this.prismaService.university.findMany();
 
-        return universities;
-    }
+    return universities;
+  }
 
-    async getUniversityById(_id: string) {
-        const university = await this.prismaService.university.findUnique({
-            where: {
-                id: _id
-            },
-            include:{
-                departments:true
-            }
-        });
+  async getUniversityById(_id: string) {
+    const university = await this.prismaService.university.findUnique({
+      where: {
+        id: _id,
+      },
+      include: {
+        departments: true,
+      },
+    });
 
-        return university;
-    }
+    return university;
+  }
 
-    async getCountUniversityById(_id: string) {
-        const university = await this.prismaService.university.findUnique({
+  async getCountUniversityById(_id: string) {
+    const university = await this.prismaService.university.findUnique({
+      where: {
+        id: _id,
+      },
+      include: {
+        departments: true,
+        college: true,
+        Student: true,
+        universityUsers: true,
+      },
+    });
 
-            where: {
-                id: _id
-            },
-            include:{
-                departments:true,
-                college:true,
-                Student:true,
-                universityUsers:true,
-            }
-        });
+    return [
+      university.Student.length,
+      university.departments.length,
+      university.college.length,
+      university.universityUsers.length,
+    ];
+  }
 
-        return [university.Student.length,university.departments.length,university.college.length,university.universityUsers.length]
-    }
+  async updateUniversity(dto, _id: string) {
+    return await this.prismaService.university.update({
+      where: {
+        id: _id,
+      },
+      data: dto,
+    });
+  }
 
-    async updateUniversity(dto, _id: string) {
-        return await this.prismaService.university.update({
-            where: {
-                id: _id
-            },
-            data: dto
-        });
-    }
-
-    async deleteUniversity(_id: string) {
-        return await this.prismaService.university.delete({
-            where: {
-                id: _id
-            }
-        });
-    }
+  async deleteUniversity(_id: string) {
+    return await this.prismaService.university.delete({
+      where: {
+        id: _id,
+      },
+    });
+  }
+  async filterUniversityByUserID(_id: string) {
+    return await this.prismaService.universityUser.findMany({
+      where: {
+        userId: _id,
+      },
+      select: {
+       universityId:true
+     }
+    });
+  }
 }

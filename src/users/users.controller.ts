@@ -20,9 +20,9 @@ export class UsersController {
         return await this.userService.getNotDeanandHeadUser()
     }
         
-    @Get("role")
-    async user(){
-        return await this.userService.getNormalUser()
+    @Get("role/:id")
+    async user(@Param('id') id: string){
+        return await this.userService.getNormalUser(id)
     }
 
     @Get("head")
@@ -38,7 +38,7 @@ export class UsersController {
     @Get("university/:id")
     async Universityuser(@Param('id') id: string){
         console.log("univesity Users")
-        return await this.userService.getAllUnivesityUsers(id)
+        return await this.userService.getAllUniversityUsers(id)
     }
     @Post(":id")
  //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)

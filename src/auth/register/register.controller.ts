@@ -47,7 +47,9 @@ export class RegisterController {
         dto.universityLogoUrl = logoUrl
         dto.logoPublicId = logoId
         console.log(dto.adminProfilePicture, dto.adminImagePublicId, 'admin');
-        console.log(dto.universityLogoUrl, dto.logoPublicId, 'logo');
+        console.log( dto.universityLogoUrl, dto.logoPublicId, 'logo' );
+        console.log("input data is",dto );
+        
         return this.registerService.registerUniversity(dto);
     }
 
