@@ -53,8 +53,8 @@ export class UsersController {
     return await this.userService.getAllUniversityUsers(id);
   }
   @Post(':id')
-  //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
-  //   @UseGuards(AtGuard, RoleGuard)
+  //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)//
+  //   @UseGuards(AtGuard, RoleGuard)//
   @UseInterceptors(FileInterceptor('image'))
   async createUser(
     @Body() user: any,
