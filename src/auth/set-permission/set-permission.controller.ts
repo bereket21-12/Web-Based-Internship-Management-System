@@ -4,17 +4,17 @@ import { SetPermissionDto } from 'src/common/dtos';
 
 @Controller('auth/roles')
 export class SetPermissionController {
-    constructor(private setPermissionService: SetPermissionService) {}
+  constructor(private setPermissionService: SetPermissionService) {}
 
-    @Post()
-    async setRoles(@Body() dto: SetPermissionDto[]) {
-        const roleIds = await this.setPermissionService.setPermission(dto);
-        return roleIds;
-    }
+  @Post()
+  async setRoles(@Body() dto: SetPermissionDto[]) {
+    const roleIds = await this.setPermissionService.setPermission(dto);
+    return roleIds;
+  }
 
-    @Get()
-    async getRoles() {
-        const roles = await this.setPermissionService.getRoles();
-        return roles;
-    }
+  @Get('admin')
+  async getRoles() {
+    const roles = await this.setPermissionService.getRoles();
+    return roles;
+  }
 }
