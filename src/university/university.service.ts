@@ -5,7 +5,11 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 export class UniversityService {
   constructor(private prismaService: PrismaService) {}
   async getUniversities() {
-    const universities = await this.prismaService.university.findMany();
+    const universities = await this.prismaService.university.findMany({
+      include: {
+        departments: true,
+      },
+    });
 
     return universities;
   }
@@ -66,8 +70,8 @@ export class UniversityService {
         userId: _id,
       },
       select: {
-       universityId:true
-     }
+        universityId: true,
+      },
     });
   }
 }
