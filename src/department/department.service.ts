@@ -55,6 +55,7 @@ export class DepartmentService {
 
     return college;
   }
+
   async updateDepartment(dto, _id: string) {
     return await this.prismaService.department.update({
       where: {

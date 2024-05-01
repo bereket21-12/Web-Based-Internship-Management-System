@@ -26,7 +26,6 @@ export class DepartmentController {
     }
 
 
-
     @Patch('update/:id')
     async updateDepartment(@Body() dto, @Param('id') id: string) {
         return await this.departmentService.updateDepartment(dto, id);

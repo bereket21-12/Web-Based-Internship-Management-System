@@ -128,6 +128,7 @@ export class RegisterController {
             dto.resumePublicId = resumeUploadPromise.public_id;
             // console.log(resumeUploadPromise.url, resumeUploadPromise.public_id, 'resume')
         }
+        console.log(dto);
         return this.registerService.registerStudent(dto);
     }
 
