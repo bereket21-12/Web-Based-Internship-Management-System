@@ -10,369 +10,371 @@ import { departmentRegisterDto } from 'src/common/dtos/department.dto';
 
 @Injectable()
 export class RegisterService {
-    constructor(
-        private prismaService: PrismaService,
-        private generateJwtService: GenerateJwtService,
-        private cloudinary: CloudinaryService,
-    ) { }
+  constructor(
+    private prismaService: PrismaService,
+    private generateJwtService: GenerateJwtService,
+    private cloudinary: CloudinaryService,
+  ) {}
 
-    async registerUniversity(dto: any): Promise<Tokens> {
-        try {
-          const hashedPassword = await argon.hash(dto.adminPassword);
-    
-          // Create a new user for university admin
-          const newAdminUser = await this.prismaService.user.create({
-            data: {
-              userName: dto.adminUserName,
-              email: dto.adminEmail,
-              password: hashedPassword,
-              firstName: dto.adminFirstName,
-              middleName: dto.adminMiddleName,
-              profilePic: dto.adminProfilePicture,
-              imagePublicId: dto.adminImagePublicId,
-              phoneNum: dto.adminPhoneNumber,
-              roleName: 'UNIVERSITY_ADMIN',
-              notifications: dto.adminNotifications,
-              conversationIds: dto.adminConversationIds,
-              
-            },
-          });
-    
-          // Check if the new user was created successfully
-          if (!newAdminUser || !newAdminUser.id) {
-            throw new Error('Failed to create university admin user.');
-          }
-    
-          // Create a new university admin user record
+  async registerUniversity(dto: any): Promise<Tokens> {
+    try {
+      const hashedPassword = await argon.hash(dto.adminPassword);
 
-    
-          // Create a new university
-          const newUniversity = await this.prismaService.university.create({
-            data: {
-              name: dto.universityName,
-              email: dto.universityEmail,
-              phoneNum: dto.universityPhoneNumber,
-              websiteUrl: dto.websiteUrl,
-              logoUrl: dto.universityLogoUrl,
-              logoPublicId: dto.logoPublicId,
-              address: dto.address,
-              verified: dto.verified,
-              universityAdminId: newAdminUser.id,
-              // Add other fields here
-            },
-          });
+      // Create a new user for university admin
+      const newAdminUser = await this.prismaService.user.create({
+        data: {
+          userName: dto.adminUserName,
+          email: dto.adminEmail,
+          password: hashedPassword,
+          firstName: dto.adminFirstName,
+          middleName: dto.adminMiddleName,
+          profilePic: dto.adminProfilePicture,
+          imagePublicId: dto.adminImagePublicId,
+          phoneNum: dto.adminPhoneNumber,
+          roleName: 'UNIVERSITY_ADMIN',
+          notifications: dto.adminNotifications,
+          conversationIds: dto.adminConversationIds,
+        },
+      });
 
-          await this.prismaService.universityUser.create({
-            data: {
-              university: {
-                connect: { id: newUniversity.id },
-              },
-              user: {
-                connect: { id: newAdminUser.id },
-              },
-            },
-          });
-    
-          // Check if the new university was created successfully
-          if (!newUniversity || !newUniversity.id) {
-            throw new Error('Failed to create university.');
-          }
-    
-          // Generate tokens for the admin user
-          const tokens = await this.generateJwtService.getToken(newAdminUser.id, dto.adminEmail, 'UNIVERSITY_ADMIN');
-    
-          // Update refresh token hash for the admin user
-          await this.updateRtHash(newAdminUser.id, tokens.refresh_token);
-    
-          return tokens;
-        } catch (error) {
-          // Handle any errors
-          console.error('Error registering university:', error);
-          throw error;
-        }
+      // Check if the new user was created successfully
+      if (!newAdminUser || !newAdminUser.id) {
+        throw new Error('Failed to create university admin user.');
       }
-    async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
-        try {
-            const hashedPassword = await argon.hash(dto.HRPassword)
 
-            const newHR = await this.prismaService.user.create({
-                data: {
-                    userName: dto.HRUserName,
-                    email: dto.HREmail,
-                    password: hashedPassword,
-                    firstName: dto.HRFirstName,
-                    middleName: dto.HRMiddleName,
-                    profilePic: dto.HRProfilePicture,
-                    imagePublicId: dto.HRImagePublicId,
-                    phoneNum: dto.HRPhoneNumber,
-                    roleName: 'COMPANY_HR',
-                }
-            })
+      // Create a new university admin user record
 
-            const newCompany = await this.prismaService.company.create({
-                data: {
-                    name: dto.companyName,
-                    email: dto.companyEmail,
-                    phoneNum: dto.companyPhoneNum,
-                    website: dto.website,
-                    logoUrl: dto.logoUrl,
-                    logoPublicId: dto.logoPublicId,
-                    industry: dto.industryType,
-                    address: dto.address,
-                    companyHR: {
-                        connect: {
-                            id: newHR.id
-                        }
-                    }
-                }
-            })
+      // Create a new university
+      const newUniversity = await this.prismaService.university.create({
+        data: {
+          name: dto.universityName,
+          email: dto.universityEmail,
+          phoneNum: dto.universityPhoneNumber,
+          websiteUrl: dto.websiteUrl,
+          logoUrl: dto.universityLogoUrl,
+          logoPublicId: dto.logoPublicId,
+          address: dto.address,
+          verified: dto.verified,
+          universityAdminId: newAdminUser.id,
+          // Add other fields here
+        },
+      });
 
-            const tokens = await this.generateJwtService.getToken(newCompany.id, dto.HREmail, 'COMPANY_HR');
-            await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
-            return tokens;
-        } catch (error) {
-            console.log(error)
-            return error
-        }
+      await this.prismaService.universityUser.create({
+        data: {
+          university: {
+            connect: { id: newUniversity.id },
+          },
+          user: {
+            connect: { id: newAdminUser.id },
+          },
+        },
+      });
+
+      // Check if the new university was created successfully
+      if (!newUniversity || !newUniversity.id) {
+        throw new Error('Failed to create university.');
+      }
+
+      // Generate tokens for the admin user
+      const tokens = await this.generateJwtService.getToken(
+        newAdminUser.id,
+        dto.adminEmail,
+        'UNIVERSITY_ADMIN',
+      );
+
+      // Update refresh token hash for the admin user
+      await this.updateRtHash(newAdminUser.id, tokens.refresh_token);
+
+      return tokens;
+    } catch (error) {
+      // Handle any errors
+      console.error('Error registering university:', error);
+      throw error;
     }
+  }
+  async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
+    try {
+      const hashedPassword = await argon.hash(dto.HRPassword);
 
-    // async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
-    //     const hashedPassword = await argon.hash(dto.HRPassword)
+      const newHR = await this.prismaService.user.create({
+        data: {
+          userName: dto.HRUserName,
+          email: dto.HREmail,
+          password: hashedPassword,
+          firstName: dto.HRFirstName,
+          middleName: dto.HRMiddleName,
+          profilePic: dto.HRProfilePicture,
+          imagePublicId: dto.HRImagePublicId,
+          phoneNum: dto.HRPhoneNumber,
+          roleName: 'COMPANY_HR',
+        },
+      });
 
-    //     const newHR = await this.prismaService.user.create({
-    //         data: {
-    //             userName: dto.HRUserName,
-    //             email: dto.HREmail,
-    //             password: hashedPassword,
-    //             firstName: dto.HRFirstName,
-    //             middleName: dto.HRMiddleName,
-    //             profilePic: dto.HRProfilePicture,
-    //             imagePublicId: dto.HRImagePublicId,
-    //             phoneNum: dto.HRPhoneNumber,
-    //             roleName: 'COMPANY_HR',
-    //         }
-    //     })
-
-    //     const newCompany = await this.prismaService.company.create({
-    //         data: {
-    //             name: dto.companyName,
-    //             email: dto.companyEmail,
-    //             phoneNum: dto.companyPhoneNum,
-    //             website: dto.website,
-    //             logoUrl: dto.logoUrl,
-    //             logoPublicId: dto.logoPublicId,
-    //             industry: dto.industryType,
-    //             address: dto.address,
-    //             companyHR: {
-    //                 connect: {
-    //                     id: newHR.id
-    //                 }
-    //             }
-    //         }
-    //     })
-
-    //     const tokens = await this.generateJwtService.getToken(newCompany.id, dto.HREmail, 'COMPANY_HR');
-    //     await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
-    //     return tokens;
-    // }
-
-    async registerStudent(dto: StudentRegistrationDto): Promise<Tokens> {
-        try {
-            const hashedPassword = await argon.hash(dto.password)
-            const university = dto.universityName ? await this.prismaService.university.findUnique({
-                where: { name: dto.universityName },
-            }) : null;
-
-            const department = dto.departmentName ? await this.prismaService.department.findUnique({
-                where: { name: dto.departmentName },
-            }) : null;
-
-            const newStudent = await this.prismaService.user.create({
-                data: {
-                    email: dto.email,
-                    password: hashedPassword,
-                    firstName: dto.firstName,
-                    middleName: dto.middleName,
-                    userName: dto.userName,
-                    profilePic: dto.profilePic,
-                    imagePublicId: dto.imagePublicId,
-                    phoneNum: dto.phoneNum,
-                    role: {
-                        connect: {
-                            name: 'STUDENT'
-                        }
-                    },
-                    verified: dto.verified ?? false,
-                },
-            });
-
-            const student = await this.prismaService.student.create({
-                data: {
-                    user: {
-                        connect: {
-                            id: newStudent.id
-                        }
-                    },
-                    University: {
-                        connect: {
-                            id: university?.id
-                        }
-                    },
-                    department: {
-                        connect: {
-                            id: department?.id
-                        }
-                    },
-                    year: Number(dto.year),
-                    gpa: Number(dto.gpa),
-                    skills: dto.skills,
-                    resumeUrl: dto.resumeUrl,
-                }
-            })
-            console.log("cheking user role: ", newStudent.roleName)
-            const tokens = await this.generateJwtService.getToken(newStudent.id, newStudent.email, newStudent.roleName);
-            await this.updateRtHash(newStudent.id, tokens.refresh_token);
-            return tokens;
-        } catch (error) {
-            console.log(error)
-            return error
-        }
-    }
-
-    // async registerStudent(dto: StudentRegistrationDto): Promise<Tokens> {
-    //     const hashedPassword = await argon.hash(dto.password)
-    //     const university = dto.universityName ? await this.prismaService.university.findUnique({
-    //         where: { name: dto.universityName },
-    //     }) : null;
-
-    //     const department = dto.departmentName ? await this.prismaService.department.findUnique({
-    //         where: { name: dto.departmentName },
-    //     }) : null;
-
-    //     const newStudent = await this.prismaService.user.create({
-    //         data: {
-    //             email: dto.email,
-    //             password: hashedPassword,
-    //             firstName: dto.firstName,
-    //             middleName: dto.middleName,
-    //             userName: dto.userName,
-    //             profilePic: dto.profilePic,
-    //             imagePublicId: dto.imagePublicId,
-    //             phoneNum: dto.phoneNum,
-    //             roleName: 'STUDENT',
-    //             verified: dto.verified ?? false,
-    //         },
-    //     });
-
-    //     const student = await this.prismaService.student.create({
-    //         data: {
-    //             user: {
-    //                 connect: {
-    //                     id: newStudent.id
-    //                 }
-    //             },
-    //             University: {
-    //                 connect: {
-    //                     id: university?.id
-    //                 }
-    //             },
-    //             department: {
-    //                 connect: {
-    //                     id: department?.id
-    //                 }
-    //             },
-    //             year: Number(dto.year),
-    //             gpa: Number(dto.gpa),
-    //             skills: dto.skills,
-    //             resumeUrl: dto.resumeUrl,
-    //         }
-    //     })
-
-    //     const tokens = await this.generateJwtService.getToken(student.id, dto.email, 'STUDENT');
-    //     await this.updateRtHash(student.id, tokens.refresh_token);
-    //     console.log(tokens)
-    //     return tokens;
-    // }
-
-    async updateRtHash(userId: string, rtHash: string) {
-        const hash = await argon.hash(rtHash);
-        await this.prismaService.user.update({
-            where: {
-                id: userId
+      const newCompany = await this.prismaService.company.create({
+        data: {
+          name: dto.companyName,
+          email: dto.companyEmail,
+          phoneNum: dto.companyPhoneNum,
+          website: dto.website,
+          logoUrl: dto.logoUrl,
+          logoPublicId: dto.logoPublicId,
+          industry: dto.industryType,
+          address: dto.address,
+          companyHR: {
+            connect: {
+              id: newHR.id,
             },
-            data: {
-                hashedRt: hash
-            }
-        })
+          },
+        },
+      });
+
+      const tokens = await this.generateJwtService.getToken(
+        newCompany.id,
+        dto.HREmail,
+        'COMPANY_HR',
+      );
+      await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
+      return tokens;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
+  // async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
+  //     const hashedPassword = await argon.hash(dto.HRPassword)
+
+  //     const newHR = await this.prismaService.user.create({
+  //         data: {
+  //             userName: dto.HRUserName,
+  //             email: dto.HREmail,
+  //             password: hashedPassword,
+  //             firstName: dto.HRFirstName,
+  //             middleName: dto.HRMiddleName,
+  //             profilePic: dto.HRProfilePicture,
+  //             imagePublicId: dto.HRImagePublicId,
+  //             phoneNum: dto.HRPhoneNumber,
+  //             roleName: 'COMPANY_HR',
+  //         }
+  //     })
+
+  //     const newCompany = await this.prismaService.company.create({
+  //         data: {
+  //             name: dto.companyName,
+  //             email: dto.companyEmail,
+  //             phoneNum: dto.companyPhoneNum,
+  //             website: dto.website,
+  //             logoUrl: dto.logoUrl,
+  //             logoPublicId: dto.logoPublicId,
+  //             industry: dto.industryType,
+  //             address: dto.address,
+  //             companyHR: {
+  //                 connect: {
+  //                     id: newHR.id
+  //                 }
+  //             }
+  //         }
+  //     })
+
+  //     const tokens = await this.generateJwtService.getToken(newCompany.id, dto.HREmail, 'COMPANY_HR');
+  //     await this.updateRtHash(newCompany.companyHRId, tokens.refresh_token);
+  //     return tokens;
+  // }
+
+  async registerStudent(dto: any): Promise<Tokens> {
+    try {
+      const hashedPassword = await argon.hash(dto.password);
+      const university = await this.prismaService.university.findUnique({
+        where: { id: dto.universityName },
+      });
+      const department = await this.prismaService.department.findUnique({
+        where: { id: dto.departmentName },
+      });
+      const newStudent = await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          password: hashedPassword,
+          firstName: dto.firstName,
+          middleName: dto.middleName,
+          userName: dto.userName,
+          profilePic: dto.profilePic,
+          imagePublicId: dto.imagePublicId,
+          phoneNum: dto.phoneNum,
+          role: {
+            connect: {
+              name: 'STUDENT',
+            },
+          },
+          verified: dto.verified ?? false,
+        },
+      });
+      console.log(newStudent);
+      const student = await this.prismaService.student.create({
+        data: {
+          user: {
+            connect: {
+              id: newStudent.id,
+            },
+          },
+          University: {
+            connect: {
+              id: university?.id,
+            },
+          },
+          department: {
+            connect: {
+              id: department?.id,
+            },
+          },
+          year: Number(dto.year),
+          gpa: Number(dto.gpa),
+          skills: dto.skills,
+          resumeUrl: dto.resumeUrl,
+        },
+      });
+      console.log('cheking user role: ', newStudent.roleName);
+      console.log('std info', student);
+
+      const tokens = await this.generateJwtService.getToken(
+        newStudent.id,
+        newStudent.email,
+        newStudent.roleName,
+      );
+      await this.updateRtHash(newStudent.id, tokens.refresh_token);
+      return tokens;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
+  // async registerStudent(dto: StudentRegistrationDto): Promise<Tokens> {
+  //     const hashedPassword = await argon.hash(dto.password)
+  //     const university = dto.universityName ? await this.prismaService.university.findUnique({
+  //         where: { name: dto.universityName },
+  //     }) : null;
+
+  //     const department = dto.departmentName ? await this.prismaService.department.findUnique({
+  //         where: { name: dto.departmentName },
+  //     }) : null;
+
+  //     const newStudent = await this.prismaService.user.create({
+  //         data: {
+  //             email: dto.email,
+  //             password: hashedPassword,
+  //             firstName: dto.firstName,
+  //             middleName: dto.middleName,
+  //             userName: dto.userName,
+  //             profilePic: dto.profilePic,
+  //             imagePublicId: dto.imagePublicId,
+  //             phoneNum: dto.phoneNum,
+  //             roleName: 'STUDENT',
+  //             verified: dto.verified ?? false,
+  //         },
+  //     });
+
+  //     const student = await this.prismaService.student.create({
+  //         data: {
+  //             user: {
+  //                 connect: {
+  //                     id: newStudent.id
+  //                 }
+  //             },
+  //             University: {
+  //                 connect: {
+  //                     id: university?.id
+  //                 }
+  //             },
+  //             department: {
+  //                 connect: {
+  //                     id: department?.id
+  //                 }
+  //             },
+  //             year: Number(dto.year),
+  //             gpa: Number(dto.gpa),
+  //             skills: dto.skills,
+  //             resumeUrl: dto.resumeUrl,
+  //         }
+  //     })
+
+  //     const tokens = await this.generateJwtService.getToken(student.id, dto.email, 'STUDENT');
+  //     await this.updateRtHash(student.id, tokens.refresh_token);
+  //     console.log(tokens)
+  //     return tokens;
+  // }
+
+  async updateRtHash(userId: string, rtHash: string) {
+    const hash = await argon.hash(rtHash);
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        hashedRt: hash,
+      },
+    });
+  }
+
+  async registerDepartment(dto: departmentRegisterDto) {
+    try {
+      const dep = await this.prismaService.department.create({
+        data: {
+          name: dto.name,
+          email: dto.email,
+          phoneNum: dto.phoneNum,
+          University: {
+            connect: {
+              id: dto.universityId,
+            },
+          },
+          college: {
+            connect: {
+              id: dto.collegeId,
+            },
+          },
+          departmentHead: {
+            connect: {
+              id: dto.departmentHeadId,
+            },
+          },
+        },
+      });
+
+      return dep;
+    } catch (error) {
+      console.log(error);
     }
 
+    return null;
+  }
 
+  // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
+  //     // Define a default image URL
+  //     const defaultImageUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709011728/yn7txagp9asfmu5uie7f.jpg';
+  //     const defaultImageId = 'yn7txagp9asfmu5uie7f';
+  //     const logoUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709102607/d2lzd65x1idyztuz2afq.jpg'
+  //     const logoId = 'd2lzd65x1idyztuz2afq';
 
-    async registerDepartment(dto: departmentRegisterDto) {
+  //     // Use a ternary operator to decide whether to upload the image or use the default
+  //     const imageUploadPromise = imageFile
+  //         ? this.cloudinary.uploadImage(imageFile).catch(err => {
+  //             throw new BadRequestException(`Image upload failed: ${err.message}`);
+  //         })
+  //         : Promise.resolve({ url: defaultImageUrl, publicId: defaultImageId }); // If no imageFile, resolve with default image URL
 
-        try {
+  //     // Similar handling for the resume file, with an additional check to only upload if provided
+  //     const logoUploadPromise = logoFile
+  //         ? this.cloudinary.uploadImage(logoFile).catch(err => {
+  //             throw new BadRequestException(`Resume upload failed: ${err.message}`);
+  //         })
+  //         : Promise.resolve({ url: logoUrl, publicId: logoId }); // Use a default or placeholder URL for resumes, or handle differently as needed
 
-            const dep = await this.prismaService.department.create({
+  //     const uploads = await Promise.all([
+  //         imageUploadPromise,
+  //         logoUploadPromise
+  //     ]);
 
-                data: {
-                    name: dto.name,
-                    email: dto.email,
-                    phoneNum: dto.phoneNum,
-                    University: {
-                        connect: {
-                            id: dto.universityId
-                        }
-                    },
-                    college: {
-                        connect: {
-                            id: dto.collegeId
-                        }
-                    },
-                    departmentHead:{
-                        connect:{
-                            id:dto.departmentHeadId
-                        }
-                    }
-
-
-                    
-                }
-            })
-
-            return dep
-        } catch (error) {
-            console.log(error)
-        }
-
-        return null
-    }
-
-    // async uploadProfilePicAndResume(imageFile?: Express.Multer.File, logoFile?: Express.Multer.File) {
-    //     // Define a default image URL
-    //     const defaultImageUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709011728/yn7txagp9asfmu5uie7f.jpg';
-    //     const defaultImageId = 'yn7txagp9asfmu5uie7f';
-    //     const logoUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1709102607/d2lzd65x1idyztuz2afq.jpg'
-    //     const logoId = 'd2lzd65x1idyztuz2afq';
-
-    //     // Use a ternary operator to decide whether to upload the image or use the default
-    //     const imageUploadPromise = imageFile
-    //         ? this.cloudinary.uploadImage(imageFile).catch(err => {
-    //             throw new BadRequestException(`Image upload failed: ${err.message}`);
-    //         })
-    //         : Promise.resolve({ url: defaultImageUrl, publicId: defaultImageId }); // If no imageFile, resolve with default image URL
-
-    //     // Similar handling for the resume file, with an additional check to only upload if provided
-    //     const logoUploadPromise = logoFile
-    //         ? this.cloudinary.uploadImage(logoFile).catch(err => {
-    //             throw new BadRequestException(`Resume upload failed: ${err.message}`);
-    //         })
-    //         : Promise.resolve({ url: logoUrl, publicId: logoId }); // Use a default or placeholder URL for resumes, or handle differently as needed
-
-    //     const uploads = await Promise.all([
-    //         imageUploadPromise,
-    //         logoUploadPromise
-    //     ]);
-
-    //     return uploads;
-    // }
+  //     return uploads;
+  // }
 }
