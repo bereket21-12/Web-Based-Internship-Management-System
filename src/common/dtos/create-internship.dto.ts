@@ -10,9 +10,6 @@ export class CreateInternship {
   @IsString()
   companyId: string;
 
-  @IsString()
-  duration: string;
-
   @IsDate()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   startDate: Date;
@@ -32,7 +29,10 @@ export class CreateInternship {
   @IsOptional()
   qualifications: string[];
 
-  @IsOptional()
+  @IsString()
+  description: string
+
+  // @IsOptional()
   @IsString()
   applicationInstructions: string;
 
@@ -53,7 +53,7 @@ export enum Compensations {
   UNPAID = 'UNPAID'
 }
 
-export class UpdateInternshipDto extends PartialType(CreateInternship) {}
+export class UpdateInternshipDto extends PartialType(CreateInternship) { }
 /*
 model Internship {
   id                      String                @id @default(auto()) @map("_id") @db.ObjectId

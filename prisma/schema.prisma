@@ -65,6 +65,8 @@ model Student {
   advisor        Advisor?      @relation(fields: [advisorId], references: [id])
   mentorId       String?       @db.ObjectId
   mentor         Mentor?       @relation(fields: [mentorId], references: [id])
+  internshipId   String?       @db.ObjectId
+  internship     Internship?   @relation(fields: [internshipId], references: [id])
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   Report         Report[]
@@ -78,7 +80,6 @@ model Internship {
   title                   String
   companyId               String                @db.ObjectId
   company                 Company               @relation(fields: [companyId], references: [id])
-  duration                String
   startDate               DateTime
   endDate                 DateTime
   schedule                Schedule
@@ -89,6 +90,7 @@ model Internship {
   updatedAt               DateTime              @updatedAt
   Report                  Report[]
   Application             Application[]
+  Student                 Student[]
 }
 
 model InternshipDescription {
@@ -96,6 +98,7 @@ model InternshipDescription {
   responsibilities        String[]
   qualifications          String[]
   applicationInstructions String
+  description             String
   deadline                DateTime
   createdAt               DateTime    @default(now())
   updatedAt               DateTime    @updatedAt

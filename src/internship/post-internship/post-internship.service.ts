@@ -62,6 +62,7 @@ export class PostInternshipService {
                     set: dto.qualifications
                 },
                 applicationInstructions: dto.applicationInstructions,
+                description: dto.description,
                 deadline: dto.deadline
             }
         })
@@ -79,7 +80,6 @@ export class PostInternshipService {
                         id: internshipDescription.id
                     }
                 },
-                duration: dto.duration,
                 startDate: dto.startDate,
                 endDate: dto.endDate,
                 schedule: dto.schedule,
@@ -121,7 +121,6 @@ export class PostInternshipService {
             },
             data: {
                 title: dto.title,
-                duration: dto.duration,
                 startDate: dto.startDate,
                 endDate: dto.endDate,
                 schedule: dto.schedule,

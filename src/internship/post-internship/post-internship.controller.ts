@@ -1,9 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { PostInternshipService } from './post-internship.service';
 import { InternshipFilterDto } from 'src/common/dtos/internship-filter.dto';
-import { CreateInternship, UpdateInternshipDto } from 'src/common/dtos/create-internship.dto';
+import { UpdateInternshipDto } from 'src/common/dtos/create-internship.dto';
+import { Role } from 'src/common/constants/role.enum';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { AtGuard, RoleGuard } from 'src/common/guards';
 
-@Controller('post-internship')
+@Controller('internship')
 export class PostInternshipController {
     constructor(
         private postInternshipService: PostInternshipService
@@ -19,7 +22,9 @@ export class PostInternshipController {
         return this.postInternshipService.getInternshipById(_id);
     }
 
-    @Get()
+    @Get('?filter')
+    @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR, Role.STUDENT)
+    @UseGuards(AtGuard, RoleGuard)
     async getInternships(@Query() filter: InternshipFilterDto){
         const internships = await this.postInternshipService.findMany(filter);
 
@@ -27,7 +32,10 @@ export class PostInternshipController {
     }
 
     @Post()
-    async createInternship(@Body() createInternshipDto: CreateInternship) {
+    @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)
+    @UseGuards(AtGuard, RoleGuard)
+    async createInternship(@Body() createInternshipDto: any) {
+        console.log(createInternshipDto);
         return this.postInternshipService.createInternship(createInternshipDto);
     }
 
