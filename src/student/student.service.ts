@@ -5,6 +5,15 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 export class StudentService {
     constructor(private prismaService :PrismaService){}
 
+    async getAllStudents() {
+        const students = await this.prismaService.student.findMany({
+            include: {
+                advisor: true,
+                department:true,
+                user:true     
+            },
+        });
+    }
 
     async getStudentInUniversity(id: string) {
 

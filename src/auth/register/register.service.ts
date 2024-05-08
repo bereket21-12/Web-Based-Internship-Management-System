@@ -14,7 +14,7 @@ export class RegisterService {
     private prismaService: PrismaService,
     private generateJwtService: GenerateJwtService,
     private cloudinary: CloudinaryService,
-  ) {}
+  ) { }
 
   async registerUniversity(dto: any): Promise<Tokens> {
     try {
@@ -128,7 +128,7 @@ export class RegisterService {
           },
         },
       });
-
+      console.log('new company', newCompany)
       const tokens = await this.generateJwtService.getToken(
         newCompany.id,
         dto.HREmail,

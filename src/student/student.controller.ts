@@ -6,6 +6,11 @@ export class StudentController {
 
     constructor(private studentService : StudentService){}
 
+    @Get()
+    async getAllStudents() {
+        return this.studentService.getAllStudents();
+    }
+
     @Get(":id")
     async getUniversityStudents(@Param('id') id :string){
         return await this.studentService.getStudentInUniversity(id)  

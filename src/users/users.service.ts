@@ -1,11 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from 'src/common/dtos';
+import { CreateMentorDto, CreateUserDto, UpdateUserDto } from 'src/common/dtos';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import * as argon from 'argon2';
 
 @Injectable()
 export class UsersService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
+
+  async getAllUsers() {
+    const allUsers = await this.prismaService.user.findMany({
+      where: {
+        NOT: [
+          { profilePic: null }, // Exclude null profilePic
+          { imagePublicId: null }, // Exclude null imagePublicId
+        ]
+      }
+    });
+    return allUsers;
+  }
+
 
   async createStaffUser(
     createUserDto: CreateUserDto,
@@ -39,11 +52,40 @@ export class UsersService {
     return newUser;
   }
 
-  async getAllUsers(): Promise<any> {
-    const allUsers = await this.prismaService.user.findMany();
-    return allUsers;
-  }
+  async createMentor(data: any): Promise<any> {
+    const hashedPassword = await argon.hash(data.mentorPassword);
 
+    const newUser = await this.prismaService.user.create({
+      data: {
+        firstName: data.mentorFirstName,
+        middleName: data.mentorMiddleName,
+        userName: data.mentorUserName,
+        profilePic: data.profilePic,
+        imagePublicId: data.imagePublicId,
+        phoneNum: data.mentorPhoneNum,
+        email: data.mentorEmail,
+        password: hashedPassword,
+        roleName: 'MENTOR',
+      },
+    });
+
+    const newMentor = await this.prismaService.mentor.create({
+      data: {
+        user: {
+          connect: {
+            id: newUser.id,
+          }
+        },
+        company: {
+          connect: {
+            id: data.companyId,
+          }
+        }
+      }
+    })
+
+    return newMentor;
+  }
   async getUserById(id: string): Promise<any> {
     const user = await this.prismaService.user.findUnique({
       where: {
@@ -129,7 +171,7 @@ export class UsersService {
   async getNormalUser(id: string): Promise<any> {
     const usersWithoutRole = await this.prismaService.user.findMany({
       where: {
-        id: this.user.toString(),
+        id: id,
       },
     });
     return usersWithoutRole;
