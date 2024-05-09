@@ -20,4 +20,4 @@ export class CreateApplicationDto {
 
 export class UpdateApplicationDto extends PartialType(CreateApplicationDto){}
 
-type Status = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CANCELLED';
+export type Status = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CANCELLED';

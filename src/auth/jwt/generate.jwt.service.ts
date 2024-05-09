@@ -13,7 +13,7 @@ export class GenerateJwtService {
             },
                 {
                     secret: process.env.JWT_SECRET,
-                    expiresIn: 60*60, // 1 hour
+                    expiresIn: 60 * 60, // 1 hour
                 }),
             this.jwtService.signAsync({
                 sub: userId,
@@ -26,9 +26,9 @@ export class GenerateJwtService {
                 })
         ]);
 
-    return {
-      access_token,
-      refresh_token,
-    };
-  }
+        return {
+            access_token,
+            refresh_token,
+        };
+    }
 }
