@@ -47,6 +47,20 @@ model User {
   University       University[]
 }
 
+model Advisor {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String       @db.ObjectId
+  user         User         @relation(fields: [userId], references: [id])
+  departmentId String       @db.ObjectId
+  department   Department   @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  students     Student[] // This establishes a one-to-many relationship
+  Report       Report[]
+  Feedback     Feedback[]
+  Evaluation   Evaluation[]
+}
+
 model Student {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
   userId         String        @unique @db.ObjectId
@@ -61,8 +75,7 @@ model Student {
   resumeUrl      String?
   resumePublicId String?
   isOnInternship Boolean?
-  advisorId      String?       @db.ObjectId
-  advisor        Advisor?      @relation(fields: [advisorId], references: [id])
+  advisor        Advisor?      @relation(fields: [advisorId], references: [id]) // Remove advisorId field
   mentorId       String?       @db.ObjectId
   mentor         Mentor?       @relation(fields: [mentorId], references: [id])
   internshipId   String?       @db.ObjectId
@@ -73,6 +86,7 @@ model Student {
   Feedback       Feedback[]
   Evaluation     Evaluation[]
   Application    Application[]
+  advisorId      String?       @db.ObjectId
 }
 
 model Internship {
@@ -103,26 +117,6 @@ model InternshipDescription {
   createdAt               DateTime    @default(now())
   updatedAt               DateTime    @updatedAt
   Internship              Internship?
-}
-
-model Company {
-  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
-  name               String        @unique
-  industry           String
-  companyHRId        String        @db.ObjectId
-  companyHR          User          @relation(fields: [companyHRId], references: [id])
-  logoUrl            String
-  logoPublicId       String
-  website            String?
-  email              String
-  phoneNum           String
-  address            Address?
-  internshiprOferred Internship[]
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
-  Mentor             Mentor[]
-  Feedback           Feedback[]
-  Application        Application[]
 }
 
 model Application {
@@ -181,23 +175,69 @@ model University {
   departments       Department[]
   universityAdminId String           @db.ObjectId
   verified          Boolean          @default(false)
-  universityAdmin   User?            @relation(fields: [userId], references: [id])
+  universityAdmin   User?            @relation(fields: [universityAdminId], references: [id])
   email             String           @unique
   phoneNum          String
   address           Address?
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
-  Student           Student[]
+  students          Student[]
   universityUsers   UniversityUser[]
-  userId            String?          @db.ObjectId
 }
 
 model UniversityUser {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   university   University @relation(fields: [universityId], references: [id])
-  universityId String
+  universityId String     @db.ObjectId
   user         User       @relation(fields: [userId], references: [id])
-  userId       String
+  userId       String     @db.ObjectId
+}
+
+model Department {
+  id               String              @id @default(auto()) @map("_id") @db.ObjectId
+  name             String              @unique
+  departmentHeadId String              @db.ObjectId
+  departmentHead   User                @relation(fields: [departmentHeadId], references: [id])
+  collegeId        String              @db.ObjectId
+  college          College             @relation(fields: [collegeId], references: [id])
+  email            String
+  phoneNum         String
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  students         Student[]
+  University       University          @relation(fields: [universityId], references: [id])
+  universityId     String              @db.ObjectId
+  advisors         Advisor[]
+  companies        DepartmentCompany[]
+}
+
+model Company {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String              @unique
+  industry          String
+  companyHRId       String              @db.ObjectId
+  companyHR         User                @relation(fields: [companyHRId], references: [id])
+  logoUrl           String
+  logoPublicId      String
+  website           String?
+  email             String
+  phoneNum          String
+  address           Address?
+  internshipOffered Internship[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  mentors           Mentor[]
+  feedbacks         Feedback[]
+  applications      Application[]
+  departments       DepartmentCompany[]
+}
+
+model DepartmentCompany {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String     @db.ObjectId
+  company      Company    @relation(fields: [companyId], references: [id])
+  companyId    String     @db.ObjectId
 }
 
 model College {
@@ -213,37 +253,6 @@ model College {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   Form          Form[]
-}
-
-model Department {
-  id               String     @id @default(auto()) @map("_id") @db.ObjectId
-  name             String     @unique
-  departmentHeadId String     @db.ObjectId
-  departmentHead   User       @relation(fields: [departmentHeadId], references: [id])
-  collegeId        String     @db.ObjectId
-  college          College    @relation(fields: [collegeId], references: [id])
-  email            String
-  phoneNum         String
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
-  Student          Student[]
-  University       University @relation(fields: [universityId], references: [id])
-  universityId     String     @db.ObjectId
-  Advisor          Advisor[]
-}
-
-model Advisor {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
-  userId       String       @db.ObjectId
-  user         User         @relation(fields: [userId], references: [id])
-  departmentId String       @db.ObjectId
-  department   Department   @relation(fields: [departmentId], references: [id])
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  Student      Student[]
-  Report       Report[]
-  Feedback     Feedback[]
-  Evaluation   Evaluation[]
 }
 
 model Mentor {

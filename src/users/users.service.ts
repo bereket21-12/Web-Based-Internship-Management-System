@@ -24,32 +24,42 @@ export class UsersService {
     createUserDto: CreateUserDto,
     universityId: any,
   ): Promise<any> {
-    const hashedPassword = await argon.hash(createUserDto.userPassword);
+    try {
+      const hashedPassword = await argon.hash(createUserDto.userPassword);
+      const newUser = await this.prismaService.user.create({
+        data: {
+          firstName: createUserDto.firstName,
+          middleName: createUserDto.middleName,
+          userName: createUserDto.userName,
+          profilePic: createUserDto.profilePic,
+          imagePublicId: createUserDto.profilePicPublicId,
+          phoneNum: createUserDto.phoneNum,
+          verified: false,
+          email: createUserDto.email,
+          password: hashedPassword,
+          roleName: createUserDto.roleName,
+        },
+      });
 
-    const newUser = await this.prismaService.user.create({
-      data: {
-        firstName: createUserDto.firstName,
-        middleName: createUserDto.middleName,
-        userName: createUserDto.userName,
-        profilePic: createUserDto.profilePic,
-        imagePublicId: createUserDto.profilePicPublicId,
-        phoneNum: createUserDto.phoneNum,
-        verified: false,
-        email: createUserDto.email,
-        password: hashedPassword,
-        roleName: createUserDto.roleName,
-      },
+      // Create the association between the user and the university
+      await this.prismaService.universityUser.create({
+        data: {
+          universityId: universityId,
+          userId: newUser.id,
+        },
+      });
+
+      return newUser;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getUserDepartmentId(userId: string): Promise<string | null> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: { departments: { select: { id: true } } },
     });
-
-    // Create the association between the user and the university
-    await this.prismaService.universityUser.create({
-      data: {
-        universityId: universityId,
-        userId: newUser.id,
-      },
-    });
-
-    return newUser;
+    return user?.departments[0]?.id ?? null;
   }
 
   async createMentor(data: any): Promise<any> {

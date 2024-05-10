@@ -35,16 +35,16 @@ export class UniversityService {
       include: {
         departments: true,
         college: true,
-        Student: true,
+        students: true,
         universityUsers: true,
       },
     });
 
     return [
-      university.Student.length,
-      university.departments.length,
-      university.college.length,
-      university.universityUsers.length,
+      university.students.length | 0,
+      university.departments.length | 0,
+      university.college.length | 0,
+      university.universityUsers.length | 0,
     ];
   }
 

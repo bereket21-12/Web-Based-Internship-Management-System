@@ -18,10 +18,25 @@ import { StudentModule } from './student/student.module';
 import { CompanyModule } from './company/company.module';
 import { HeadModule } from './head/head.module';
 
-
 @Module({
-  imports: [UsersModule, PrismaModule, InternshipModule, AuthModule, CommonModule, ChatModule, CloudinaryModule,MessageModule,SocketGateway, UniversityModule, DepartmentModule, CollegeModule, CompanyModule, StudentModule, HeadModule],
+  imports: [
+    UsersModule,
+    PrismaModule,
+    InternshipModule,
+    AuthModule,
+    CommonModule,
+    ChatModule,
+    CloudinaryModule,
+    MessageModule,
+    SocketGateway,
+    UniversityModule,
+    DepartmentModule,
+    CollegeModule,
+    CompanyModule,
+    StudentModule,
+    HeadModule,
+  ],
   controllers: [],
   providers: [MessageService, AccessControlService],
 })
-export class AppModule { }
+export class AppModule {}

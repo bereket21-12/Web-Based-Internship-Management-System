@@ -19,7 +19,6 @@ export class RegisterService {
   async registerUniversity(dto: any): Promise<Tokens> {
     try {
       const hashedPassword = await argon.hash(dto.adminPassword);
-
       // Create a new user for university admin
       const newAdminUser = await this.prismaService.user.create({
         data: {
@@ -42,8 +41,6 @@ export class RegisterService {
         throw new Error('Failed to create university admin user.');
       }
 
-      // Create a new university admin user record
-
       // Create a new university
       const newUniversity = await this.prismaService.university.create({
         data: {
@@ -60,21 +57,13 @@ export class RegisterService {
         },
       });
 
-      await this.prismaService.universityUser.create({
-        data: {
-          university: {
-            connect: { id: newUniversity.id },
-          },
-          user: {
-            connect: { id: newAdminUser.id },
-          },
-        },
-      });
-
       // Check if the new university was created successfully
       if (!newUniversity || !newUniversity.id) {
         throw new Error('Failed to create university.');
       }
+
+      // Create universityUsers
+      await this.createUniversityUsers(newAdminUser.id, newUniversity.id);
 
       // Generate tokens for the admin user
       const tokens = await this.generateJwtService.getToken(
@@ -93,6 +82,31 @@ export class RegisterService {
       throw error;
     }
   }
+
+  async createUniversityUsers(
+    userId: string,
+    universityId: string,
+  ): Promise<void> {
+    try {
+      // Create universityUsers
+      await this.prismaService.universityUser.create({
+        data: {
+          university: {
+            connect: { id: universityId },
+          },
+          user: {
+            connect: { id: userId },
+          },
+        },
+      });
+      console.log('UniversityUser created successfully');
+    } catch (error) {
+      // Handle any errors
+      console.error('Error creating UniversityUser:', error);
+      throw error;
+    }
+  }
+
   async registerCompany(dto: CompanyRegistrationDto): Promise<Tokens> {
     try {
       const hashedPassword = await argon.hash(dto.HRPassword);
@@ -183,9 +197,11 @@ export class RegisterService {
   // }
 
   async registerStudent(dto: any): Promise<Tokens> {
+    console.log(dto);
+
     try {
       const hashedPassword = await argon.hash(dto.password);
-      const university = await this.prismaService.university.findUnique({
+      const university = await this.prismaService.university.findMany({
         where: { id: dto.universityName },
       });
       const department = await this.prismaService.department.findUnique({
@@ -219,12 +235,12 @@ export class RegisterService {
           },
           University: {
             connect: {
-              id: university?.id,
+              id: dto.universityName,
             },
           },
           department: {
             connect: {
-              id: department?.id,
+              id: dto.departmentName,
             },
           },
           year: Number(dto.year),

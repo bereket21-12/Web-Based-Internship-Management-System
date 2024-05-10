@@ -4,10 +4,11 @@ import { LoginController } from './login.controller';
 import { GenerateJwtModule } from '../jwt/generate.jwt.module';
 import { UniversityModule } from 'src/university/university.module';
 import { UniversityService } from 'src/university/university.service';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [GenerateJwtModule, UniversityModule],
-  providers: [LoginService, UniversityService],
+  providers: [LoginService, UniversityService, UsersService],
   controllers: [LoginController],
 })
 export class LoginModule {}

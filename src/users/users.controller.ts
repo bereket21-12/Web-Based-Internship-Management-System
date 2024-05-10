@@ -45,6 +45,12 @@ export class UsersController {
     return await this.userService.user(id);
   }
 
+  @Get(':userId/departmentId')
+  async getUserDepartmentId(
+    @Param('userId') userId: string,
+  ): Promise<string | null> {
+    return this.userService.getUserDepartmentId(userId);
+  }
   @Get('head')
   async head() {
     return await this.userService.getDEPARTMENT_HEAD();

@@ -5,12 +5,14 @@ import { Tokens } from 'src/common/types';
 import * as argon from 'argon2';
 import { GenerateJwtService } from '../jwt/generate.jwt.service';
 import { UniversityService } from 'src/university/university.service';
+import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class LoginService {
   constructor(
     private prismaService: PrismaService,
     private generateJwtService: GenerateJwtService,
     private filterUnservice: UniversityService,
+    private filterDepId: UsersService,
   ) {}
 
   async login(dto: LoginDto): Promise<any> {
@@ -28,7 +30,10 @@ export class LoginService {
     }
 
     const unId = await this.filterUnservice.filterUniversityByUserID(user.id);
+    const dpId = await this.filterDepId.getUserDepartmentId(user.id);
     console.log('uniD', unId);
+    console.log('DepiD', dpId);
+
     // Verify the password
     const passwordMatches = await argon.verify(user.password, dto.password);
     if (!passwordMatches) {
@@ -44,9 +49,10 @@ export class LoginService {
     // Update refresh token hash in the database
     await this.updateRtHash(user.id, tokens.refresh_token);
     console.log('tokens', tokens);
-    if (unId) {
+    if (unId || dpId) {
       const userWithTokens = {
         unId,
+        dpId,
         user,
         ...(JSON.parse(JSON.stringify(tokens)) as Tokens),
       };
