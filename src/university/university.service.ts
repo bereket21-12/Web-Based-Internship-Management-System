@@ -8,6 +8,7 @@ export class UniversityService {
     const universities = await this.prismaService.university.findMany({
       include: {
         departments: true,
+    
       },
     });
 

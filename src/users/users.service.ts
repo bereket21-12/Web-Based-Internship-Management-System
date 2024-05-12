@@ -5,7 +5,7 @@ import * as argon from 'argon2';
 
 @Injectable()
 export class UsersService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
 
   async getAllUsers() {
     const allUsers = await this.prismaService.user.findMany({
@@ -13,12 +13,11 @@ export class UsersService {
         NOT: [
           { profilePic: null }, // Exclude null profilePic
           { imagePublicId: null }, // Exclude null imagePublicId
-        ]
-      }
+        ],
+      },
     });
     return allUsers;
   }
-
 
   async createStaffUser(
     createUserDto: CreateUserDto,
@@ -62,6 +61,14 @@ export class UsersService {
     return user?.departments[0]?.id ?? null;
   }
 
+  async getUserAdvisorId(userId: string): Promise<string | null> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: { Advisor: { select: { id: true } } },
+    });
+    return user?.Advisor[0]?.id ?? null;
+  }
+
   async createMentor(data: any): Promise<any> {
     const hashedPassword = await argon.hash(data.mentorPassword);
 
@@ -84,15 +91,15 @@ export class UsersService {
         user: {
           connect: {
             id: newUser.id,
-          }
+          },
         },
         company: {
           connect: {
             id: data.companyId,
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
 
     return newMentor;
   }

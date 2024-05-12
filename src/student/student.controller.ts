@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { StudentService } from './student.service';
 
 @Controller('student')
@@ -23,6 +31,17 @@ export class StudentController {
   async approveStudents(@Param('id') id: string) {
     return await this.studentService.approveStudent(id);
   }
+  //get the number of students assigned to the advisor
+  @Get('countstdinadv/:id')
+  async getCountofAdvisorStudents(@Param('id') id: string) {
+    return await this.studentService.getCountAdvisorStudent(id);
+  }
+
+  //get lists of students assigned to advisor
+  @Get('advisorstd/:id')
+  async getAdvisorStudents(@Param('id') id: string) {
+    return await this.studentService.getAdvisorStudent(id);
+  }
 
   @Get('countvalid/:id')
   async countStudentsindp(@Param('id') id: string) {
@@ -32,5 +51,21 @@ export class StudentController {
   @Get('countApprove/:id')
   async countStudentstoapprove(@Param('id') id: string) {
     return await this.studentService.getCountStudentInDeptoApprove(id);
+  }
+
+  @Post('evaluateByMentor/:id/:point')
+  async evaluateStudentByMentor(
+    @Param('id') id: string,
+    @Param('point') point: string,
+  ) {
+    return await this.studentService.evaluateStudentByMentor(id, point);
+  }
+
+  @Post('evaluateByAdvisor/:id/:point')
+  async evaluateStudentByAdvisor(
+    @Param('id') id: string,
+    @Param('point') point: string,
+  ) {
+    return await this.studentService.evaluateStudentbyAdvisor(id, point);
   }
 }

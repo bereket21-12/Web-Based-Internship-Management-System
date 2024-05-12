@@ -134,6 +134,17 @@ export class HeadService {
     });
   }
 
+  async getCountAdvisor(_id: string) {
+    const advisor =  await this.prismaService.advisor.findMany({
+      where: {
+        departmentId: _id,
+      },
+      
+  
+    });
+     return advisor.length
+  }
+
   async getStudentInDep(id: string) {
     const student = await this.prismaService.student.findMany({
       where: {

@@ -30,6 +30,11 @@ export class HeadController {
   async getvarifiedstudents(@Param('id') id: string) {
     return this.headSevice.getStudentInDep(id);
   }
+
+  @Get('countadvisor/:id')
+  async countAdvisor(@Param('id') id: string) {
+    return this.headSevice.getCountAdvisor(id);
+  }
   @Get('company/:id')
   async getDepComapny(@Param('ID') id: string) {
     return this.headSevice.getDepCompany(id);

@@ -31,8 +31,11 @@ export class LoginService {
 
     const unId = await this.filterUnservice.filterUniversityByUserID(user.id);
     const dpId = await this.filterDepId.getUserDepartmentId(user.id);
+    const advId = await this.filterDepId.getUserAdvisorId(user.id);
+
     console.log('uniD', unId);
     console.log('DepiD', dpId);
+    console.log('adviD', advId);
 
     // Verify the password
     const passwordMatches = await argon.verify(user.password, dto.password);
@@ -49,10 +52,11 @@ export class LoginService {
     // Update refresh token hash in the database
     await this.updateRtHash(user.id, tokens.refresh_token);
     console.log('tokens', tokens);
-    if (unId || dpId) {
+    if (unId || dpId || advId) {
       const userWithTokens = {
         unId,
         dpId,
+        advId,
         user,
         ...(JSON.parse(JSON.stringify(tokens)) as Tokens),
       };

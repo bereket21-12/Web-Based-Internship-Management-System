@@ -87,6 +87,8 @@ model Student {
   Evaluation     Evaluation[]
   Application    Application[]
   advisorId      String?       @db.ObjectId
+  MentorePoint   String?
+  AdvisorPoint   String?
 }
 
 model Internship {
