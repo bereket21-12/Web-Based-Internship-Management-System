@@ -60,6 +60,29 @@ export class UsersService {
     });
     return user?.departments[0]?.id ?? null;
   }
+  async getStudentDepartmentId(userId: string): Promise<string | null> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: { Student: { select: { departmentId: true } } },
+    });
+    return user?.Student[0]?.departmentId ?? null;
+  }
+
+  async getStudentId(userId: string): Promise<string | null> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: { Student: { select: { id: true } } },
+    });
+    return user?.Student[0]?.id ?? null;
+  }
+
+  async getStudentFlag(userId: string): Promise<boolean | null> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: { Student: { select: { isOnInternship: true } } },
+    });
+    return user?.Student[0]?.isOnInternship ?? null;
+  }
 
   async getUserAdvisorId(userId: string): Promise<string | null> {
     const user = await this.prismaService.user.findUnique({

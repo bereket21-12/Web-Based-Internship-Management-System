@@ -1,44 +1,44 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { IsOptional, IsString } from "class-validator";
+import { PartialType } from '@nestjs/mapped-types';
+import { IsOptional, IsString, IsArray } from 'class-validator';
 
 export class CreateReportDto {
-    @IsString()
-    studentId: string;
+  @IsString()
+  studentId: string;
 
-    @IsString()
-    @IsOptional()
-    advisorId: string;
+  @IsString()
+  advisorId?: string;
 
-    @IsString()
-    @IsOptional()
-    mentorId: string;
+  @IsString()
+  mentorId?: string;
 
-    @IsString()
-    internshipId: string;
+  @IsString()
+  internshipId: string;
 
-    @IsString()
-    title: string;
+  @IsString()
+  title: string;
 
-    @IsString()
-    @IsOptional()
-    attachmentUrl: string;
+  @IsOptional()
+  @IsString()
+  attachmentUrl?: string;
 
-    @IsString()
-    description: string;
+  @IsString()
+  description: string;
 
-    @IsString({ each: true })
-    challengesFaced: string[];
+  @IsArray()
+  @IsString({ each: true })
+  challengesFaced: string[];
 
-    @IsString({ each: true })
-    lessonsLearned: string[];
+  @IsArray()
+  @IsString({ each: true })
+  lessonsLearned: string[];
 
-    @IsString({ each: true })
-    tasksAccomplished: string[];
+  @IsArray()
+  @IsString({ each: true })
+  tasksAccomplished: string[];
 
-    @IsString()
-    @IsOptional()
-    feedbackId: string;
-    
+  @IsString()
+  @IsOptional()
+  feedbackId?: string;
 }
 
 export class UpdateReportDto extends PartialType(CreateReportDto) {}

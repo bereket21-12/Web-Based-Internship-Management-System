@@ -37,6 +37,42 @@ export class StudentController {
     return await this.studentService.getCountAdvisorStudent(id);
   }
 
+  //get applications with there status apply by student
+  @Get('appsub/:id')
+  async getStdApplication(@Param('id') id: string) {
+    return await this.studentService.getApplicationSubmitted(id);
+  }
+
+  //get accepted applications
+  @Get('accptedapp/:id')
+  async getInternOpp(@Param('id') id: string) {
+    return await this.studentService.getAcceptedApplication(id);
+  }
+
+  //get accepted applications
+  @Get('internship/:id')
+  async getInternById(@Param('id') id: string) {
+    return await this.studentService.getInternshipById(id);
+  }
+
+  //get my mentor and advisor
+  @Get('advandmen/:id')
+  async getAdvisorandMentor(@Param('id') id: string) {
+    return await this.studentService.getMentoreandAdvisor(id);
+  }
+
+  //get student's internship
+  @Get('stdintern/:id')
+  async getStudentIntern(@Param('id') id: string) {
+    return await this.studentService.getStudentsInternShip(id);
+  }
+
+  //get internshipopportuinty which are posted by connectedcompany
+  @Get('internopp/:id')
+  async getinternshipOpp(@Param('id') id: string) {
+    return await this.studentService.getInternshipOpportunity(id);
+  }
+
   //get lists of students assigned to advisor
   @Get('advisorstd/:id')
   async getAdvisorStudents(@Param('id') id: string) {
@@ -52,7 +88,10 @@ export class StudentController {
   async countStudentstoapprove(@Param('id') id: string) {
     return await this.studentService.getCountStudentInDeptoApprove(id);
   }
-
+  @Post()
+  async createReport(@Body() createReportDto: any) {
+    return this.studentService.registerCompany(createReportDto);
+  }
   @Post('evaluateByMentor/:id/:point')
   async evaluateStudentByMentor(
     @Param('id') id: string,

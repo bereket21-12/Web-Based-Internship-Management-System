@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateReportDto } from 'src/common/dtos/report.dto';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
@@ -163,5 +164,134 @@ export class StudentService {
     });
 
     return student;
+  }
+
+  //get internship opportunities
+  async getInternshipOpportunity(id: string) {
+    const internOpp = await this.prismaService.departmentCompany.findMany({
+      where: { departmentId: id },
+      include: {
+        company: {
+          include: {
+            internshipOffered: true,
+          },
+        },
+      },
+    });
+
+    return internOpp;
+  }
+
+  //get applications with there status apply by student
+  async getApplicationSubmitted(id: string) {
+    const applicaions = await this.prismaService.student.findMany({
+      where: { id: id },
+      include: {
+        Application: {
+          include: {
+            company: true,
+            internship: true,
+          },
+        },
+      },
+    });
+
+    return applicaions;
+  }
+
+  //get accepted applications
+  async getAcceptedApplication(id: string) {
+    const applicaions = await this.prismaService.student.findMany({
+      where: { id: id },
+      include: {
+        Application: {
+          where: {
+            status: 'ACCEPTED',
+          },
+          include: {
+            company: true,
+            internship: true,
+          },
+        },
+      },
+    });
+
+    return applicaions;
+  }
+
+  //get internship by id
+  async getInternshipById(id: string) {
+    const internship = await this.prismaService.internship.findMany({
+      where: { id: id },
+      include: {
+        description: true,
+      },
+    });
+
+    return internship;
+  }
+
+  //get student's internship by id
+  async getStudentsInternShip(id: string) {
+    const internship = await this.prismaService.student.findMany({
+      where: { userId: id },
+      include: {
+        internship: {
+          include: {
+            company: true,
+            Application: true,
+            description: true,
+          },
+        },
+      },
+    });
+
+    return internship;
+  }
+
+  //get my mentor and advisor
+  async getMentoreandAdvisor(id: string) {
+    const advMen = await this.prismaService.student.findMany({
+      where: { userId: id },
+      include: {
+        advisor: {
+          include: {
+            user: true,
+          },
+        },
+        mentor: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    return advMen;
+  }
+
+  async registerCompany(dto: CreateReportDto) {
+    try {
+      const report = await this.prismaService.report.create({
+        data: {
+          studentId: dto.studentId,
+          advisorId: dto.advisorId,
+          mentorId: dto.mentorId,
+          internshipId: dto.internshipId,
+          title: dto.title,
+          description: dto.description,
+          attachmentUrl: dto.attachmentUrl,
+          challengesFaced: { set: dto.challengesFaced },
+          lessonsLearned: { set: dto.lessonsLearned },
+          tasksAccomplished: { set: dto.tasksAccomplished },
+          feedbackId: dto.feedbackId,
+        },
+      });
+
+      return report;
+    } catch (error) {
+      // Handle error
+      throw new Error('Failed to register report.');
+    }
   }
 }
