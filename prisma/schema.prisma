@@ -289,25 +289,25 @@ model Feedback {
 }
 
 model Report {
-  id                String     @id @default(auto()) @map("_id") @db.ObjectId
-  studentId         String     @db.ObjectId
-  student           Student    @relation(fields: [studentId], references: [id])
-  advisorId         String?    @db.ObjectId
-  advisor           Advisor?   @relation(fields: [advisorId], references: [id])
-  mentorId          String?    @db.ObjectId
-  mentor            Mentor?    @relation(fields: [mentorId], references: [id])
-  internshipId      String     @db.ObjectId
-  internship        Internship @relation(fields: [internshipId], references: [id])
+  id                String      @id @default(auto()) @map("_id") @db.ObjectId
+  studentId         String      @db.ObjectId
+  student           Student?    @relation(fields: [studentId], references: [id])
+  advisorId         String?     @db.ObjectId
+  advisor           Advisor?    @relation(fields: [advisorId], references: [id])
+  mentorId          String?     @db.ObjectId
+  mentor            Mentor?     @relation(fields: [mentorId], references: [id])
+  internshipId      String      @db.ObjectId
+  internship        Internship? @relation(fields: [internshipId], references: [id])
   title             String
   attachmentUrl     String?
-  feedbackId        String?    @db.ObjectId
-  feedback          Feedback?  @relation(fields: [feedbackId], references: [id])
+  feedbackId        String?     @db.ObjectId
+  feedback          Feedback?   @relation(fields: [feedbackId], references: [id])
   description       String
   challengesFaced   String[]
   lessonsLearned    String[]
   tasksAccomplished String[]
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 }
 
 model Form {

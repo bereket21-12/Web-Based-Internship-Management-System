@@ -270,28 +270,32 @@ export class StudentService {
     return advMen;
   }
 
-  async registerCompany(dto: CreateReportDto) {
-    try {
-      const report = await this.prismaService.report.create({
-        data: {
-          studentId: dto.studentId,
-          advisorId: dto.advisorId,
-          mentorId: dto.mentorId,
-          internshipId: dto.internshipId,
-          title: dto.title,
-          description: dto.description,
-          attachmentUrl: dto.attachmentUrl,
-          challengesFaced: { set: dto.challengesFaced },
-          lessonsLearned: { set: dto.lessonsLearned },
-          tasksAccomplished: { set: dto.tasksAccomplished },
-          feedbackId: dto.feedbackId,
+  async getStudentbyUserId(id: string) {
+    const advMen = await this.prismaService.user.findMany({
+      where: { id: id },
+      include: {
+        Student: {
+          include: {
+            advisor: {
+              select: {
+                id: true,
+              },
+            },
+            mentor: {
+              select: {
+                id: true,
+              },
+            },
+            internship: {
+              select: {
+                id: true,
+              },
+            },
+          },
         },
-      });
+      },
+    });
 
-      return report;
-    } catch (error) {
-      // Handle error
-      throw new Error('Failed to register report.');
-    }
+    return advMen;
   }
 }

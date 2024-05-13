@@ -73,6 +73,12 @@ export class StudentController {
     return await this.studentService.getInternshipOpportunity(id);
   }
 
+  //get student by userID
+  @Get('userId/:id')
+  async getStudentByUserID(@Param('id') id: string) {
+    return await this.studentService.getStudentbyUserId(id);
+  }
+
   //get lists of students assigned to advisor
   @Get('advisorstd/:id')
   async getAdvisorStudents(@Param('id') id: string) {
@@ -88,10 +94,7 @@ export class StudentController {
   async countStudentstoapprove(@Param('id') id: string) {
     return await this.studentService.getCountStudentInDeptoApprove(id);
   }
-  @Post()
-  async createReport(@Body() createReportDto: any) {
-    return this.studentService.registerCompany(createReportDto);
-  }
+
   @Post('evaluateByMentor/:id/:point')
   async evaluateStudentByMentor(
     @Param('id') id: string,
