@@ -32,6 +32,11 @@ export class ReportController {
     return this.reportService.getReportById(_id);
   }
 
+  @Get('reportadvisor/:id')
+  async getReportByAdvisorId(@Param('id') _id: string) {
+    return this.reportService.getReportByAdvisorId(_id);
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createReport(

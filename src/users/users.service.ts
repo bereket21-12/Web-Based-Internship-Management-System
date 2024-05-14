@@ -135,6 +135,19 @@ export class UsersService {
     return user;
   }
 
+  async getAdvisorById(id: string): Promise<any> {
+    const user = await this.prismaService.user.findMany({
+      where: { id: id },
+      include: {
+        Advisor: {
+          select: {
+            id:true
+          }
+        }
+      }
+    });
+    return user;
+  }
   async getAllUniversityUsers(id: string): Promise<any> {
     const allUsers = await this.prismaService.universityUser.findMany({
       where: {

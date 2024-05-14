@@ -25,7 +25,8 @@ export class UsersController {
     private cloudinaryService: CloudinaryService,
   ) {}
 
-  private static defaultImageUrl = 'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1714821126/profile_pictures/t0vhlzgmleprqbekvqht.jpg';
+  private static defaultImageUrl =
+    'https://res.cloudinary.com/dtwxnkgdf/image/upload/v1714821126/profile_pictures/t0vhlzgmleprqbekvqht.jpg';
   private static defaultImagePublicId = 'profile_pictures/t0vhlzgmleprqbekvqht';
 
   @Get()
@@ -61,13 +62,12 @@ export class UsersController {
     return await this.userService.getCOLLEGE_DEAN();
   }
 
-
   @Post('mentor')
   //   @Roles(Role.UNIVERSITY_ADMIN, Role.SYSTEM_ADMIN, Role.COMPANY_HR)//
   //   @UseGuards(AtGuard, RoleGuard)//
   // @UseInterceptors(FileInterceptor('image'))
   async createMentor(@Body() user: any) {
-    try {      
+    try {
       user.profilePic = UsersController.defaultImageUrl;
       user.imagePublicId = UsersController.defaultImagePublicId;
       return await this.userService.createMentor(user);
@@ -77,11 +77,16 @@ export class UsersController {
     }
   }
 
-
   @Get('university/:id')
   async Universityuser(@Param('id') id: string) {
     console.log('univesity Users');
     return await this.userService.getAllUniversityUsers(id);
+  }
+
+  @Get('advisor/:id')
+  async Advisor(@Param('id') id: string) {
+    console.log('univesity Users');
+    return await this.userService.getAdvisorById(id);
   }
 
   @Post(':id')

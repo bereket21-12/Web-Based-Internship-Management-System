@@ -136,6 +136,11 @@ export class StudentService {
         user: true,
         Report: true,
         advisor: true,
+        internship: {
+          include: {
+            company: true,
+          },
+        },
       },
     });
 
