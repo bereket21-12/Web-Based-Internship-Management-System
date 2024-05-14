@@ -187,6 +187,7 @@ export class StudentService {
     const applicaions = await this.prismaService.student.findMany({
       where: { id: id },
       include: {
+        user: true,
         Application: {
           include: {
             company: true,
@@ -224,6 +225,7 @@ export class StudentService {
     const internship = await this.prismaService.internship.findMany({
       where: { id: id },
       include: {
+        company: true,
         description: true,
       },
     });

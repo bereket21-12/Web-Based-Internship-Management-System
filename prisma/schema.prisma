@@ -303,9 +303,9 @@ model Report {
   feedbackId        String?     @db.ObjectId
   feedback          Feedback?   @relation(fields: [feedbackId], references: [id])
   description       String
-  challengesFaced   String[]
-  lessonsLearned    String[]
-  tasksAccomplished String[]
+  challengesFaced   String
+  lessonsLearned    String
+  tasksAccomplished String
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 }

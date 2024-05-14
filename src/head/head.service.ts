@@ -135,14 +135,12 @@ export class HeadService {
   }
 
   async getCountAdvisor(_id: string) {
-    const advisor =  await this.prismaService.advisor.findMany({
+    const advisor = await this.prismaService.advisor.findMany({
       where: {
         departmentId: _id,
       },
-      
-  
     });
-     return advisor.length
+    return advisor.length;
   }
 
   async getStudentInDep(id: string) {
@@ -162,6 +160,11 @@ export class HeadService {
           },
         },
         user: true,
+        internship: {
+          include: {
+            company: true,
+          },
+        },
       },
     });
 
